@@ -28,23 +28,23 @@ import (
 	"time"
 
 	"golang.org/x/net/http2"
-	"tailscale.com/control/controlhttp/controlhttpserver"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/tstest/tkatest"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/ptr"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
-	"tailscale.com/util/rands"
-	"tailscale.com/util/set"
-	"tailscale.com/util/zstdframe"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlhttp/controlhttpserver"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tka"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/tkatest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/util/rands"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/zstdframe"
 )
 
 const msgLimit = 1 << 20 // encrypted message length limit
@@ -642,7 +642,7 @@ func (s *Server) getUser(nodeKey key.NodePublic) (*tailcfg.User, *tailcfg.Login)
 		Provider:      "testcontrol",
 		LoginName:     loginName,
 		DisplayName:   displayName,
-		ProfilePicURL: "https://tailscale.com/static/images/marketing/team-carney.jpg",
+		ProfilePicURL: "https://github.com/Xinlong-Wu/tailscale-oh/static/images/marketing/team-carney.jpg",
 	}
 	user := &tailcfg.User{
 		ID:          id,

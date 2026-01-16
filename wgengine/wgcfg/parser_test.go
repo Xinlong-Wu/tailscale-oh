@@ -12,7 +12,7 @@ import (
 	"runtime"
 	"testing"
 
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 func noError(t *testing.T, err error) bool {

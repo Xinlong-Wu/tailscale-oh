@@ -8,11 +8,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"tailscale.com/appc"
-	"tailscale.com/feature"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/appc"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // featureName is the name of the feature implemented by this package.

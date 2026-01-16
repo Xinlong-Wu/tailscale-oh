@@ -12,7 +12,7 @@ import (
 	"github.com/tailscale/wireguard-go/conn"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 )
 
 func setGSOSize(control *[]byte, gsoSize uint16) {

@@ -71,8 +71,8 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/util/hashx"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/hashx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 // There is much overlap between the theory of serialization and hashing.

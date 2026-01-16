@@ -8,7 +8,7 @@ import (
 	"net"
 	"runtime"
 
-	"tailscale.com/types/nettype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
 )
 
 // BufferDirection represents either the read/receive or write/send direction

@@ -16,9 +16,9 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/internal/client/tailscale"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 // defaultTailnet is a value that can be used in Tailscale API calls instead of tailnet name to indicate that the API

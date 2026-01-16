@@ -6,7 +6,7 @@ package truncate_test
 import (
 	"testing"
 
-	"tailscale.com/util/truncate"
+	"github.com/Xinlong-Wu/tailscale-oh/util/truncate"
 )
 
 func TestString(t *testing.T) {

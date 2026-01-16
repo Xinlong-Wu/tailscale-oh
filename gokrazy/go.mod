@@ -1,4 +1,4 @@
-module tailscale.com/gokrazy
+module github.com/Xinlong-Wu/tailscale-oh/gokrazy
 
 go 1.23
 

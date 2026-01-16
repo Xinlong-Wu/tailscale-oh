@@ -19,16 +19,16 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/httphdr"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/progresstracking"
-	"tailscale.com/util/rands"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/localapi"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httphdr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/progresstracking"
+	"github.com/Xinlong-Wu/tailscale-oh/util/rands"
 )
 
 func init() {

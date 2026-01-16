@@ -23,13 +23,13 @@ import (
 	"github.com/mattn/go-colorable"
 	"github.com/mattn/go-isatty"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/local"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/paths"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/ffcomplete"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/paths"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 var Stderr io.Writer = os.Stderr

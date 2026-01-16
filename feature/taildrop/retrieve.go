@@ -13,9 +13,9 @@ import (
 	"sort"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 // HasFilesWaiting reports whether any files are buffered in [Handler.Dir].

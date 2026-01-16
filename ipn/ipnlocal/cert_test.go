@@ -21,11 +21,11 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/envknob"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 func TestValidLookingCertDomain(t *testing.T) {

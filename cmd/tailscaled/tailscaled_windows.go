@@ -3,7 +3,7 @@
 
 //go:build go1.19
 
-package main // import "tailscale.com/cmd/tailscaled"
+package main // import "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled"
 
 // TODO: check if administrator, like tswin does.
 //
@@ -42,25 +42,25 @@ import (
 	"golang.org/x/sys/windows/svc/eventlog"
 	"golang.zx2c4.com/wintun"
 	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
-	"tailscale.com/drive/driveimpl"
-	"tailscale.com/envknob"
-	_ "tailscale.com/ipn/auditlog"
-	_ "tailscale.com/ipn/desktop"
-	"tailscale.com/logpolicy"
-	"tailscale.com/net/dns"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tstun"
-	"tailscale.com/tsd"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/osdiag"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/gp"
-	"tailscale.com/version"
-	"tailscale.com/wf"
+	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	_ "github.com/Xinlong-Wu/tailscale-oh/ipn/auditlog"
+	_ "github.com/Xinlong-Wu/tailscale-oh/ipn/desktop"
+	"github.com/Xinlong-Wu/tailscale-oh/logpolicy"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
+	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
+	"github.com/Xinlong-Wu/tailscale-oh/util/osdiag"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/gp"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"github.com/Xinlong-Wu/tailscale-oh/wf"
 )
 
 func init() {

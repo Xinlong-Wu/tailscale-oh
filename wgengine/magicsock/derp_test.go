@@ -6,7 +6,7 @@ package magicsock
 import (
 	"testing"
 
-	"tailscale.com/net/netcheck"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netcheck"
 )
 
 func CheckDERPHeuristicTimes(t *testing.T) {

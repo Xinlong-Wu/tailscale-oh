@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	qt "github.com/frankban/quicktest"
-	"tailscale.com/util/usermetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/usermetric"
 )
 
 func TestMetrics(t *testing.T) {

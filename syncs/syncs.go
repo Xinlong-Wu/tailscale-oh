@@ -10,7 +10,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"tailscale.com/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 // ClosedChan returns a channel that's already closed.

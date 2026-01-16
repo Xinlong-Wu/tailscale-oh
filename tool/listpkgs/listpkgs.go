@@ -113,7 +113,7 @@ Pkg:
 }
 
 func isThirdParty(pkg string) bool {
-	return strings.HasPrefix(pkg, "tailscale.com/tempfork/")
+	return strings.HasPrefix(pkg, "github.com/Xinlong-Wu/tailscale-oh/tempfork/")
 }
 
 // hasBuildTag reports whether any source file in pkg mentions `tag`

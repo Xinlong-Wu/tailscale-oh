@@ -14,8 +14,8 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // isNotExistError needs to be overridden in tests that rely on distinguishing

@@ -15,11 +15,11 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"tailscale.com/ipn"
-	"tailscale.com/kube/kubetypes"
-	klc "tailscale.com/kube/localclient"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/deephash"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	klc "github.com/Xinlong-Wu/tailscale-oh/kube/localclient"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/deephash"
 )
 
 const (

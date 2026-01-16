@@ -22,9 +22,9 @@ import (
 	"github.com/mdlayher/netlink"
 	"go4.org/mem"
 	"golang.org/x/sys/unix"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/util/lineiter"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/lineiter"
 )
 
 func init() {

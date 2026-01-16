@@ -10,10 +10,10 @@ import (
 	"unsafe"
 
 	"golang.org/x/sys/windows"
-	"tailscale.com/ipn"
-	"tailscale.com/safesocket"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/winutil"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/safesocket"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 )
 
 // GetConnIdentity extracts the identity information from the connection

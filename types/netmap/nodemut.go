@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 // NodeMutation is the common interface for types that describe

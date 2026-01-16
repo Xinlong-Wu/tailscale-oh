@@ -10,9 +10,9 @@ import (
 	"net/http"
 	"testing"
 
-	"tailscale.com/tstest/integration"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 var (

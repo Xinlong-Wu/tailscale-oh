@@ -31,19 +31,19 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"golang.org/x/sys/unix"
-	"tailscale.com/ipn"
-	"tailscale.com/kube/egressservices"
-	"tailscale.com/kube/kubeclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/egressservices"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeclient"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 func TestContainerBoot(t *testing.T) {
 	boot := filepath.Join(t.TempDir(), "containerboot")
-	if err := exec.Command("go", "build", "-ldflags", "-X main.testSleepDuration=1ms", "-o", boot, "tailscale.com/cmd/containerboot").Run(); err != nil {
+	if err := exec.Command("go", "build", "-ldflags", "-X main.testSleepDuration=1ms", "-o", boot, "github.com/Xinlong-Wu/tailscale-oh/cmd/containerboot").Run(); err != nil {
 		t.Fatalf("Building containerboot: %v", err)
 	}
 	egressStatus := egressSvcStatus("foo", "foo.tailnetxyz.ts.net", "100.64.0.2")

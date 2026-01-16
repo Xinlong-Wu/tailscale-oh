@@ -11,8 +11,8 @@ import (
 	"strings"
 	"sync"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
 )
 
 // IsMobile reports whether this is a mobile client build.

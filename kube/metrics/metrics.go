@@ -12,8 +12,8 @@ import (
 	"io"
 	"net/http"
 
-	"tailscale.com/client/local"
-	"tailscale.com/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 )
 
 // metrics is a simple metrics HTTP server, if enabled it forwards requests to

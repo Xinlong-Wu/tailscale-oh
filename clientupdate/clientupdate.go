@@ -27,13 +27,13 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/feature"
-	"tailscale.com/hostinfo"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/cmpver"
-	"tailscale.com/version"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cmpver"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 const (
@@ -511,7 +511,7 @@ func updateDebianAptSourcesList(dstTrack string) (rewrote bool, err error) {
 }
 
 func updateDebianAptSourcesListBytes(was []byte, dstTrack string) (newContent []byte, err error) {
-	trackURLPrefix := []byte("https://pkgs.tailscale.com/" + dstTrack + "/")
+	trackURLPrefix := []byte("https://pkgs.github.com/Xinlong-Wu/tailscale-oh/" + dstTrack + "/")
 	var buf bytes.Buffer
 	var changes int
 	bs := bufio.NewScanner(bytes.NewReader(was))
@@ -619,7 +619,7 @@ func updateYUMRepoTrack(repoFile, dstTrack string) (rewrote bool, err error) {
 	}
 
 	urlRe := regexp.MustCompile(`^(baseurl|gpgkey)=https://pkgs\.tailscale\.com/(un)?stable/`)
-	urlReplacement := fmt.Sprintf("$1=https://pkgs.tailscale.com/%s/", dstTrack)
+	urlReplacement := fmt.Sprintf("$1=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/%s/", dstTrack)
 
 	s := bufio.NewScanner(bytes.NewReader(was))
 	newContent := bytes.NewBuffer(make([]byte, 0, len(was)))
@@ -1200,7 +1200,7 @@ type trackPackages struct {
 }
 
 func latestPackages(track string) (*trackPackages, error) {
-	url := fmt.Sprintf("https://pkgs.tailscale.com/%s/?mode=json&os=%s", track, runtime.GOOS)
+	url := fmt.Sprintf("https://pkgs.github.com/Xinlong-Wu/tailscale-oh/%s/?mode=json&os=%s", track, runtime.GOOS)
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("fetching latest tailscale version: %w", err)

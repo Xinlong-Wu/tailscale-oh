@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/ffcomplete"
-	"tailscale.com/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/ffcomplete"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 )
 
 var switchCmd = &ffcli.Command{

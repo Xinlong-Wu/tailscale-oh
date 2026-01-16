@@ -6,7 +6,7 @@
 package sockopts
 
 import (
-	"tailscale.com/types/nettype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
 )
 
 // SetICMPErrImmunity is no-op on non-Windows.

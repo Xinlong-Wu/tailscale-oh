@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/client/tailscale"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale"
 )
 
 func TestEmbeddedTypeUnmarshal(t *testing.T) {

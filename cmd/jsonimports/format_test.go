@@ -7,8 +7,8 @@ import (
 	"go/format"
 	"testing"
 
-	"tailscale.com/util/must"
-	"tailscale.com/util/safediff"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/util/safediff"
 )
 
 func TestFormatFile(t *testing.T) {

@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 func TestFileTargets(t *testing.T) {

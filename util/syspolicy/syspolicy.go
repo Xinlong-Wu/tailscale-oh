@@ -3,7 +3,7 @@
 
 // Package syspolicy contains the implementation of system policy management.
 // Calling code should use the client interface in
-// tailscale.com/util/syspolicy/policyclient.
+// github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient.
 package syspolicy
 
 import (
@@ -12,13 +12,13 @@ import (
 	"reflect"
 	"time"
 
-	"tailscale.com/util/syspolicy/internal/loggerx"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/util/syspolicy/ptype"
-	"tailscale.com/util/syspolicy/rsop"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/syspolicy/source"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal/loggerx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/ptype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/rsop"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/source"
 )
 
 var (

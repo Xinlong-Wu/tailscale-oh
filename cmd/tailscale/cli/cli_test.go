@@ -18,20 +18,20 @@ import (
 	qt "github.com/frankban/quicktest"
 	"github.com/google/go-cmp/cmp"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/envknob"
-	"tailscale.com/health/healthmsg"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/preftype"
-	"tailscale.com/util/set"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/health/healthmsg"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tka"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/deptest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
+	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 func TestPanicIfAnyEnvCheckedInInit(t *testing.T) {
@@ -1701,12 +1701,12 @@ func TestDeps(t *testing.T) {
 		GOOS:   "linux",
 		GOARCH: "arm64",
 		WantDeps: set.Of(
-			"tailscale.com/feature/capture/dissector", // want the Lua by default
+			"github.com/Xinlong-Wu/tailscale-oh/feature/capture/dissector", // want the Lua by default
 		),
 		BadDeps: map[string]string{
-			"tailscale.com/feature/capture": "don't link capture code",
-			"tailscale.com/net/packet":      "why we passing packets in the CLI?",
-			"tailscale.com/net/flowtrack":   "why we tracking flows in the CLI?",
+			"github.com/Xinlong-Wu/tailscale-oh/feature/capture": "don't link capture code",
+			"github.com/Xinlong-Wu/tailscale-oh/net/packet":      "why we passing packets in the CLI?",
+			"github.com/Xinlong-Wu/tailscale-oh/net/flowtrack":   "why we tracking flows in the CLI?",
 		},
 	}.Check(t)
 }
@@ -1717,8 +1717,8 @@ func TestDepsNoCapture(t *testing.T) {
 		GOARCH: "arm64",
 		Tags:   "ts_omit_capture",
 		BadDeps: map[string]string{
-			"tailscale.com/feature/capture":           "don't link capture code",
-			"tailscale.com/feature/capture/dissector": "don't like the Lua",
+			"github.com/Xinlong-Wu/tailscale-oh/feature/capture":           "don't link capture code",
+			"github.com/Xinlong-Wu/tailscale-oh/feature/capture/dissector": "don't like the Lua",
 		},
 	}.Check(t)
 

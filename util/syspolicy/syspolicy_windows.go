@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"os/user"
 
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/rsop"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/syspolicy/source"
-	"tailscale.com/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/rsop"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/source"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 func init() {

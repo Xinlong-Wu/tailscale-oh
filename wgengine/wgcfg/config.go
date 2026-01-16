@@ -8,11 +8,11 @@ import (
 	"net/netip"
 	"slices"
 
-	"tailscale.com/types/key"
-	"tailscale.com/types/logid"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
 )
 
-//go:generate go run tailscale.com/cmd/cloner -type=Config,Peer
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/cloner -type=Config,Peer
 
 // Config is a WireGuard configuration.
 // It only supports the set of things Tailscale uses.

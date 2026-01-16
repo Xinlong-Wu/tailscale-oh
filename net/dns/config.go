@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & AUTHORS
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:generate go run tailscale.com/cmd/viewer --type=Config --clonefunc
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/viewer --type=Config --clonefunc
 
 // Package dns contains code to configure and manage DNS settings.
 package dns
@@ -14,13 +14,13 @@ import (
 	"slices"
 	"sort"
 
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/envknob"
-	"tailscale.com/net/dns/publicdns"
-	"tailscale.com/net/dns/resolver"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlknobs"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dns/publicdns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dns/resolver"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
 )
 
 // Config is a DNS configuration.

@@ -7,7 +7,7 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 // TestHandleConnectorTransitIPRequestZeroLength tests that if sent a

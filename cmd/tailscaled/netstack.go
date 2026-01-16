@@ -11,9 +11,9 @@ import (
 	"net"
 	"net/netip"
 
-	"tailscale.com/tsd"
-	"tailscale.com/types/logger"
-	"tailscale.com/wgengine/netstack"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack"
 )
 
 func init() {

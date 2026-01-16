@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"tailscale.com/util/nocasemaps"
-	"tailscale.com/util/vizerror"
+	"github.com/Xinlong-Wu/tailscale-oh/util/nocasemaps"
+	"github.com/Xinlong-Wu/tailscale-oh/util/vizerror"
 )
 
 // Version describes the IP address version.

@@ -15,12 +15,12 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 // ServeConfigKey returns a StateKey that stores the
@@ -609,10 +609,10 @@ func CheckFunnelAccess(port uint16, node *ipnstate.PeerStatus) error {
 // for Tailscale Funnel usage.
 func NodeCanFunnel(node *ipnstate.PeerStatus) error {
 	if !node.HasCap(tailcfg.CapabilityHTTPS) {
-		return errors.New("Funnel not available; HTTPS must be enabled. See https://tailscale.com/s/https.")
+		return errors.New("Funnel not available; HTTPS must be enabled. See https://github.com/Xinlong-Wu/tailscale-oh/s/https.")
 	}
 	if !node.HasCap(tailcfg.NodeAttrFunnel) {
-		return errors.New("Funnel not available; \"funnel\" node attribute not set. See https://tailscale.com/s/no-funnel.")
+		return errors.New("Funnel not available; \"funnel\" node attribute not set. See https://github.com/Xinlong-Wu/tailscale-oh/s/no-funnel.")
 	}
 	return nil
 }

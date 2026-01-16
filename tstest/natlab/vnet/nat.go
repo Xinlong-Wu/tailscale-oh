@@ -10,7 +10,7 @@ import (
 	"net/netip"
 	"time"
 
-	"tailscale.com/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 const (

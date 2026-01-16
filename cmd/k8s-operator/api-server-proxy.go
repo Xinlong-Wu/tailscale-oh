@@ -10,8 +10,8 @@ import (
 	"log"
 	"os"
 
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 func parseAPIProxyMode() *kubetypes.APIServerProxyMode {

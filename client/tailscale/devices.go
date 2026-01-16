@@ -14,7 +14,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"tailscale.com/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 )
 
 type GetDevicesResponse struct {

@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 // FirewallType is the type of filtering a stateful firewall

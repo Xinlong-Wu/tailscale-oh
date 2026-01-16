@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 )
 
 // NewBus constructs an [eventbus.Bus] that will be shut automatically when

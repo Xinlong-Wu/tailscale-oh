@@ -11,14 +11,14 @@ import (
 	"sync"
 	"testing"
 
-	"tailscale.com/client/local"
-	"tailscale.com/envknob"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/lapitest"
-	"tailscale.com/tsd"
-	"tailscale.com/types/ptr"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policytest"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/lapitest"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policytest"
 )
 
 func TestUserConnectDisconnectNonWindows(t *testing.T) {

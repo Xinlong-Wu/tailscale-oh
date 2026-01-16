@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/util/cibuild"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cibuild"
 )
 
 func TestWatchForPolicyChange(t *testing.T) {

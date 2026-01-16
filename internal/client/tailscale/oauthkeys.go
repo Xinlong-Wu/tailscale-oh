@@ -6,7 +6,7 @@ package tailscale
 import (
 	"context"
 
-	"tailscale.com/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 )
 
 // HookResolveAuthKey resolves to [oauthkey.ResolveAuthKey] when the

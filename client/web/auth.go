@@ -15,9 +15,9 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 const (

@@ -18,7 +18,7 @@ import (
 	"strings"
 	"sync"
 
-	"tailscale.com/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
 )
 
 // dohOfIP maps from public DNS IPs to their DoH base URL.

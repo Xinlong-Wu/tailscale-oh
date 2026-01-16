@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/util/winutil"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 )
 
 func init() {

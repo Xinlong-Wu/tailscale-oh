@@ -14,10 +14,10 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
-	kube "tailscale.com/k8s-operator"
-	"tailscale.com/tstest"
-	"tailscale.com/types/ptr"
-	"tailscale.com/util/httpm"
+	kube "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
 )
 
 // See [TestMain] for test requirements.
@@ -66,7 +66,7 @@ func TestIngress(t *testing.T) {
 			Name:      "test-ingress",
 			Namespace: "default",
 			Annotations: map[string]string{
-				"tailscale.com/expose": "true",
+				"github.com/Xinlong-Wu/tailscale-oh/expose": "true",
 			},
 		},
 		Spec: corev1.ServiceSpec{

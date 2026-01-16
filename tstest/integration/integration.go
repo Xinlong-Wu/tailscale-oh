@@ -33,25 +33,25 @@ import (
 	"time"
 
 	"go4.org/mem"
-	"tailscale.com/client/local"
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/ipn/store"
-	"tailscale.com/net/stun/stuntest"
-	"tailscale.com/safesocket"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/nettype"
-	"tailscale.com/util/rands"
-	"tailscale.com/util/zstdframe"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/derp/derpserver"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun/stuntest"
+	"github.com/Xinlong-Wu/tailscale-oh/safesocket"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
+	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/rands"
+	"github.com/Xinlong-Wu/tailscale-oh/util/zstdframe"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 var (
@@ -192,7 +192,7 @@ func buildTestBinaries(dir string) error {
 		}
 		return bi, nil
 	}
-	err := build(dir, "tailscale.com/cmd/tailscaled", "tailscale.com/cmd/tailscale")
+	err := build(dir, "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled", "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale")
 	if err != nil {
 		return err
 	}

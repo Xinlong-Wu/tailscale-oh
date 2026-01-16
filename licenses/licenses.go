@@ -10,12 +10,12 @@ import "runtime"
 func LicensesURL() string {
 	switch runtime.GOOS {
 	case "android":
-		return "https://tailscale.com/licenses/android"
+		return "https://github.com/Xinlong-Wu/tailscale-oh/licenses/android"
 	case "darwin", "ios":
-		return "https://tailscale.com/licenses/apple"
+		return "https://github.com/Xinlong-Wu/tailscale-oh/licenses/apple"
 	case "windows":
-		return "https://tailscale.com/licenses/windows"
+		return "https://github.com/Xinlong-Wu/tailscale-oh/licenses/windows"
 	default:
-		return "https://tailscale.com/licenses/tailscale"
+		return "https://github.com/Xinlong-Wu/tailscale-oh/licenses/tailscale"
 	}
 }

@@ -8,10 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/ptr"
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 )
 
 func TestSettingDefinition(t *testing.T) {

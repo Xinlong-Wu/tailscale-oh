@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 )
 
 var (

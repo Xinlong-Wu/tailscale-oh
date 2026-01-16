@@ -12,12 +12,12 @@ import (
 
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=true -type=Config
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/cloner  -clonefunc=true -type=Config
 
 // View returns a read-only view of Config.
 func (p *Config) View() ConfigView {

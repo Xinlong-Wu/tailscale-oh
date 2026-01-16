@@ -8,7 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 // nilErrPtr is a sentinel *error value for SyncValue.err to signal

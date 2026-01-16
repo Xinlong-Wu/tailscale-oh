@@ -35,19 +35,19 @@ import (
 
 	"github.com/pires/go-proxyproto"
 	"go4.org/mem"
-	"tailscale.com/ipn"
-	"tailscale.com/net/netutil"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/views"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/ctxkey"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netutil"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/ctxkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 func init() {
@@ -1045,7 +1045,7 @@ func (b *LocalBackend) addTailscaleIdentityHeaders(r *httputil.ProxyRequest) {
 	r.Out.Header.Set("Tailscale-User-Login", encTailscaleHeaderValue(user.LoginName))
 	r.Out.Header.Set("Tailscale-User-Name", encTailscaleHeaderValue(user.DisplayName))
 	r.Out.Header.Set("Tailscale-User-Profile-Pic", user.ProfilePicURL)
-	r.Out.Header.Set("Tailscale-Headers-Info", "https://tailscale.com/s/serve-headers")
+	r.Out.Header.Set("Tailscale-Headers-Info", "https://github.com/Xinlong-Wu/tailscale-oh/s/serve-headers")
 }
 
 // encTailscaleHeaderValue cleans or encodes as necessary v, to be suitable in

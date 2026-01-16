@@ -54,8 +54,8 @@ const (
 
 	EgessServicesPreshutdownEP = "/internal-egress-services-preshutdown"
 
-	LabelManaged    = "tailscale.com/managed"
-	LabelSecretType = "tailscale.com/secret-type" // "config", "state" "certs"
+	LabelManaged    = "github.com/Xinlong-Wu/tailscale-oh/managed"
+	LabelSecretType = "github.com/Xinlong-Wu/tailscale-oh/secret-type" // "config", "state" "certs"
 
 	LabelSecretTypeConfig = "config"
 	LabelSecretTypeState  = "state"

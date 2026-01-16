@@ -15,7 +15,7 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 // mustFormatFile formats a Go source file and adjust "json" imports.

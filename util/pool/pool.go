@@ -13,7 +13,7 @@ import (
 	"fmt"
 	"math/rand/v2"
 
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 // consistencyCheck enables additional runtime checks to ensure that the pool

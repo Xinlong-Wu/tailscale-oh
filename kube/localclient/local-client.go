@@ -9,8 +9,8 @@ import (
 	"context"
 	"io"
 
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 )
 
 // LocalClient is roughly a subset of the local.Client struct's methods, used

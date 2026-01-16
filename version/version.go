@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	tailscaleroot "tailscale.com"
-	"tailscale.com/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
 )
 
 // Stamp vars can have their value set at build time by linker flags (see

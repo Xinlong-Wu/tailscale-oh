@@ -1,4 +1,4 @@
-module tailscale.com
+module github.com/Xinlong-Wu/tailscale-oh
 
 go 1.25.5
 
@@ -129,6 +129,7 @@ require (
 	sigs.k8s.io/kind v0.30.0
 	sigs.k8s.io/yaml v1.6.0
 	software.sslmate.com/src/go-pkcs12 v0.4.0
+	tailscale.com v1.81.0-pre.0.20250303195457-5449aba94c51
 )
 
 require (

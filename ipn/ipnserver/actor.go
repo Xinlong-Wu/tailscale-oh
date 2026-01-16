@@ -12,13 +12,13 @@ import (
 	"runtime"
 	"time"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/ctxkey"
-	"tailscale.com/util/osuser"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnauth"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/ctxkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/osuser"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 var _ ipnauth.Actor = (*actor)(nil)

@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 func TestRaceSuccess1(t *testing.T) {

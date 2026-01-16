@@ -22,19 +22,19 @@ import (
 
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
-	"tailscale.com/disco"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/stun"
-	"tailscale.com/net/tstun"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime/mono"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/ringlog"
-	"tailscale.com/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/disco"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime/mono"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/ringlog"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
 )
 
 var mtuProbePingSizesV4 []int
@@ -97,7 +97,7 @@ type endpoint struct {
 
 	expired         bool // whether the node has expired
 	isWireguardOnly bool // whether the endpoint is WireGuard only
-	relayCapable    bool // whether the node is capable of speaking via a [tailscale.com/net/udprelay.Server]
+	relayCapable    bool // whether the node is capable of speaking via a [github.com/Xinlong-Wu/tailscale-oh/net/udprelay.Server]
 }
 
 // udpRelayEndpointReady determines whether the given relay [addrQuality] should
@@ -1258,7 +1258,7 @@ func (de *endpoint) sendDiscoPing(ep epAddr, discoKey key.DiscoPublic, txid stun
 // discoPingPurpose is the reason why a discovery ping message was sent.
 type discoPingPurpose int
 
-//go:generate go run tailscale.com/cmd/addlicense -file discopingpurpose_string.go go run golang.org/x/tools/cmd/stringer -type=discoPingPurpose -trimprefix=ping
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/addlicense -file discopingpurpose_string.go go run golang.org/x/tools/cmd/stringer -type=discoPingPurpose -trimprefix=ping
 const (
 	// pingDiscovery means that purpose of a ping was to see if a
 	// path was valid.

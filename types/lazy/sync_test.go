@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"tailscale.com/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 )
 
 func TestSyncValue(t *testing.T) {

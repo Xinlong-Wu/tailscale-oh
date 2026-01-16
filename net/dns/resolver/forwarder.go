@@ -25,26 +25,26 @@ import (
 	"time"
 
 	dns "golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/net/dns/publicdns"
-	"tailscale.com/net/dnscache"
-	"tailscale.com/net/neterror"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netx"
-	"tailscale.com/net/sockstats"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/syncs"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/nettype"
-	"tailscale.com/util/cloudenv"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/race"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlknobs"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dns/publicdns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dnscache"
+	"github.com/Xinlong-Wu/tailscale-oh/net/neterror"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
+	"github.com/Xinlong-Wu/tailscale-oh/net/sockstats"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsdial"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cloudenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/race"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 // headerBytes is the number of bytes in a DNS message header.
@@ -442,7 +442,7 @@ func (f *forwarder) getKnownDoHClientForProvider(urlBase string) (c *http.Client
 	})
 	tlsConfig := &tls.Config{
 		// Enforce TLS 1.3, as all of our supported DNS-over-HTTPS servers are compatible with it
-		// (see tailscale.com/net/dns/publicdns/publicdns.go).
+		// (see github.com/Xinlong-Wu/tailscale-oh/net/dns/publicdns/publicdns.go).
 		MinVersion: tls.VersionTLS13,
 	}
 	c = &http.Client{

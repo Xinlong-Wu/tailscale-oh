@@ -26,9 +26,9 @@ import (
 
 	"go4.org/mem"
 	"golang.org/x/crypto/ssh"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/lineiter"
-	"tailscale.com/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/lineiter"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 // keyTypes are the SSH key types that we either try to read from the

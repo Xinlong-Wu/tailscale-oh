@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/httpm"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
 )
 
 // VIPService is a Tailscale VIPService with Tailscale API JSON representation.

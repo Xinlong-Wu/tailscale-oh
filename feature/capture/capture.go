@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/feature"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/net/packet"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/localapi"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 func init() {

@@ -5,7 +5,7 @@
 
 package magicsock
 
-import "tailscale.com/disco"
+import "github.com/Xinlong-Wu/tailscale-oh/disco"
 
 func (c *Conn) DontFragSetting() (bool, error) {
 	return false, nil

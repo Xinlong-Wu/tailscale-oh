@@ -8,8 +8,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/tstest"
-	"tailscale.com/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
 )
 
 func TestCache(t *testing.T) {

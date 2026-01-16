@@ -7,7 +7,7 @@ import (
 	"net/netip"
 	"sync"
 
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 // Conn25 holds the developing state for the as yet nascent next generation app connector.

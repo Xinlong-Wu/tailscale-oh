@@ -13,8 +13,8 @@ import (
 	"path"
 
 	"github.com/tailscale/hujson"
-	"tailscale.com/util/precompress"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/util/precompress"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 func runBuildPkg() {

@@ -8,8 +8,8 @@ import (
 	"encoding/binary"
 	"net/netip"
 
-	"tailscale.com/net/packet"
-	"tailscale.com/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
 )
 
 // UpdateSrcAddr updates the source address in the packet buffer (e.g. during

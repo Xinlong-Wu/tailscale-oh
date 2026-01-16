@@ -1740,3 +1740,5 @@ sigs.k8s.io/yaml v1.6.0 h1:G8fkbMSAFqgEFgh4b1wmtzDnioxFCUgTZhlbj5P9QYs=
 sigs.k8s.io/yaml v1.6.0/go.mod h1:796bPqUfzR/0jLAl6XjHl3Ck7MiyVv8dbTdyT3/pMf4=
 software.sslmate.com/src/go-pkcs12 v0.4.0 h1:H2g08FrTvSFKUj+D309j1DPfk5APnIdAQAB8aEykJ5k=
 software.sslmate.com/src/go-pkcs12 v0.4.0/go.mod h1:Qiz0EyvDRJjjxGyUQa2cCNZn/wMyzrRJ/qcDXOQazLI=
+tailscale.com v1.81.0-pre.0.20250303195457-5449aba94c51 h1:OFXbtx+IcmimElUm0ZtRkD/4shX4QFjc7J9cecHJ8XQ=
+tailscale.com v1.81.0-pre.0.20250303195457-5449aba94c51/go.mod h1:vhy1j4UGZI67Xlto4G2L6CDYetgUiaYyD9s8YCzvmRc=

@@ -16,16 +16,16 @@ import (
 	"time"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/envknob"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/net/netcheck"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/portmapper/portmappertype"
-	"tailscale.com/net/tlsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netcheck"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/portmapper/portmappertype"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tlsdial"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 
 	// The "netcheck" command also wants the portmapper linked.
 	//
@@ -33,7 +33,7 @@ import (
 	// tailscaled subcommand, to avoid making the CLI also link in the portmapper.
 	// For now (2025-09-15), keep doing what we've done for the past five years and
 	// keep linking it here.
-	_ "tailscale.com/feature/condregister/portmapper"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/portmapper"
 )
 
 var netcheckCmd = &ffcli.Command{

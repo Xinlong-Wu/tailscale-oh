@@ -10,13 +10,13 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/drive"
-	"tailscale.com/ipn"
-	"tailscale.com/tstest"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/drive"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 )
 
 func TestIsNotableNotify(t *testing.T) {

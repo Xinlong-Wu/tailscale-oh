@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"go4.org/mem"
-	"tailscale.com/util/dirwalk"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dirwalk"
 )
 
 // counter is a reusable counter for counting file descriptors.

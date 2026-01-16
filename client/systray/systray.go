@@ -29,12 +29,12 @@ import (
 	"github.com/atotto/clipboard"
 	dbus "github.com/godbus/dbus/v5"
 	"github.com/toqueteos/webbrowser"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/stringsx"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/stringsx"
 )
 
 var (
@@ -168,7 +168,7 @@ This usually means that you should run the application like:
 
 tailscale systray
 
-See https://tailscale.com/kb/1597/linux-systray for more information.`)
+See https://github.com/Xinlong-Wu/tailscale-oh/kb/1597/linux-systray for more information.`)
 	}
 	setAppIcon(disconnected)
 	menu.rebuild()
@@ -180,7 +180,7 @@ No permission to manage Tailscale. Set operator by running:
 
 sudo tailscale set --operator=$USER
 
-See https://tailscale.com/s/cli-operator for more information.`)
+See https://github.com/Xinlong-Wu/tailscale-oh/s/cli-operator for more information.`)
 	}
 	menu.mu.Unlock()
 }
@@ -226,10 +226,10 @@ func (menu *Menu) rebuild() {
 	systray.ResetMenu()
 
 	if menu.readonly {
-		const readonlyMsg = "No permission to manage Tailscale.\nSee tailscale.com/s/cli-operator"
+		const readonlyMsg = "No permission to manage Tailscale.\nSee github.com/Xinlong-Wu/tailscale-oh/s/cli-operator"
 		m := systray.AddMenuItem(readonlyMsg, "")
 		onClick(ctx, m, func(_ context.Context) {
-			webbrowser.Open("https://tailscale.com/s/cli-operator")
+			webbrowser.Open("https://github.com/Xinlong-Wu/tailscale-oh/s/cli-operator")
 		})
 		systray.AddSeparator()
 	}

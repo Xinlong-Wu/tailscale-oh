@@ -3,7 +3,7 @@
 
 package sessionrecording
 
-import "tailscale.com/tailcfg"
+import "github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 
 // CastHeader is the header of an asciinema file.
 type CastHeader struct {

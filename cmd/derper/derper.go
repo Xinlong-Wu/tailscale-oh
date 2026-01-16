@@ -5,10 +5,10 @@
 //
 // For more information, see:
 //
-//   - About: https://tailscale.com/kb/1232/derp-servers
-//   - Protocol & Go docs: https://pkg.go.dev/tailscale.com/derp
+//   - About: https://github.com/Xinlong-Wu/tailscale-oh/kb/1232/derp-servers
+//   - Protocol & Go docs: https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/derp
 //   - Running a DERP server: https://github.com/tailscale/tailscale/tree/main/cmd/derper#derp
-package main // import "tailscale.com/cmd/derper"
+package main // import "github.com/Xinlong-Wu/tailscale-oh/cmd/derper"
 
 import (
 	"cmp"
@@ -39,18 +39,18 @@ import (
 
 	"github.com/tailscale/setec/client/setec"
 	"golang.org/x/time/rate"
-	"tailscale.com/atomicfile"
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/metrics"
-	"tailscale.com/net/ktimeout"
-	"tailscale.com/net/stunserver"
-	"tailscale.com/tsweb"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/atomicfile"
+	"github.com/Xinlong-Wu/tailscale-oh/derp/derpserver"
+	"github.com/Xinlong-Wu/tailscale-oh/metrics"
+	"github.com/Xinlong-Wu/tailscale-oh/net/ktimeout"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stunserver"
+	"github.com/Xinlong-Wu/tailscale-oh/tsweb"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 
 	// Support for prometheus varz in tsweb
-	_ "tailscale.com/tsweb/promvarz"
+	_ "github.com/Xinlong-Wu/tailscale-oh/tsweb/promvarz"
 )
 
 var (
@@ -531,7 +531,7 @@ type templateData struct {
 var homePageTemplate = template.Must(template.New("home").Parse(`<html><body>
 <h1>DERP</h1>
 <p>
-  This is a <a href="https://tailscale.com/">Tailscale</a> DERP server.
+  This is a <a href="https://github.com/Xinlong-Wu/tailscale-oh/">Tailscale</a> DERP server.
 </p>
 
 <p>
@@ -551,11 +551,11 @@ var homePageTemplate = template.Must(template.New("home").Parse(`<html><body>
 
 <ul>
 {{if .ShowAbuseInfo }}
-  <li><a href="https://tailscale.com/security-policies">Tailscale Security Policies</a></li>
-  <li><a href="https://tailscale.com/tailscale-aup">Tailscale Acceptable Use Policies</a></li>
+  <li><a href="https://github.com/Xinlong-Wu/tailscale-oh/security-policies">Tailscale Security Policies</a></li>
+  <li><a href="https://github.com/Xinlong-Wu/tailscale-oh/tailscale-aup">Tailscale Acceptable Use Policies</a></li>
 {{end}}
-  <li><a href="https://tailscale.com/kb/1232/derp-servers">About DERP</a></li>
-  <li><a href="https://pkg.go.dev/tailscale.com/derp">Protocol & Go docs</a></li>
+  <li><a href="https://github.com/Xinlong-Wu/tailscale-oh/kb/1232/derp-servers">About DERP</a></li>
+  <li><a href="https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/derp">Protocol & Go docs</a></li>
   <li><a href="https://github.com/tailscale/tailscale/tree/main/cmd/derper#derp">How to run a DERP server</a></li>
 </ul>
 

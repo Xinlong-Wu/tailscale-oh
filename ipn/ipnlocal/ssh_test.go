@@ -10,11 +10,11 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/health"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus/eventbustest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 func TestSSHKeyGen(t *testing.T) {

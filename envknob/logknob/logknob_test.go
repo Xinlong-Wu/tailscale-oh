@@ -8,15 +8,15 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/envknob"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 var testKnob = NewLogKnob(
 	"TS_TEST_LOGKNOB",
-	"https://tailscale.com/cap/testing",
+	"https://github.com/Xinlong-Wu/tailscale-oh/cap/testing",
 )
 
 // Static type assertion for our interface type.
@@ -64,7 +64,7 @@ func TestLogKnob(t *testing.T) {
 		}
 
 		testKnob.UpdateFromNetMap(&netmap.NetworkMap{
-			AllCaps: set.Of(tailcfg.NodeCapability("https://tailscale.com/cap/testing")),
+			AllCaps: set.Of(tailcfg.NodeCapability("https://github.com/Xinlong-Wu/tailscale-oh/cap/testing")),
 		})
 		if !testKnob.shouldLog() {
 			t.Errorf("expected shouldLog()=true")

@@ -18,8 +18,8 @@ import (
 
 	"golang.org/x/crypto/blake2s"
 	chp "golang.org/x/crypto/chacha20poly1305"
-	"tailscale.com/syncs"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 const (

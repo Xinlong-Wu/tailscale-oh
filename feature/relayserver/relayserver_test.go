@@ -10,16 +10,16 @@ import (
 	"slices"
 	"testing"
 
-	"tailscale.com/ipn"
-	"tailscale.com/net/udprelay/endpoint"
-	"tailscale.com/net/udprelay/status"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/tstime"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/ptr"
-	"tailscale.com/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/net/udprelay/endpoint"
+	"github.com/Xinlong-Wu/tailscale-oh/net/udprelay/status"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 )
 
 func Test_extension_profileStateChanged(t *testing.T) {

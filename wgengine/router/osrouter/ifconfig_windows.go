@@ -14,12 +14,12 @@ import (
 	"sort"
 	"time"
 
-	"tailscale.com/health"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/net/tstun"
-	"tailscale.com/wgengine/router"
-	"tailscale.com/wgengine/winnet"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/winnet"
 
 	ole "github.com/go-ole/go-ole"
 	"github.com/tailscale/wireguard-go/tun"

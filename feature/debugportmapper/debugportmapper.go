@@ -16,11 +16,11 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/portmapper"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/localapi"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/portmapper"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 )
 
 func init() {

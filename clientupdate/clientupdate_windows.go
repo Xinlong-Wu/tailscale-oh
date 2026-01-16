@@ -20,8 +20,8 @@ import (
 
 	"github.com/google/uuid"
 	"golang.org/x/sys/windows"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/authenticode"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/authenticode"
 )
 
 const (
@@ -257,7 +257,7 @@ func msiUUIDForVersion(ver string) string {
 	if err != nil {
 		track = UnstableTrack
 	}
-	msiURL := fmt.Sprintf("https://pkgs.tailscale.com/%s/tailscale-setup-%s-%s.msi", track, ver, arch)
+	msiURL := fmt.Sprintf("https://pkgs.github.com/Xinlong-Wu/tailscale-oh/%s/tailscale-setup-%s-%s.msi", track, ver, arch)
 	return "{" + strings.ToUpper(uuid.NewSHA1(uuid.NameSpaceURL, []byte(msiURL)).String()) + "}"
 }
 

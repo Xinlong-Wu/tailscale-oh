@@ -19,8 +19,8 @@ import (
 	"strings"
 	"sync"
 
-	"tailscale.com/feature/featuretags"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/featuretags"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 var (

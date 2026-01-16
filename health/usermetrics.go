@@ -8,8 +8,8 @@ package health
 import (
 	"expvar"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/util/usermetric"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/util/usermetric"
 )
 
 const MetricLabelWarning = "warning"

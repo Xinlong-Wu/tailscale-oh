@@ -6,7 +6,7 @@ package ipn
 import (
 	"testing"
 
-	"tailscale.com/tstest/deptest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/deptest"
 )
 
 func TestDeps(t *testing.T) {

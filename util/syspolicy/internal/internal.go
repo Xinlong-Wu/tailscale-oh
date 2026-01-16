@@ -9,9 +9,9 @@ import (
 	"bytes"
 
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/testenv"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 // Init facilitates deferred invocation of initializers.

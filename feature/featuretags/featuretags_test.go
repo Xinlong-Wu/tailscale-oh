@@ -8,7 +8,7 @@ import (
 	"slices"
 	"testing"
 
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 func TestKnownDeps(t *testing.T) {

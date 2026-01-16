@@ -9,7 +9,7 @@ import (
 	"testing"
 	"testing/quick"
 
-	"tailscale.com/types/geo"
+	"github.com/Xinlong-Wu/tailscale-oh/types/geo"
 )
 
 func TestPointZero(t *testing.T) {

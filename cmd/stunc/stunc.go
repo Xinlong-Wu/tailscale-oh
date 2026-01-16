@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"time"
 
-	"tailscale.com/net/stun"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
 )
 
 func main() {

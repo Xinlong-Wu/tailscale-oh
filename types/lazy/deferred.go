@@ -7,7 +7,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 // DeferredInit allows one or more funcs to be deferred

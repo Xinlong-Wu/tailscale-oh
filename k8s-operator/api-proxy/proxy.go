@@ -26,18 +26,18 @@ import (
 	"k8s.io/apiserver/pkg/endpoints/request"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/transport"
-	"tailscale.com/client/local"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/envknob"
-	ksr "tailscale.com/k8s-operator/sessionrecording"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/net/netx"
-	"tailscale.com/sessionrecording"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsnet"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/ctxkey"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	ksr "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
+	"github.com/Xinlong-Wu/tailscale-oh/sessionrecording"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/ctxkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 var (
@@ -204,7 +204,7 @@ type APIServerProxy struct {
 	sendEventFunc func(ap netip.AddrPort, event io.Reader, dial netx.DialFunc) error
 
 	// Flag used to enable sending API requests as events to tsrecorder.
-	// Deprecated: events are now set via ACLs (see https://tailscale.com/kb/1246/tailscale-ssh-session-recording#turn-on-session-recording-in-your-tailnet-policy-file)
+	// Deprecated: events are now set via ACLs (see https://github.com/Xinlong-Wu/tailscale-oh/kb/1246/tailscale-ssh-session-recording#turn-on-session-recording-in-your-tailnet-policy-file)
 	eventsEnabled bool
 }
 

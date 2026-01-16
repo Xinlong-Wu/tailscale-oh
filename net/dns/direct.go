@@ -24,14 +24,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/feature"
-	"tailscale.com/health"
-	"tailscale.com/net/dns/resolvconffile"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dns/resolvconffile"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 // writeResolvConf writes DNS configuration in resolv.conf format to the given writer.
@@ -452,7 +452,7 @@ var resolvTrampleWarnable = health.Register(&health.Warnable{
 	Code:     "resolv-conf-overwritten",
 	Severity: health.SeverityMedium,
 	Title:    "DNS configuration issue",
-	Text:     health.StaticMessage("System DNS config not ideal. /etc/resolv.conf overwritten. See https://tailscale.com/s/dns-fight"),
+	Text:     health.StaticMessage("System DNS config not ideal. /etc/resolv.conf overwritten. See https://github.com/Xinlong-Wu/tailscale-oh/s/dns-fight"),
 })
 
 // checkForFileTrample checks whether /etc/resolv.conf has been trampled

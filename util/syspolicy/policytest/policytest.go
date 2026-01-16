@@ -11,10 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/util/set"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/util/syspolicy/ptype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/ptype"
 )
 
 // Config is a [policyclient.Client] implementation with a static mapping of

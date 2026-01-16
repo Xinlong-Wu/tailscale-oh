@@ -9,7 +9,7 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 func TestGetState(t *testing.T) {

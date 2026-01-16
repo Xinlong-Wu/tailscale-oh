@@ -9,8 +9,8 @@ import (
 	"os"
 	"sync"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/types/persist"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
 )
 
 // HookCanAutoUpdate is a hook for the clientupdate package

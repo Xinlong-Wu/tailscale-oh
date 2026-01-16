@@ -55,10 +55,10 @@ import (
 
 	"github.com/hdevalence/ed25519consensus"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/feature"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 const (

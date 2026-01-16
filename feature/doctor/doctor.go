@@ -12,13 +12,13 @@ import (
 	"net/http"
 	"time"
 
-	"tailscale.com/doctor"
-	"tailscale.com/doctor/ethtool"
-	"tailscale.com/doctor/permissions"
-	"tailscale.com/doctor/routetable"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/doctor"
+	"github.com/Xinlong-Wu/tailscale-oh/doctor/ethtool"
+	"github.com/Xinlong-Wu/tailscale-oh/doctor/permissions"
+	"github.com/Xinlong-Wu/tailscale-oh/doctor/routetable"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 func init() {

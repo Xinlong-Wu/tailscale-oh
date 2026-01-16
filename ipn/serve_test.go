@@ -6,13 +6,13 @@ package ipn
 import (
 	"testing"
 
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 func TestCheckFunnelAccess(t *testing.T) {
 	caps := func(c ...tailcfg.NodeCapability) []tailcfg.NodeCapability { return c }
-	const portAttr tailcfg.NodeCapability = "https://tailscale.com/cap/funnel-ports?ports=443,8080-8090,8443,"
+	const portAttr tailcfg.NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/funnel-ports?ports=443,8080-8090,8443,"
 	tests := []struct {
 		port    uint16
 		caps    []tailcfg.NodeCapability

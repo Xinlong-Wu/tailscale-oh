@@ -16,12 +16,12 @@ import (
 	"github.com/fxamacker/cbor/v2"
 	"github.com/hdevalence/ed25519consensus"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/tkatype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=false -type=NodeKeySignature
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/cloner  -clonefunc=false -type=NodeKeySignature
 
 // SigKind describes valid NodeKeySignature types.
 type SigKind uint8

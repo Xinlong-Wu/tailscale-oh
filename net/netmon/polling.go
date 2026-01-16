@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 func newPollingMon(logf logger.Logf, m *Monitor) (osMon, error) {

@@ -46,30 +46,30 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"tailscale.com/client/local"
-	"tailscale.com/client/tailscale"
-	"tailscale.com/envknob"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/store/kubestore"
-	apiproxy "tailscale.com/k8s-operator/api-proxy"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tsnet"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/set"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/kubestore"
+	apiproxy "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/api-proxy"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 // Generate Connector and ProxyClass CustomResourceDefinition yamls from their Go types.
 //go:generate go run sigs.k8s.io/controller-tools/cmd/controller-gen crd schemapatch:manifests=./deploy/crds output:dir=./deploy/crds paths=../../k8s-operator/apis/...
 
 // Generate static manifests for deploying Tailscale operator on Kubernetes from the operator's Helm chart.
-//go:generate go run tailscale.com/cmd/k8s-operator/generate staticmanifests
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/k8s-operator/generate staticmanifests
 
 // Generate the helm chart's CRDs (which are ignored from git).
-//go:generate go run tailscale.com/cmd/k8s-operator/generate helmcrd
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/k8s-operator/generate helmcrd
 
 // Generate CRD API docs.
 //go:generate go run github.com/elastic/crd-ref-docs --renderer=markdown --source-path=../../k8s-operator/apis/ --config=../../k8s-operator/api-docs-config.yaml --output-path=../../k8s-operator/api.md
@@ -116,7 +116,7 @@ func main() {
 
 	// The operator can run either as a plain operator or it can
 	// additionally act as api-server proxy
-	// https://tailscale.com/kb/1236/kubernetes-operator/?q=kubernetes#accessing-the-kubernetes-control-plane-using-an-api-server-proxy.
+	// https://github.com/Xinlong-Wu/tailscale-oh/kb/1236/kubernetes-operator/?q=kubernetes#accessing-the-kubernetes-control-plane-using-an-api-server-proxy.
 	mode := parseAPIProxyMode()
 	if mode == nil {
 		hostinfo.SetApp(kubetypes.AppOperator)
@@ -732,7 +732,7 @@ type reconcilerOpts struct {
 	// proxyTags are ACL tags to tag proxy auth keys. Multiple tags should
 	// be provided as a string with comma-separated tag values. Proxy tags
 	// default to tag:k8s.
-	// https://tailscale.com/kb/1085/auth-keys
+	// https://github.com/Xinlong-Wu/tailscale-oh/kb/1085/auth-keys
 	proxyTags string
 	// proxyActAsDefaultLoadBalancer determines whether this operator
 	// instance should act as the default ingress controller when looking at
@@ -891,7 +891,7 @@ func indexProxyClass(o client.Object) []string {
 
 // proxyClassHandlerForSvc returns a handler that, for a given ProxyClass,
 // returns a list of reconcile requests for all Services labeled with
-// tailscale.com/proxy-class: <proxy class name>.
+// github.com/Xinlong-Wu/tailscale-oh/proxy-class: <proxy class name>.
 func proxyClassHandlerForSvc(cl client.Client, logger *zap.SugaredLogger) handler.MapFunc {
 	return func(ctx context.Context, o client.Object) []reconcile.Request {
 		svcList := new(corev1.ServiceList)
@@ -933,7 +933,7 @@ func proxyClassHandlerForSvc(cl client.Client, logger *zap.SugaredLogger) handle
 
 // proxyClassHandlerForIngress returns a handler that, for a given ProxyClass,
 // returns a list of reconcile requests for all Ingresses labeled with
-// tailscale.com/proxy-class: <proxy class name>.
+// github.com/Xinlong-Wu/tailscale-oh/proxy-class: <proxy class name>.
 func proxyClassHandlerForIngress(cl client.Client, logger *zap.SugaredLogger) handler.MapFunc {
 	return func(ctx context.Context, o client.Object) []reconcile.Request {
 		ingList := new(networkingv1.IngressList)

@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/net/stun"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 func TestSTUNServer(t *testing.T) {

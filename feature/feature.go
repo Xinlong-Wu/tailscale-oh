@@ -8,7 +8,7 @@ import (
 	"errors"
 	"reflect"
 
-	"tailscale.com/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 var ErrUnavailable = errors.New("feature not included in this build")

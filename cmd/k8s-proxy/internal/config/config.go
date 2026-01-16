@@ -25,10 +25,10 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/watch"
 	clientcorev1 "k8s.io/client-go/kubernetes/typed/core/v1"
-	"tailscale.com/kube/k8s-proxy/conf"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/types/ptr"
-	"tailscale.com/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/k8s-proxy/conf"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 type configLoader struct {

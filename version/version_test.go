@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	ts "tailscale.com"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 func TestAlpineTag(t *testing.T) {

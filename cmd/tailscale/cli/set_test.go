@@ -9,9 +9,9 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/ipn"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 func TestCalcAdvertiseRoutesForSet(t *testing.T) {

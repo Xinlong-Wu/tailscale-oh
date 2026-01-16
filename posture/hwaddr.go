@@ -7,7 +7,7 @@ import (
 	"net/netip"
 	"slices"
 
-	"tailscale.com/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 )
 
 // GetHardwareAddrs returns the hardware addresses of all non-loopback

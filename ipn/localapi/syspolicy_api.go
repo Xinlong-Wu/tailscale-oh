@@ -11,9 +11,9 @@ import (
 	"net/http"
 	"strings"
 
-	"tailscale.com/util/httpm"
-	"tailscale.com/util/syspolicy/rsop"
-	"tailscale.com/util/syspolicy/setting"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/rsop"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
 )
 
 func init() {

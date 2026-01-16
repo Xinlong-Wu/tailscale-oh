@@ -10,7 +10,7 @@ import (
 	"github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 type Interface interface {

@@ -8,8 +8,8 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
 )
 
 func nodeViews(v []*tailcfg.Node) []tailcfg.NodeView {

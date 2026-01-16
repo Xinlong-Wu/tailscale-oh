@@ -18,14 +18,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/envknob"
-	"tailscale.com/net/netx"
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/cloudenv"
-	"tailscale.com/util/singleflight"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cloudenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/singleflight"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 var zaddr netip.Addr

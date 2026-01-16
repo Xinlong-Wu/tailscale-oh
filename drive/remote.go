@@ -3,7 +3,7 @@
 
 package drive
 
-//go:generate go run tailscale.com/cmd/viewer --type=Share --clonefunc
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/viewer --type=Share --clonefunc
 
 import (
 	"bytes"

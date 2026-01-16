@@ -6,7 +6,7 @@ package portlist
 import (
 	"time"
 
-	"tailscale.com/net/netstat"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netstat"
 )
 
 func init() {

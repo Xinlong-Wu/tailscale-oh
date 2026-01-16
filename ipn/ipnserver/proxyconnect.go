@@ -10,9 +10,9 @@ import (
 	"net"
 	"net/http"
 
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/logpolicy"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/logpolicy"
 )
 
 // handleProxyConnectConn handles a CONNECT request to

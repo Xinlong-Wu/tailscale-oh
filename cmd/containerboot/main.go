@@ -72,7 +72,7 @@
 //     check endpoints if enabled via TS_ENABLE_METRICS and/or TS_ENABLE_HEALTH_CHECK.
 //     Defaults to [::]:9002, serving on all available interfaces.
 //   - TS_ENABLE_METRICS: if true, a metrics endpoint will be served at /metrics on
-//     the address specified by TS_LOCAL_ADDR_PORT. See https://tailscale.com/kb/1482/client-metrics
+//     the address specified by TS_LOCAL_ADDR_PORT. See https://github.com/Xinlong-Wu/tailscale-oh/kb/1482/client-metrics
 //     for more information on the metrics exposed.
 //   - TS_ENABLE_HEALTH_CHECK: if true, a health check endpoint will be served at /healthz on
 //     the address specified by TS_LOCAL_ADDR_PORT. The health endpoint will return 200
@@ -90,7 +90,7 @@
 //     TS_EXPERIMENTAL_ENABLE_FORWARDING_OPTIMIZATIONS: set to true to
 //     autoconfigure the default network interface for optimal performance for
 //     Tailscale subnet router/exit node.
-//     https://tailscale.com/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
+//     https://github.com/Xinlong-Wu/tailscale-oh/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
 //     NB: This env var is currently experimental and the logic will likely change!
 //   - EXPERIMENTAL_ALLOW_PROXYING_CLUSTER_TRAFFIC_VIA_INGRESS: if set to true
 //     and if this containerboot instance is an L7 ingress proxy (created by
@@ -132,20 +132,20 @@ import (
 	"time"
 
 	"golang.org/x/sys/unix"
-	"tailscale.com/client/tailscale"
-	"tailscale.com/ipn"
-	kubeutils "tailscale.com/k8s-operator"
-	healthz "tailscale.com/kube/health"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/kube/metrics"
-	"tailscale.com/kube/services"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/ptr"
-	"tailscale.com/util/deephash"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/linuxfw"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	kubeutils "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	healthz "github.com/Xinlong-Wu/tailscale-oh/kube/health"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/metrics"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/services"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/deephash"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/linuxfw"
 )
 
 func newNetfilterRunner(logf logger.Logf) (linuxfw.NetfilterRunner, error) {

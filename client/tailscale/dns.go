@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"tailscale.com/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 )
 
 // DNSNameServers is returned when retrieving the list of nameservers.

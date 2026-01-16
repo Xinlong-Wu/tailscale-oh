@@ -15,7 +15,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 var dialTest = flag.String("dial-test", "", "if non-empty, addr:port to test dial")

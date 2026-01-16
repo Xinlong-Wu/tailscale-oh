@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"gvisor.dev/gvisor/pkg/tcpip"
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 // TCPHandlerForDst returns a TCP handler for connections to dst, or nil if

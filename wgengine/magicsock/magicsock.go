@@ -28,48 +28,48 @@ import (
 	"github.com/tailscale/wireguard-go/device"
 	"go4.org/mem"
 	"golang.org/x/net/ipv6"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/disco"
-	"tailscale.com/envknob"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/feature/condlite/expvar"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/batching"
-	"tailscale.com/net/netcheck"
-	"tailscale.com/net/neterror"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netns"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/ping"
-	"tailscale.com/net/portmapper/portmappertype"
-	"tailscale.com/net/sockopts"
-	"tailscale.com/net/sockstats"
-	"tailscale.com/net/stun"
-	"tailscale.com/net/tstun"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/tstime/mono"
-	"tailscale.com/types/key"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/netlogfunc"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/nettype"
-	"tailscale.com/types/views"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/cloudinfo"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/ringlog"
-	"tailscale.com/util/set"
-	"tailscale.com/util/testenv"
-	"tailscale.com/util/usermetric"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/router"
-	"tailscale.com/wgengine/wgint"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlknobs"
+	"github.com/Xinlong-Wu/tailscale-oh/disco"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/condlite/expvar"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/net/batching"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netcheck"
+	"github.com/Xinlong-Wu/tailscale-oh/net/neterror"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/net/ping"
+	"github.com/Xinlong-Wu/tailscale-oh/net/portmapper/portmappertype"
+	"github.com/Xinlong-Wu/tailscale-oh/net/sockopts"
+	"github.com/Xinlong-Wu/tailscale-oh/net/sockstats"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime/mono"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netlogfunc"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cloudinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/ringlog"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/usermetric"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/wgint"
 )
 
 const (
@@ -339,7 +339,7 @@ type Conn struct {
 	peerMap peerMap
 
 	// relayManager manages allocation and handshaking of
-	// [tailscale.com/net/udprelay.Server] endpoints.
+	// [github.com/Xinlong-Wu/tailscale-oh/net/udprelay.Server] endpoints.
 	relayManager relayManager
 
 	// discoInfo is the state for an active peer DiscoKey.
@@ -2169,7 +2169,7 @@ func packetLooksLike(msg []byte) (t packetLooksLikeType, isGeneveEncap bool) {
 //   - magic             [6]byte
 //   - senderDiscoPubKey [32]byte
 //   - nonce             [24]byte
-//   - naclbox of payload (see tailscale.com/disco package for inner payload format)
+//   - naclbox of payload (see github.com/Xinlong-Wu/tailscale-oh/disco package for inner payload format)
 //
 // For messages received over DERP, the src.ap.Addr() will be derpMagicIP (with
 // src.ap.Port() being the region ID) and the derpNodeSrc will be the node key

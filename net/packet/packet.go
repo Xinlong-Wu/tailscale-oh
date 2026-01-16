@@ -10,8 +10,8 @@ import (
 	"net/netip"
 	"strings"
 
-	"tailscale.com/net/netaddr"
-	"tailscale.com/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
 )
 
 const unknown = ipproto.Unknown

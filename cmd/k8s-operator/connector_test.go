@@ -19,11 +19,11 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tstest"
-	"tailscale.com/types/ptr"
-	"tailscale.com/util/mak"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 func TestConnector(t *testing.T) {
@@ -36,7 +36,7 @@ func TestConnector(t *testing.T) {
 		},
 		TypeMeta: metav1.TypeMeta{
 			Kind:       tsapi.ConnectorKind,
-			APIVersion: "tailscale.com/v1alpha1",
+			APIVersion: "github.com/Xinlong-Wu/tailscale-oh/v1alpha1",
 		},
 		Spec: tsapi.ConnectorSpec{
 			Replicas: ptr.To[int32](1),
@@ -96,7 +96,7 @@ func TestConnector(t *testing.T) {
 		mak.Set(&secret.Data, "device_ips", []byte(`["127.0.0.1", "::1"]`))
 	})
 	expectReconciled(t, cr, "", "test")
-	cn.Finalizers = append(cn.Finalizers, "tailscale.com/finalizer")
+	cn.Finalizers = append(cn.Finalizers, "github.com/Xinlong-Wu/tailscale-oh/finalizer")
 	cn.Status.IsExitNode = cn.Spec.ExitNode
 	cn.Status.SubnetRoutes = cn.Spec.SubnetRouter.AdvertiseRoutes.Stringify()
 	cn.Status.Hostname = hostname
@@ -372,7 +372,7 @@ func TestConnectorWithAppConnector(t *testing.T) {
 	expectEqual(t, fc, expectedSTS(t, fc, opts), removeResourceReqs)
 	// Connector's ready condition should be set to true
 
-	cn.ObjectMeta.Finalizers = append(cn.ObjectMeta.Finalizers, "tailscale.com/finalizer")
+	cn.ObjectMeta.Finalizers = append(cn.ObjectMeta.Finalizers, "github.com/Xinlong-Wu/tailscale-oh/finalizer")
 	cn.Status.IsAppConnector = true
 	cn.Status.Devices = []tsapi.ConnectorDevice{}
 	cn.Status.Conditions = []metav1.Condition{{

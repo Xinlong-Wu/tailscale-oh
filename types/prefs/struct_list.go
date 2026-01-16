@@ -10,9 +10,9 @@ import (
 
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/ptr"
-	"tailscale.com/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 )
 
 // StructList is a preference type that holds zero or more potentially mutable struct values.
@@ -104,7 +104,7 @@ type StructListView[T views.ViewCloner[T, V], V views.StructView[T]] struct {
 }
 
 // StructListViewOf returns a read-only view of l.
-// It is used by [tailscale.com/cmd/viewer].
+// It is used by [github.com/Xinlong-Wu/tailscale-oh/cmd/viewer].
 func StructListViewOf[T views.ViewCloner[T, V], V views.StructView[T]](ls *StructList[T]) StructListView[T, V] {
 	return StructListView[T, V]{ls}
 }

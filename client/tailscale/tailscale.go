@@ -8,7 +8,7 @@
 // This package is only intended for internal and transitional use.
 //
 // Deprecated: the official control plane client is available at
-// [tailscale.com/client/tailscale/v2].
+// [github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2].
 package tailscale
 
 import (
@@ -22,7 +22,7 @@ import (
 )
 
 // I_Acknowledge_This_API_Is_Unstable must be set true to use this package
-// for now. This package is being replaced by [tailscale.com/client/tailscale/v2].
+// for now. This package is being replaced by [github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2].
 var I_Acknowledge_This_API_Is_Unstable = false
 
 // TODO: use url.PathEscape() for deviceID and tailnets when constructing requests.
@@ -37,7 +37,7 @@ const maxReadSize = 10 << 20
 // Use [NewClient] to instantiate one. Exported fields should be set before
 // the client is used and not changed thereafter.
 //
-// Deprecated: use [tailscale.com/client/tailscale/v2] instead.
+// Deprecated: use [github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2] instead.
 type Client struct {
 	// tailnet is the globally unique identifier for a Tailscale network, such
 	// as "example.com" or "user@gmail.com".
@@ -71,7 +71,7 @@ func (c *Client) httpClient() *http.Client {
 // be of type url.Values to add a query string to the URL.
 //
 // For example, BuildURL(devices, 5) with the default server URL would result in
-// https://api.tailscale.com/api/v2/devices/5.
+// https://api.github.com/Xinlong-Wu/tailscale-oh/api/v2/devices/5.
 func (c *Client) BuildURL(pathElements ...any) string {
 	elem := make([]string, 1, len(pathElements)+1)
 	elem[0] = "/api/v2"
@@ -96,7 +96,7 @@ func (c *Client) BuildURL(pathElements ...any) string {
 // be of type url.Values to add a query string to the URL.
 //
 // For example, BuildTailnetURL(policy, validate) with the default server URL and a tailnet of "example.com"
-// would result in https://api.tailscale.com/api/v2/tailnet/example.com/policy/validate.
+// would result in https://api.github.com/Xinlong-Wu/tailscale-oh/api/v2/tailnet/example.com/policy/validate.
 func (c *Client) BuildTailnetURL(pathElements ...any) string {
 	allElements := make([]any, 2, len(pathElements)+2)
 	allElements[0] = "tailnet"
@@ -141,7 +141,7 @@ func (c *Client) setAuth(r *http.Request) {
 // "api.tailscale.com" is set as the BaseURL for the returned client
 // and can be changed manually by the user.
 //
-// Deprecated: use [tailscale.com/client/tailscale/v2] instead.
+// Deprecated: use [github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2] instead.
 func NewClient(tailnet string, auth AuthMethod) *Client {
 	return &Client{
 		tailnet:   tailnet,
@@ -195,7 +195,7 @@ func (e ErrResponse) Error() string {
 // HandleErrorResponse decodes the error message from the server and returns
 // an [ErrResponse] from it.
 //
-// Deprecated: use [tailscale.com/client/tailscale/v2] instead.
+// Deprecated: use [github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2] instead.
 func HandleErrorResponse(b []byte, resp *http.Response) error {
 	var errResp ErrResponse
 	if err := json.Unmarshal(b, &errResp); err != nil {

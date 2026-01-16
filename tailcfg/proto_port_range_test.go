@@ -7,8 +7,8 @@ import (
 	"encoding"
 	"testing"
 
-	"tailscale.com/types/ipproto"
-	"tailscale.com/util/vizerror"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/util/vizerror"
 )
 
 var _ encoding.TextUnmarshaler = (*ProtoPortRange)(nil)

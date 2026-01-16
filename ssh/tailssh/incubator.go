@@ -38,12 +38,12 @@ import (
 	"github.com/u-root/u-root/pkg/termios"
 	gossh "golang.org/x/crypto/ssh"
 	"golang.org/x/sys/unix"
-	"tailscale.com/cmd/tailscaled/childproc"
-	"tailscale.com/hostinfo"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tempfork/gliderlabs/ssh"
-	"tailscale.com/types/logger"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled/childproc"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tempfork/gliderlabs/ssh"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 const (

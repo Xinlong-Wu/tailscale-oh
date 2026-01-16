@@ -14,10 +14,10 @@ import (
 	"net/http"
 	"runtime"
 
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/util/httpm"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 func init() {

@@ -26,17 +26,17 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	"tailscale.com/client/tailscale"
-	"tailscale.com/ipn"
-	kube "tailscale.com/k8s-operator"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/k8s-proxy/conf"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/ptr"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	kube "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/k8s-proxy/conf"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ptr"
 )
 
 const (
@@ -617,7 +617,7 @@ func TestProxyGroupWithStaticEndpoints(t *testing.T) {
 			pg := &tsapi.ProxyGroup{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:       "test",
-					Finalizers: []string{"tailscale.com/finalizer"},
+					Finalizers: []string{"github.com/Xinlong-Wu/tailscale-oh/finalizer"},
 				},
 				Spec: tsapi.ProxyGroupSpec{
 					Type:       tsapi.ProxyGroupTypeEgress,
@@ -818,7 +818,7 @@ func TestProxyGroup(t *testing.T) {
 	pg := &tsapi.ProxyGroup{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:       "test",
-			Finalizers: []string{"tailscale.com/finalizer"},
+			Finalizers: []string{"github.com/Xinlong-Wu/tailscale-oh/finalizer"},
 			Generation: 1,
 		},
 		Spec: tsapi.ProxyGroupSpec{

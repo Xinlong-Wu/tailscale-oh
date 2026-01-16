@@ -16,12 +16,12 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"go4.org/mem"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/disco"
-	"tailscale.com/net/packet"
-	"tailscale.com/tstime/mono"
-	"tailscale.com/types/key"
-	"tailscale.com/types/views"
-	"tailscale.com/util/usermetric"
+	"github.com/Xinlong-Wu/tailscale-oh/disco"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime/mono"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/usermetric"
 )
 
 type testClient struct {

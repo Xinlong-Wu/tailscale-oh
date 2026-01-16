@@ -9,7 +9,7 @@ import (
 	"testing"
 	"testing/iotest"
 
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 func TestCopy(t *testing.T) {

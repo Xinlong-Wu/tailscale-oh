@@ -9,7 +9,7 @@ import (
 	"context"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/client/systray"
+	"github.com/Xinlong-Wu/tailscale-oh/client/systray"
 )
 
 var systrayCmd = &ffcli.Command{

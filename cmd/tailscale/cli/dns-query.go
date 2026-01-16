@@ -14,7 +14,7 @@ import (
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/types/dnstype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
 )
 
 var dnsQueryCmd = &ffcli.Command{

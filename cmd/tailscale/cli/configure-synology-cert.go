@@ -19,9 +19,9 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 func init() {
@@ -41,7 +41,7 @@ func synologyConfigureCertCmd() *ffcli.Command {
 This command is intended to run periodically as root on a Synology device to
 create or refresh the TLS certificate for the tailnet domain.
 
-See: https://tailscale.com/kb/1153/enabling-https
+See: https://github.com/Xinlong-Wu/tailscale-oh/kb/1153/enabling-https
 `),
 		FlagSet: (func() *flag.FlagSet {
 			fs := newFlagSet("synology-cert")

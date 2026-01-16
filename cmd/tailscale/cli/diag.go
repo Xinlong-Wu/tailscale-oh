@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	ps "github.com/mitchellh/go-ps"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 func init() {

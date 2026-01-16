@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"go4.org/mem"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 type ParseError struct {

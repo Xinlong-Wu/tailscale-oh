@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/tstime/mono"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime/mono"
 )
 
 // Value measures the rate at which events occur,

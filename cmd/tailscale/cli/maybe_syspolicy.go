@@ -5,4 +5,4 @@
 
 package cli
 
-import _ "tailscale.com/feature/syspolicy"
+import _ "github.com/Xinlong-Wu/tailscale-oh/feature/syspolicy"

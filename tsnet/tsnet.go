@@ -26,43 +26,43 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/client/local"
-	"tailscale.com/control/controlclient"
-	"tailscale.com/envknob"
-	_ "tailscale.com/feature/c2n"
-	_ "tailscale.com/feature/condregister/identityfederation"
-	_ "tailscale.com/feature/condregister/oauthkey"
-	_ "tailscale.com/feature/condregister/portmapper"
-	_ "tailscale.com/feature/condregister/useproxy"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/ipn/localapi"
-	"tailscale.com/ipn/store"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/logpolicy"
-	"tailscale.com/logtail"
-	"tailscale.com/logtail/filch"
-	"tailscale.com/net/memnet"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/proxymux"
-	"tailscale.com/net/socks5"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tsd"
-	"tailscale.com/types/bools"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/nettype"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
-	"tailscale.com/util/testenv"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/netstack"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/c2n"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/identityfederation"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/oauthkey"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/portmapper"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/useproxy"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/internal/client/tailscale"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnauth"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/localapi"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
+	"github.com/Xinlong-Wu/tailscale-oh/logpolicy"
+	"github.com/Xinlong-Wu/tailscale-oh/logtail"
+	"github.com/Xinlong-Wu/tailscale-oh/logtail/filch"
+	"github.com/Xinlong-Wu/tailscale-oh/net/memnet"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/proxymux"
+	"github.com/Xinlong-Wu/tailscale-oh/net/socks5"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsdial"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/types/bools"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
+	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack"
 )
 
 // Server is an embedded Tailscale server.
@@ -84,7 +84,7 @@ type Server struct {
 	// Store specifies the state store to use.
 	//
 	// If nil, a new FileStore is initialized at `Dir/tailscaled.state`.
-	// See tailscale.com/ipn/store for supported stores.
+	// See github.com/Xinlong-Wu/tailscale-oh/ipn/store for supported stores.
 	//
 	// Logs will automatically be uploaded to log.tailscale.com,
 	// where the configuration file for logging will be saved at
@@ -106,7 +106,7 @@ type Server struct {
 	Logf logger.Logf
 
 	// Ephemeral, if true, specifies that the instance should register
-	// as an Ephemeral node (https://tailscale.com/s/ephemeral-nodes).
+	// as an Ephemeral node (https://github.com/Xinlong-Wu/tailscale-oh/s/ephemeral-nodes).
 	Ephemeral bool
 
 	// AuthKey, if non-empty, is the auth key to create the node
@@ -1092,10 +1092,10 @@ func (s *Server) ListenTLS(network, addr string) (net.Listener, error) {
 		return nil, err
 	}
 	if !st.CurrentTailnet.MagicDNSEnabled {
-		return nil, errors.New("tsnet: you must enable MagicDNS in the DNS page of the admin panel to proceed. See https://tailscale.com/s/https")
+		return nil, errors.New("tsnet: you must enable MagicDNS in the DNS page of the admin panel to proceed. See https://github.com/Xinlong-Wu/tailscale-oh/s/https")
 	}
 	if len(st.CertDomains) == 0 {
-		return nil, errors.New("tsnet: you must enable HTTPS in the admin panel to proceed. See https://tailscale.com/s/https")
+		return nil, errors.New("tsnet: you must enable HTTPS in the admin panel to proceed. See https://github.com/Xinlong-Wu/tailscale-oh/s/https")
 	}
 
 	ln, err := s.listen(network, addr, listenOnTailnet)
@@ -1248,7 +1248,7 @@ func (s *Server) ListenFunnel(network, addr string, opts ...FunnelOption) (net.L
 		srvConfig = &ipn.ServeConfig{}
 	}
 	if len(st.CertDomains) == 0 {
-		return nil, errors.New("Funnel not available; HTTPS must be enabled. See https://tailscale.com/s/https")
+		return nil, errors.New("Funnel not available; HTTPS must be enabled. See https://github.com/Xinlong-Wu/tailscale-oh/s/https")
 	}
 	domain := st.CertDomains[0]
 	hp := ipn.HostPort(domain + ":" + portStr)
@@ -1390,7 +1390,7 @@ func (s *Server) GetRootPath() string {
 // Packets will be written to the pcap until the process exits. The pcap needs a Lua dissector
 // to be installed in WireShark in order to decode properly: wgengine/capture/ts-dissector.lua
 // in this repository.
-// https://tailscale.com/kb/1023/troubleshooting/#can-i-examine-network-traffic-inside-the-encrypted-tunnel
+// https://github.com/Xinlong-Wu/tailscale-oh/kb/1023/troubleshooting/#can-i-examine-network-traffic-inside-the-encrypted-tunnel
 func (s *Server) CapturePcap(ctx context.Context, pcapFile string) error {
 	stream, err := s.localClient.StreamDebugCapture(ctx)
 	if err != nil {

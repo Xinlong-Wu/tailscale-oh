@@ -14,10 +14,10 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"tailscale.com/k8s-operator/sessionrecording/fakes"
-	"tailscale.com/k8s-operator/sessionrecording/tsrecorder"
-	"tailscale.com/sessionrecording"
-	"tailscale.com/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording/fakes"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording/tsrecorder"
+	"github.com/Xinlong-Wu/tailscale-oh/sessionrecording"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 // Test_Writes tests that 1 or more Write calls to spdyRemoteConnRecorder

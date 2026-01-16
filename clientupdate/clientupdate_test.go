@@ -28,38 +28,38 @@ func TestUpdateDebianAptSourcesListBytes(t *testing.T) {
 		{
 			name:    "stable-to-unstable",
 			toTrack: UnstableTrack,
-			in:      "# Tailscale packages for debian buster\ndeb https://pkgs.tailscale.com/stable/debian bullseye main\n",
-			want:    "# Tailscale packages for debian buster\ndeb https://pkgs.tailscale.com/unstable/debian bullseye main\n",
+			in:      "# Tailscale packages for debian buster\ndeb https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/debian bullseye main\n",
+			want:    "# Tailscale packages for debian buster\ndeb https://pkgs.github.com/Xinlong-Wu/tailscale-oh/unstable/debian bullseye main\n",
 		},
 		{
 			name:    "stable-unchanged",
 			toTrack: StableTrack,
-			in:      "# Tailscale packages for debian buster\ndeb https://pkgs.tailscale.com/stable/debian bullseye main\n",
+			in:      "# Tailscale packages for debian buster\ndeb https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/debian bullseye main\n",
 		},
 		{
 			name:    "if-both-stable-and-unstable-dont-change",
 			toTrack: StableTrack,
 			in: "# Tailscale packages for debian buster\n" +
-				"deb https://pkgs.tailscale.com/stable/debian bullseye main\n" +
-				"deb https://pkgs.tailscale.com/unstable/debian bullseye main\n",
+				"deb https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/debian bullseye main\n" +
+				"deb https://pkgs.github.com/Xinlong-Wu/tailscale-oh/unstable/debian bullseye main\n",
 		},
 		{
 			name:    "if-both-stable-and-unstable-dont-change-unstable",
 			toTrack: UnstableTrack,
 			in: "# Tailscale packages for debian buster\n" +
-				"deb https://pkgs.tailscale.com/stable/debian bullseye main\n" +
-				"deb https://pkgs.tailscale.com/unstable/debian bullseye main\n",
+				"deb https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/debian bullseye main\n" +
+				"deb https://pkgs.github.com/Xinlong-Wu/tailscale-oh/unstable/debian bullseye main\n",
 		},
 		{
 			name:    "signed-by-form",
 			toTrack: UnstableTrack,
-			in:      "# Tailscale packages for ubuntu jammy\ndeb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu jammy main\n",
-			want:    "# Tailscale packages for ubuntu jammy\ndeb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/unstable/ubuntu jammy main\n",
+			in:      "# Tailscale packages for ubuntu jammy\ndeb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/ubuntu jammy main\n",
+			want:    "# Tailscale packages for ubuntu jammy\ndeb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.github.com/Xinlong-Wu/tailscale-oh/unstable/ubuntu jammy main\n",
 		},
 		{
 			name:    "unsupported-lines",
 			toTrack: UnstableTrack,
-			in:      "# Tailscale packages for ubuntu jammy\ndeb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/foobar/ubuntu jammy main\n",
+			in:      "# Tailscale packages for ubuntu jammy\ndeb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.github.com/Xinlong-Wu/tailscale-oh/foobar/ubuntu jammy main\n",
 			wantErr: "unexpected/unsupported /etc/apt/sources.list.d/tailscale.list contents",
 		},
 	}
@@ -100,23 +100,23 @@ func TestUpdateYUMRepoTrack(t *testing.T) {
 			before: `
 [tailscale-stable]
 name=Tailscale stable
-baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch
+baseurl=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/fedora/$basearch
 enabled=1
 type=rpm
 repo_gpgcheck=1
 gpgcheck=0
-gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
+gpgkey=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/fedora/repo.gpg
 `,
 			track: StableTrack,
 			after: `
 [tailscale-stable]
 name=Tailscale stable
-baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch
+baseurl=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/fedora/$basearch
 enabled=1
 type=rpm
 repo_gpgcheck=1
 gpgcheck=0
-gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
+gpgkey=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/fedora/repo.gpg
 `,
 		},
 		{
@@ -124,23 +124,23 @@ gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
 			before: `
 [tailscale-stable]
 name=Tailscale stable
-baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch
+baseurl=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/fedora/$basearch
 enabled=1
 type=rpm
 repo_gpgcheck=1
 gpgcheck=0
-gpgkey=https://pkgs.tailscale.com/stable/fedora/repo.gpg
+gpgkey=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/stable/fedora/repo.gpg
 `,
 			track: UnstableTrack,
 			after: `
 [tailscale-unstable]
 name=Tailscale unstable
-baseurl=https://pkgs.tailscale.com/unstable/fedora/$basearch
+baseurl=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/unstable/fedora/$basearch
 enabled=1
 type=rpm
 repo_gpgcheck=1
 gpgcheck=0
-gpgkey=https://pkgs.tailscale.com/unstable/fedora/repo.gpg
+gpgkey=https://pkgs.github.com/Xinlong-Wu/tailscale-oh/unstable/fedora/repo.gpg
 `,
 			rewrote: true,
 		},
@@ -211,7 +211,7 @@ tailscale-1.44.2-r0 description:
 The easiest, most secure way to use WireGuard and 2FA
 
 tailscale-1.44.2-r0 webpage:
-https://tailscale.com/
+https://github.com/Xinlong-Wu/tailscale-oh/
 
 tailscale-1.44.2-r0 installed size:
 32 MiB
@@ -239,7 +239,7 @@ tailscale description:
 The easiest, most secure way to use WireGuard and 2FA
 
 tailscale webpage:
-https://tailscale.com/
+https://github.com/Xinlong-Wu/tailscale-oh/
 
 tailscale installed size:
 32 MiB
@@ -258,7 +258,7 @@ tailscale-1.54.1-r0 description:
 The easiest, most secure way to use WireGuard and 2FA
 
 tailscale-1.54.1-r0 webpage:
-https://tailscale.com/
+https://github.com/Xinlong-Wu/tailscale-oh/
 
 tailscale-1.54.1-r0 installed size:
 34 MiB
@@ -267,7 +267,7 @@ tailscale-1.58.2-r0 description:
 The easiest, most secure way to use WireGuard and 2FA
 
 tailscale-1.58.2-r0 webpage:
-https://tailscale.com/
+https://github.com/Xinlong-Wu/tailscale-oh/
 
 tailscale-1.58.2-r0 installed size:
 35 MiB

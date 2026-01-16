@@ -156,11 +156,18 @@ func likelyHomeRouterIPHelper() (ret netip.Addr, _ netip.Addr, ok bool) {
 	return ret, netip.Addr{}, ret.IsValid()
 }
 
-// UpdateLastKnownInterface is called by libtailscale in the Android app when
+// UpdateLastKnownDefaultRouteInterface is called by libtailscale in the Android app when
 // the connectivity manager detects a network path transition. If ifName is "", network has been lost.
 // After updating the interface, Android calls Monitor.InjectEvent(), triggering a link change.
-func UpdateLastKnownInterface(ifName string) {
-	if old := lastKnownIfName.Swap(ifName); old != ifName {
-		log.Printf(": update from Android, ifName = %s (was %s)", ifName, old)
+func UpdateLastKnownDefaultRouteInterface(ifName string) {
+	if old := lastKnownDefaultRouteIfName.Swap(ifName); old != ifName {
+		log.Printf("defaultroute: update from Android, ifName = %s (was %s)", ifName, old)
 	}
+}
+
+func defaultRoute() (d DefaultRouteDetails, err error) {
+	if ifName := lastKnownDefaultRouteIfName.Load(); ifName != "" {
+		d.InterfaceName = ifName
+	}
+	return d, nil
 }

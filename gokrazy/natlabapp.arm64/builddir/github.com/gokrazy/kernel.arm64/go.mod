@@ -1,4 +1,4 @@
-module gokrazy/build/natlabapp.arm64
+module github.com/Xinlong-Wu/tailscale-oh/gokrazy/build/natlabapp.arm64
 
 go 1.23.1
 

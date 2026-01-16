@@ -1,4 +1,4 @@
-module gokrazy/build/tsapp
+module github.com/Xinlong-Wu/tailscale-oh/gokrazy/build/tsapp
 
 go 1.22.2
 

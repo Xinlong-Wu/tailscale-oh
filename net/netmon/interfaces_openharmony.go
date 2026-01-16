@@ -21,17 +21,12 @@ var (
 	lastKnownDefaultRouteIfName syncs.AtomicValue[string]
 )
 
-var procNetRoutePath = "/proc/net/route"
-
 // maxProcNetRouteRead is the max number of lines to read from
 // /proc/net/route looking for a default route.
-const maxProcNetRouteRead = 1000
 
 func init() {
 	likelyHomeRouterIP = likelyHomeRouterIPAndroid
 }
-
-var procNetRouteErr atomic.Bool
 
 /*
 Parse 10.0.0.1 out of:
@@ -161,18 +156,11 @@ func likelyHomeRouterIPHelper() (ret netip.Addr, _ netip.Addr, ok bool) {
 	return ret, netip.Addr{}, ret.IsValid()
 }
 
-// UpdateLastKnownDefaultRouteInterface is called by libtailscale in the Android app when
+// UpdateLastKnownInterface is called by libtailscale in the Android app when
 // the connectivity manager detects a network path transition. If ifName is "", network has been lost.
 // After updating the interface, Android calls Monitor.InjectEvent(), triggering a link change.
-func UpdateLastKnownDefaultRouteInterface(ifName string) {
-	if old := lastKnownDefaultRouteIfName.Swap(ifName); old != ifName {
-		log.Printf("defaultroute: update from Android, ifName = %s (was %s)", ifName, old)
+func UpdateLastKnownInterface(ifName string) {
+	if old := lastKnownIfName.Swap(ifName); old != ifName {
+		log.Printf(": update from Android, ifName = %s (was %s)", ifName, old)
 	}
-}
-
-func defaultRoute() (d DefaultRouteDetails, err error) {
-	if ifName := lastKnownDefaultRouteIfName.Load(); ifName != "" {
-		d.InterfaceName = ifName
-	}
-	return d, nil
 }

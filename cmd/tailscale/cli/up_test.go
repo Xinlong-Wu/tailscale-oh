@@ -7,7 +7,7 @@ import (
 	"flag"
 	"testing"
 
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 // validUpFlags are the only flags that are valid for tailscale up. The up

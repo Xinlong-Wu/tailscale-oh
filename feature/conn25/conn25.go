@@ -24,26 +24,26 @@ import (
 
 	"go4.org/netipx"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/appc"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/net/tstun"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/appctype"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
-	"tailscale.com/util/testenv"
-	"tailscale.com/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/appc"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
 )
 
 // featureName is the name of the feature implemented by this package.
@@ -546,7 +546,7 @@ type ConnectorTransitIPResponse struct {
 	TransitIPs []TransitIPResponse `json:"transitIPs,omitempty"`
 }
 
-const AppConnectorsExperimentalAttrName = "tailscale.com/app-connectors-experimental"
+const AppConnectorsExperimentalAttrName = "github.com/Xinlong-Wu/tailscale-oh/app-connectors-experimental"
 
 // ipSets wraps all the IPSets the config needs.
 type ipSets struct {

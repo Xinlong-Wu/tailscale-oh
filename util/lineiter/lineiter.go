@@ -11,7 +11,7 @@ import (
 	"iter"
 	"os"
 
-	"tailscale.com/types/result"
+	"github.com/Xinlong-Wu/tailscale-oh/types/result"
 )
 
 // File returns an iterator that reads lines from the named file.

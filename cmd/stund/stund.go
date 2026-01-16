@@ -13,11 +13,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	"tailscale.com/net/stunserver"
-	"tailscale.com/tsweb"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stunserver"
+	"github.com/Xinlong-Wu/tailscale-oh/tsweb"
 
 	// Support for prometheus varz in tsweb
-	_ "tailscale.com/tsweb/promvarz"
+	_ "github.com/Xinlong-Wu/tailscale-oh/tsweb/promvarz"
 )
 
 var (

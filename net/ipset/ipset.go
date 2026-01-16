@@ -9,8 +9,8 @@ import (
 	"net/netip"
 
 	"github.com/gaissmai/bart"
-	"tailscale.com/types/views"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 // FalseContainsIPFunc is shorthand for NewContainsIPFunc(views.Slice[netip.Prefix]{}).

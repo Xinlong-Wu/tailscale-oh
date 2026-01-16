@@ -7,9 +7,9 @@ import (
 	"context"
 	"testing"
 
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnauth"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnauth"
 )
 
 // Client wraps a [local.Client] for testing purposes.

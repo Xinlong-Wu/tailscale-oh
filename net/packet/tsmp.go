@@ -16,8 +16,8 @@ import (
 	"net/netip"
 
 	"go4.org/mem"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 const minTSMPSize = 7 // the rejected body is 7 bytes

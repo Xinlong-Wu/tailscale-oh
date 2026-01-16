@@ -11,15 +11,15 @@ import (
 	"fmt"
 	"net/http"
 
-	"tailscale.com/health"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/posture"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/ptype"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/posture"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/ptype"
 )
 
 func init() {

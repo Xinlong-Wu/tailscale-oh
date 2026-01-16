@@ -3,7 +3,7 @@
 
 // The tailscale command is the Tailscale command-line client. It interacts
 // with the tailscaled node agent.
-package main // import "tailscale.com/cmd/tailscale"
+package main // import "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale"
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"tailscale.com/cmd/tailscale/cli"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli"
 )
 
 func main() {

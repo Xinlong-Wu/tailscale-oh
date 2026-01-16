@@ -13,7 +13,7 @@ import (
 	"testing"
 
 	"go4.org/mem"
-	"tailscale.com/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 func TestWalkShallowOSSpecific(t *testing.T) {

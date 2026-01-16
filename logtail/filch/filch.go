@@ -18,8 +18,8 @@ import (
 	"slices"
 	"sync"
 
-	"tailscale.com/metrics"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/metrics"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 var stderrFD = 2 // a variable for testing

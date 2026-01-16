@@ -10,9 +10,9 @@ import (
 	"fmt"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/feature"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 var versionCmd = &ffcli.Command{

@@ -17,10 +17,10 @@ import (
 	"sync"
 
 	"github.com/tailscale/xnet/webdav"
-	"tailscale.com/drive/driveimpl/dirfs"
-	"tailscale.com/drive/driveimpl/shared"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl/dirfs"
+	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl/shared"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // Child is a child folder of this compositedav.

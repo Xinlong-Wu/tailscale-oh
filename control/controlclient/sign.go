@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"time"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 var (

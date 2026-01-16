@@ -13,10 +13,10 @@ import (
 	"runtime"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/clientupdate"
-	"tailscale.com/util/prompt"
-	"tailscale.com/version"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/clientupdate"
+	"github.com/Xinlong-Wu/tailscale-oh/util/prompt"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 func init() {
@@ -83,7 +83,7 @@ func runUpdate(ctx context.Context, args []string) error {
 		Confirm: confirmUpdate,
 	})
 	if errors.Is(err, errors.ErrUnsupported) {
-		return errors.New("The 'update' command is not supported on this platform; see https://tailscale.com/s/client-updates")
+		return errors.New("The 'update' command is not supported on this platform; see https://github.com/Xinlong-Wu/tailscale-oh/s/client-updates")
 	}
 	return err
 }

@@ -11,11 +11,11 @@ import (
 	"fmt"
 	"slices"
 
-	"tailscale.com/syncs"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/syspolicy/source"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/source"
 )
 
 var (

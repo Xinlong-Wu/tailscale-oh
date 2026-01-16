@@ -11,9 +11,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 )
 
 func init() {

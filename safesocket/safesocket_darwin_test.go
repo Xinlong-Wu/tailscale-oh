@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 // TestSetCredentials verifies that calling SetCredentials

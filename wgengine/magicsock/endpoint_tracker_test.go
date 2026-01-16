@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 func TestEndpointTracker(t *testing.T) {

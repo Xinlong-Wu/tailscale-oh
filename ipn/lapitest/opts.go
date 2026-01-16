@@ -9,12 +9,12 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/control/controlclient"
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // Option is any optional configuration that can be passed to [NewServer] or [NewBackend].

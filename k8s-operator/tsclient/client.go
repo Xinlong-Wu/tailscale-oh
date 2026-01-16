@@ -9,7 +9,7 @@ package tsclient
 import (
 	"context"
 
-	"tailscale.com/client/tailscale/v2"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
 )
 
 type (

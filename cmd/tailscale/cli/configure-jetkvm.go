@@ -15,7 +15,7 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 func init() {

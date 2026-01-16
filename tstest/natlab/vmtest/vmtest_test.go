@@ -11,14 +11,14 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/client/local"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/tstest/natlab/vmtest"
-	"tailscale.com/tstest/natlab/vnet"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/natlab/vmtest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/natlab/vnet"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
 )
 
 func TestMacOSAndLinuxCanPing(t *testing.T) {

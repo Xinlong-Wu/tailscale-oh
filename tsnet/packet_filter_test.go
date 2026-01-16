@@ -10,14 +10,14 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/must"
-	"tailscale.com/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
 )
 
 // waitFor blocks until a NetMap is seen on the IPN bus that satisfies the given

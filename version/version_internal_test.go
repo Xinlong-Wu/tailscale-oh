@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/cibuild"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cibuild"
 )
 
 func TestIsValidLongWithTwoRepos(t *testing.T) {

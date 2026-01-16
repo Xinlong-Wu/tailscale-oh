@@ -5,4 +5,4 @@
 
 package condregister
 
-import _ "tailscale.com/ipn/store/awsstore"
+import _ "github.com/Xinlong-Wu/tailscale-oh/ipn/store/awsstore"

@@ -16,8 +16,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
-	"tailscale.com/feature"
-	"tailscale.com/internal/client/tailscale"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/internal/client/tailscale"
 )
 
 func init() {

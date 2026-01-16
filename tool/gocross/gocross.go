@@ -18,7 +18,7 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"tailscale.com/atomicfile"
+	"github.com/Xinlong-Wu/tailscale-oh/atomicfile"
 )
 
 func main() {

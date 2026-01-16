@@ -5,7 +5,7 @@
 // to add to during init that tailscaled calls at runtime.
 package tailscaledhooks
 
-import "tailscale.com/feature"
+import "github.com/Xinlong-Wu/tailscale-oh/feature"
 
 // UninstallSystemDaemonWindows is called when the Windows
 // system daemon is uninstalled.

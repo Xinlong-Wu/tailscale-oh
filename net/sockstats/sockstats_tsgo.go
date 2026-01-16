@@ -14,11 +14,11 @@ import (
 	"syscall"
 	"time"
 
-	"tailscale.com/net/netmon"
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 const IsAvailable = true

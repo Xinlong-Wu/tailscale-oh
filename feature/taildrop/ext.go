@@ -17,17 +17,17 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/cmd/tailscaled/tailscaledhooks"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstime"
-	"tailscale.com/types/empty"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/osshare"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled/tailscaledhooks"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/types/empty"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/osshare"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 func init() {

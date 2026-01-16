@@ -12,7 +12,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"tailscale.com/k8s-operator/reconciler"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/reconciler"
 )
 
 func TestFinalizers(t *testing.T) {

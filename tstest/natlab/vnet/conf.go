@@ -15,10 +15,10 @@ import (
 
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcapgo"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/must"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 // Note: the exported Node and Network are the configuration types;

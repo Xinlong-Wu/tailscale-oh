@@ -18,14 +18,14 @@ import (
 	"strconv"
 	"sync"
 
-	"tailscale.com/control/ts2021"
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/control/ts2021"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsdial"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 // DefaultServerURL is the default coordination server base URL,

@@ -18,13 +18,13 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
-	"tailscale.com/client/local"
-	"tailscale.com/ipn"
-	"tailscale.com/kube/certs"
-	"tailscale.com/kube/kubetypes"
-	klc "tailscale.com/kube/localclient"
-	"tailscale.com/kube/services"
-	"tailscale.com/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/certs"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	klc "github.com/Xinlong-Wu/tailscale-oh/kube/localclient"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/services"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
 )
 
 // watchServeConfigChanges watches path for changes, and when it sees one, reads
@@ -162,7 +162,7 @@ func isValidHTTPSConfig(certDomain string, sc *ipn.ServeConfig) bool {
 		log.Printf(
 			`serve proxy: this node is configured as a proxy that exposes an HTTPS endpoint to tailnet,
 		(perhaps a Kubernetes operator Ingress proxy) but it is not able to issue TLS certs, so this will likely not work.
-		To make it work, ensure that HTTPS is enabled for your tailnet, see https://tailscale.com/kb/1153/enabling-https for more details.`)
+		To make it work, ensure that HTTPS is enabled for your tailnet, see https://github.com/Xinlong-Wu/tailscale-oh/kb/1153/enabling-https for more details.`)
 		return false
 	}
 	return true

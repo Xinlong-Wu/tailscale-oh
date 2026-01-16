@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/tstest"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 func TestParse(t *testing.T) {

@@ -8,9 +8,9 @@ import (
 	"errors"
 	"fmt"
 
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn/ipnlocal/netmapcache"
-	"tailscale.com/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal/netmapcache"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
 )
 
 // diskCache is the state netmap caching to disk.

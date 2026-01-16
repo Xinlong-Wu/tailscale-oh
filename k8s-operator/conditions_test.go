@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/tstest"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 func TestSetConnectorCondition(t *testing.T) {

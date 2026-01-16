@@ -23,16 +23,16 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"tailscale.com/ipn"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/types/opt"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 const (
-	tailscaleIngressControllerName = "tailscale.com/ts-ingress"                    // ingressClass.spec.controllerName for tailscale IngressClass resource
+	tailscaleIngressControllerName = "github.com/Xinlong-Wu/tailscale-oh/ts-ingress"                    // ingressClass.spec.controllerName for tailscale IngressClass resource
 	ingressClassDefaultAnnotation  = "ingressclass.kubernetes.io/is-default-class" // we do not support this https://kubernetes.io/docs/concepts/services-networking/ingress/#default-ingress-class
 	indexIngressProxyClass         = ".metadata.annotations.ingress-proxy-class"
 )
@@ -392,7 +392,7 @@ func handlersForIngress(ctx context.Context, ing *networkingv1.Ingress, cl clien
 }
 
 // isHTTPRedirectEnabled returns true if HTTP redirect is enabled for the Ingress.
-// The annotation is tailscale.com/http-redirect and it should be set to "true".
+// The annotation is github.com/Xinlong-Wu/tailscale-oh/http-redirect and it should be set to "true".
 func isHTTPRedirectEnabled(ing *networkingv1.Ingress) bool {
 	return ing.Annotations != nil && opt.Bool(ing.Annotations[AnnotationHTTPRedirect]).EqualBool(true)
 }

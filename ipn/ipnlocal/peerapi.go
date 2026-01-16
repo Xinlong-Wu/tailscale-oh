@@ -25,20 +25,20 @@ import (
 
 	"golang.org/x/net/dns/dnsmessage"
 	"golang.org/x/net/http/httpguts"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/sockstats"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/views"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netutil"
+	"github.com/Xinlong-Wu/tailscale-oh/net/sockstats"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
 )
 
 // initListenConfig, if non-nil, is called during peerAPIListener setup.  It is used only
@@ -226,7 +226,7 @@ type peerAPIHandler struct {
 }
 
 // PeerAPIHandler is the interface implemented by [peerAPIHandler] and needed by
-// module features registered via tailscale.com/feature/*.
+// module features registered via github.com/Xinlong-Wu/tailscale-oh/feature/*.
 type PeerAPIHandler interface {
 	Peer() tailcfg.NodeView
 	PeerCaps() tailcfg.PeerCapMap

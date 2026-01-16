@@ -15,7 +15,7 @@ import (
 	"testing"
 	"text/template"
 
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 var (

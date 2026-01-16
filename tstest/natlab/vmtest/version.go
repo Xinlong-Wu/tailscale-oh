@@ -18,7 +18,7 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // versionRE matches a concrete X.Y.Z release version.

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/cibuild"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cibuild"
 )
 
 // TestTsgoRevInCacheKey verifies that the Tailscale Go toolchain's git

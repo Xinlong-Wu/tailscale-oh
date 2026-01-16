@@ -19,11 +19,11 @@ import (
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"golang.org/x/net/idna"
-	"tailscale.com/feature"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/netmon"
-	"tailscale.com/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
 )
 
 var statusCmd = &ffcli.Command{

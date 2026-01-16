@@ -28,7 +28,7 @@ import (
 	"strings"
 	"sync"
 
-	"tailscale.com/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 const magicPrefix = "testport-report-"

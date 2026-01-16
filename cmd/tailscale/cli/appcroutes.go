@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/types/appctype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
 )
 
 var appcRoutesArgs struct {
@@ -47,7 +47,7 @@ in the the policy app connector 'routes' field.
 -n prints the total number of routes advertised by this device, whether learned, set in the policy, or set locally.
 
 For more information about App Connectors, refer to
-https://tailscale.com/kb/1281/app-connectors
+https://github.com/Xinlong-Wu/tailscale-oh/kb/1281/app-connectors
 `),
 }
 

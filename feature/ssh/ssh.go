@@ -8,4 +8,4 @@
 package ssh
 
 // Register implementations of various SSH hooks.
-import _ "tailscale.com/ssh/tailssh"
+import _ "github.com/Xinlong-Wu/tailscale-oh/ssh/tailssh"

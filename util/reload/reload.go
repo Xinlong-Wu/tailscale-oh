@@ -14,8 +14,8 @@ import (
 	"reflect"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // DefaultInterval is the default value for ReloadOpts.Interval if none is

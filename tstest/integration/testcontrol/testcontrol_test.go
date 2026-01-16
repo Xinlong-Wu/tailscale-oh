@@ -15,13 +15,13 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/control/ts2021"
-	"tailscale.com/control/tsp"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/key"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/control/ts2021"
+	"github.com/Xinlong-Wu/tailscale-oh/control/tsp"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsdial"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 // TestStreamingMapReqReadOnlyByVersion verifies that testcontrol matches

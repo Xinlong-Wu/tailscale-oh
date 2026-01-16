@@ -13,8 +13,8 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
-	"tailscale.com/types/dnstype"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/jsonoutput"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
 )
 
 var dnsStatusCmd = &ffcli.Command{
@@ -68,7 +68,7 @@ and includes the following components:
   node DNS proxy, will not answer.
 
 For more information about the DNS functionality built into Tailscale, refer to
-https://tailscale.com/kb/1054/dns.
+https://github.com/Xinlong-Wu/tailscale-oh/kb/1054/dns.
 `),
 	FlagSet: (func() *flag.FlagSet {
 		fs := newFlagSet("status")

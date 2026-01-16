@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 // GetGroupIds returns the list of group IDs that the user is a member of, or

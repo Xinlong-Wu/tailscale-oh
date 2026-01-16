@@ -11,7 +11,7 @@ import (
 	"net"
 	"strconv"
 
-	"tailscale.com/health"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
 )
 
 // ErrStateNotExist is returned by StateStore.ReadState when the
@@ -70,7 +70,7 @@ var StateStoreHealth = health.Register(&health.Warnable{
 	Severity: health.SeverityHigh,
 	Title:    "Tailscale state store failed to initialize",
 	Text: func(args health.Args) string {
-		return fmt.Sprintf("State store failed to initialize, Tailscale will not work until this is resolved. See https://tailscale.com/s/state-store-init-error. Error: %s", args[health.ArgError])
+		return fmt.Sprintf("State store failed to initialize, Tailscale will not work until this is resolved. See https://github.com/Xinlong-Wu/tailscale-oh/s/state-store-init-error. Error: %s", args[health.ArgError])
 	},
 	ImpactsConnectivity: true,
 })

@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"tailscale.com/types/preftype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
 )
 
 func TestConfigEqual(t *testing.T) {

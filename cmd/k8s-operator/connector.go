@@ -26,12 +26,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tstime"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/set"
+	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 const (

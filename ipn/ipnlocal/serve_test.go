@@ -26,22 +26,22 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/control/controlclient"
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus/eventbustest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
 )
 
 func TestExpandProxyArg(t *testing.T) {
@@ -748,7 +748,7 @@ func TestServeHTTPProxyHeaders(t *testing.T) {
 				{"Tailscale-User-Login", "someone@example.com"},
 				{"Tailscale-User-Name", "Some One"},
 				{"Tailscale-User-Profile-Pic", "https://example.com/photo.jpg"},
-				{"Tailscale-Headers-Info", "https://tailscale.com/s/serve-headers"},
+				{"Tailscale-Headers-Info", "https://github.com/Xinlong-Wu/tailscale-oh/s/serve-headers"},
 			},
 		},
 		{
@@ -888,7 +888,7 @@ func TestServeHTTPProxyGrantHeader(t *testing.T) {
 				{"Tailscale-User-Login", "someone@example.com"},
 				{"Tailscale-User-Name", "Some One"},
 				{"Tailscale-User-Profile-Pic", "https://example.com/photo.jpg"},
-				{"Tailscale-Headers-Info", "https://tailscale.com/s/serve-headers"},
+				{"Tailscale-Headers-Info", "https://github.com/Xinlong-Wu/tailscale-oh/s/serve-headers"},
 				{"Tailscale-App-Capabilities", `{"example.com/cap/interesting":[{"role":"🐿"}]}`},
 			},
 		},

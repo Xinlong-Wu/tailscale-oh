@@ -14,12 +14,12 @@ import (
 	"fmt"
 	"sync"
 
-	"tailscale.com/feature"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 )
 
 // featureName is the name of the feature implemented by this package.

@@ -5,7 +5,7 @@
 // atomically.
 //
 // This package should be considered internal; its API is not stable.
-package atomicfile // import "tailscale.com/atomicfile"
+package atomicfile // import "github.com/Xinlong-Wu/tailscale-oh/atomicfile"
 
 import (
 	"fmt"

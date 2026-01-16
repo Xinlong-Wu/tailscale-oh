@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/net/packet"
-	"tailscale.com/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
 )
 
 type Snapshot struct {

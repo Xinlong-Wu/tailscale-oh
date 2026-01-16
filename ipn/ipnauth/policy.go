@@ -7,12 +7,12 @@ import (
 	"errors"
 	"fmt"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 )
 
 type actorWithPolicyChecks struct{ Actor }

@@ -12,7 +12,7 @@ import (
 	"github.com/tailscale/wireguard-go/conn"
 	"github.com/tailscale/wireguard-go/device"
 	"github.com/tailscale/wireguard-go/tun"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 func TestReconfigDevice(t *testing.T) {

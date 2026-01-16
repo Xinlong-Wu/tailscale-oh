@@ -20,10 +20,10 @@ import (
 	"strings"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/control/tsp"
-	"tailscale.com/hostinfo"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/control/tsp"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 var globalArgs struct {

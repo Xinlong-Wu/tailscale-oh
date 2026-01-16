@@ -25,10 +25,10 @@ import (
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/tailscale/hujson"
 	"golang.org/x/oauth2/clientcredentials"
-	tsclient "tailscale.com/client/tailscale"
-	_ "tailscale.com/feature/identityfederation"
-	"tailscale.com/internal/client/tailscale"
-	"tailscale.com/util/httpm"
+	tsclient "github.com/Xinlong-Wu/tailscale-oh/client/tailscale"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/identityfederation"
+	"github.com/Xinlong-Wu/tailscale-oh/internal/client/tailscale"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
 )
 
 var (

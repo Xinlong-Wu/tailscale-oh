@@ -20,9 +20,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/tstime"
+	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
 )
 
 const (

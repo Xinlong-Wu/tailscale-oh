@@ -28,17 +28,17 @@ import (
 
 	"github.com/creachadair/msync/trigger"
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/envknob"
-	"tailscale.com/metrics"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/sockstats"
-	"tailscale.com/tstime"
-	tslogger "tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/set"
-	"tailscale.com/util/truncate"
-	"tailscale.com/util/zstdframe"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/metrics"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/sockstats"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	tslogger "github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/truncate"
+	"github.com/Xinlong-Wu/tailscale-oh/util/zstdframe"
 )
 
 // maxSize is the maximum size that a single log entry can be.

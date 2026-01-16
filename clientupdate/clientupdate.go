@@ -27,14 +27,14 @@ import (
 	"strconv"
 	"strings"
 
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/hostinfo"
-	"tailscale.com/types/lazy"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/cmpver"
-	"tailscale.com/version"
-	"tailscale.com/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cmpver"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
 )
 
 const (
@@ -519,7 +519,7 @@ func updateDebianAptSourcesList(dstTrack string) (rewrote bool, err error) {
 }
 
 func updateDebianAptSourcesListBytes(was []byte, dstTrack string) (newContent []byte, err error) {
-	trackURLPrefix := []byte("https://pkgs.tailscale.com/" + dstTrack + "/")
+	trackURLPrefix := []byte("https://pkgs.github.com/Xinlong-Wu/tailscale-oh/" + dstTrack + "/")
 	var buf bytes.Buffer
 	var changes int
 	bs := bufio.NewScanner(bytes.NewReader(was))

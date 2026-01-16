@@ -11,11 +11,11 @@ import (
 
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/set"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/gp"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/gp"
 )
 
 const (

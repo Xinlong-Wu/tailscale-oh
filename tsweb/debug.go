@@ -13,9 +13,9 @@ import (
 	"os"
 	"runtime"
 
-	"tailscale.com/feature"
-	"tailscale.com/tsweb/varz"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/tsweb/varz"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 // DebugHandler is an http.Handler that serves a debugging "homepage",
@@ -38,7 +38,7 @@ type DebugHandler struct {
 
 // PrometheusHandler is an optional hook to enable native Prometheus
 // support in the debug handler. It is disabled by default. Import the
-// tailscale.com/tsweb/promvarz package to enable this feature.
+// github.com/Xinlong-Wu/tailscale-oh/tsweb/promvarz package to enable this feature.
 var PrometheusHandler feature.Hook[func(*DebugHandler)]
 
 // Debugger returns the DebugHandler registered on mux at /debug/,

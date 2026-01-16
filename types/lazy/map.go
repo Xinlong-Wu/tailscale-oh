@@ -3,7 +3,7 @@
 
 package lazy
 
-import "tailscale.com/util/mak"
+import "github.com/Xinlong-Wu/tailscale-oh/util/mak"
 
 // GMap is a map of lazily computed [GValue] pointers, keyed by a comparable
 // type.

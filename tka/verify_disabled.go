@@ -8,7 +8,7 @@ package tka
 import (
 	"errors"
 
-	"tailscale.com/types/tkatype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 )
 
 // signatureVerify returns a nil error if the signature is valid over the

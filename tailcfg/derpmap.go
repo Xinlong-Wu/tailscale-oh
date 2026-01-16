@@ -7,7 +7,7 @@ import (
 	"net/netip"
 	"sort"
 
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 // DERPMap describes the set of DERP packet relay servers that are available.

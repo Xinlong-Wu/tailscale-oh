@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	qt "github.com/frankban/quicktest"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 func TestRunChecks(t *testing.T) {

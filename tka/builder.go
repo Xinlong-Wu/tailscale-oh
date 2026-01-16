@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"os"
 
-	"tailscale.com/types/tkatype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 )
 
 // Types implementing Signer can sign update messages.

@@ -32,15 +32,15 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"golang.org/x/sys/unix"
-	"tailscale.com/cmd/testwrapper/flakytest"
-	"tailscale.com/health"
-	"tailscale.com/ipn"
-	"tailscale.com/kube/egressservices"
-	"tailscale.com/kube/kubeclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/testwrapper/flakytest"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/egressservices"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeclient"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
 )
 
 const configFileAuthKey = "some-auth-key"
@@ -48,7 +48,7 @@ const configFileAuthKey = "some-auth-key"
 func TestContainerBoot(t *testing.T) {
 	flakytest.Mark(t, "https://github.com/tailscale/tailscale/issues/19380")
 	boot := filepath.Join(t.TempDir(), "containerboot")
-	if err := exec.Command("go", "build", "-ldflags", "-X main.testSleepDuration=1ms", "-o", boot, "tailscale.com/cmd/containerboot").Run(); err != nil {
+	if err := exec.Command("go", "build", "-ldflags", "-X main.testSleepDuration=1ms", "-o", boot, "github.com/Xinlong-Wu/tailscale-oh/cmd/containerboot").Run(); err != nil {
 		t.Fatalf("Building containerboot: %v", err)
 	}
 	egressStatus := egressSvcStatus("foo", "foo.tailnetxyz.ts.net", "100.64.0.2")

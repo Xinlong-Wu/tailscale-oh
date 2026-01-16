@@ -12,7 +12,7 @@ import (
 	"fmt"
 
 	"golang.org/x/crypto/argon2"
-	"tailscale.com/types/tkatype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 )
 
 // ErrNoSuchKey is returned if the key referenced by a KeyID does not exist.

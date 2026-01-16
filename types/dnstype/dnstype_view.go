@@ -12,10 +12,10 @@ import (
 
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
-	"tailscale.com/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 )
 
-//go:generate go run tailscale.com/cmd/cloner  -clonefunc=true -type=Resolver
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/cloner  -clonefunc=true -type=Resolver
 
 // View returns a read-only view of Resolver.
 func (p *Resolver) View() ResolverView {

@@ -6,9 +6,9 @@ package controlclient
 import (
 	"reflect"
 
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/structs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
+	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
 )
 
 type Status struct {

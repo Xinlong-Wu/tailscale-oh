@@ -22,15 +22,15 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	"tailscale.com/client/tailscale/v2"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
 
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/ingressservices"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tstest"
-	"tailscale.com/util/mak"
+	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/tsclient"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/ingressservices"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 func TestServicePGReconciler(t *testing.T) {
@@ -220,8 +220,8 @@ func TestValidateService(t *testing.T) {
 			Namespace: "ns-1",
 			UID:       types.UID("1234-UID"),
 			Annotations: map[string]string{
-				"tailscale.com/proxy-group": "test-pg",
-				"tailscale.com/hostname":    "my-app",
+				"github.com/Xinlong-Wu/tailscale-oh/proxy-group": "test-pg",
+				"github.com/Xinlong-Wu/tailscale-oh/hostname":    "my-app",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -237,8 +237,8 @@ func TestValidateService(t *testing.T) {
 			Namespace: "ns-2",
 			UID:       types.UID("1235-UID"),
 			Annotations: map[string]string{
-				"tailscale.com/proxy-group": "test-pg",
-				"tailscale.com/hostname":    "my-app",
+				"github.com/Xinlong-Wu/tailscale-oh/proxy-group": "test-pg",
+				"github.com/Xinlong-Wu/tailscale-oh/hostname":    "my-app",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -310,7 +310,7 @@ func TestIgnoreRegularService(t *testing.T) {
 			// on it being set.
 			UID: types.UID("1234-UID"),
 			Annotations: map[string]string{
-				"tailscale.com/expose": "true",
+				"github.com/Xinlong-Wu/tailscale-oh/expose": "true",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -376,7 +376,7 @@ func setupTestService(t *testing.T, svcName string, hostname string, clusterIP s
 			Namespace: "default",
 			UID:       types.UID(fmt.Sprintf("%d-UID", uid)),
 			Annotations: map[string]string{
-				"tailscale.com/proxy-group": "test-pg",
+				"github.com/Xinlong-Wu/tailscale-oh/proxy-group": "test-pg",
 			},
 		},
 		Spec: corev1.ServiceSpec{

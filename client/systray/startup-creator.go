@@ -16,7 +16,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"tailscale.com/client/freedesktop"
+	"github.com/Xinlong-Wu/tailscale-oh/client/freedesktop"
 )
 
 //go:embed tailscale-systray.service

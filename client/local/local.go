@@ -27,24 +27,24 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/drive"
-	"tailscale.com/envknob"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/udprelay/status"
-	"tailscale.com/paths"
-	"tailscale.com/safesocket"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/appctype"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/key"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/drive"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netutil"
+	"github.com/Xinlong-Wu/tailscale-oh/net/udprelay/status"
+	"github.com/Xinlong-Wu/tailscale-oh/paths"
+	"github.com/Xinlong-Wu/tailscale-oh/safesocket"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 )
 
 // defaultClient is the default Client when using the legacy
@@ -839,7 +839,7 @@ func (lc *Client) CheckUDPGROForwarding(ctx context.Context) error {
 // SetUDPGROForwarding enables UDP GRO forwarding for the main interface of this
 // node. This can be done to improve performance of tailnet nodes acting as exit
 // nodes or subnet routers.
-// See https://tailscale.com/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
+// See https://github.com/Xinlong-Wu/tailscale-oh/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
 func (lc *Client) SetUDPGROForwarding(ctx context.Context) error {
 	body, err := lc.get200(ctx, "/localapi/v0/set-udp-gro-forwarding")
 	if err != nil {

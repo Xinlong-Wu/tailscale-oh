@@ -10,16 +10,16 @@ import (
 
 	xmaps "golang.org/x/exp/maps"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/syspolicy/internal"
-	"tailscale.com/util/syspolicy/internal/loggerx"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/setting"
-	"tailscale.com/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal/loggerx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 var lazyReportMetrics lazy.SyncValue[bool] // used as a test hook

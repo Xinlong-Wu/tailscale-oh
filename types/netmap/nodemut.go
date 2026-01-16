@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 // NodeMutation is the common interface for types that describe

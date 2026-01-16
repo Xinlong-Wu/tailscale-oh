@@ -7,7 +7,7 @@ import (
 	"encoding"
 	"testing"
 
-	"tailscale.com/tstest/deptest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/deptest"
 )
 
 var (

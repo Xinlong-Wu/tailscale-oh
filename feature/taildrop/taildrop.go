@@ -17,11 +17,11 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"tailscale.com/ipn"
-	"tailscale.com/syncs"
-	"tailscale.com/tstime"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/multierr"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/multierr"
 )
 
 var (

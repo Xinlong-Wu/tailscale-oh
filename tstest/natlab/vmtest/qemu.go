@@ -17,7 +17,7 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/tstest/natlab/vnet"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/natlab/vnet"
 )
 
 // gokrazyPlatform boots gokrazy (Linux) VMs via QEMU.

@@ -16,10 +16,10 @@ import (
 	"time"
 
 	"github.com/klauspost/compress/zstd"
-	"tailscale.com/health"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 func TestMapAgainstTestControl(t *testing.T) {

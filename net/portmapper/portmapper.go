@@ -18,19 +18,19 @@ import (
 	"time"
 
 	"go4.org/mem"
-	"tailscale.com/envknob"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/net/netaddr"
-	"tailscale.com/net/neterror"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netns"
-	"tailscale.com/net/portmapper/portmappertype"
-	"tailscale.com/net/sockstats"
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/nettype"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/neterror"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/portmapper/portmappertype"
+	"github.com/Xinlong-Wu/tailscale-oh/net/sockstats"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 )
 
 var (
@@ -783,7 +783,7 @@ func (c *Client) createOrGetMapping(ctx context.Context) (mapping mapping, exter
 	}
 }
 
-//go:generate go run tailscale.com/cmd/addlicense -file pmpresultcode_string.go go run golang.org/x/tools/cmd/stringer -type=pmpResultCode -trimprefix=pmpCode
+//go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/addlicense -file pmpresultcode_string.go go run golang.org/x/tools/cmd/stringer -type=pmpResultCode -trimprefix=pmpCode
 
 type pmpResultCode uint16
 

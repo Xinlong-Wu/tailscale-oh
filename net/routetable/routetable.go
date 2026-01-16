@@ -11,7 +11,7 @@ import (
 	"net/netip"
 	"strconv"
 
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 var (

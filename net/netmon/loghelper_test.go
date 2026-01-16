@@ -10,8 +10,8 @@ import (
 	"testing"
 	"testing/synctest"
 
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/eventbus/eventbustest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus/eventbustest"
 )
 
 func TestLinkChangeLogLimiter(t *testing.T) { synctest.Test(t, syncTestLinkChangeLogLimiter) }

@@ -12,8 +12,8 @@ import (
 	"runtime"
 	"time"
 
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
 )
 
 type closeable interface {

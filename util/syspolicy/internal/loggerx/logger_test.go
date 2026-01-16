@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 func TestDebugLogging(t *testing.T) {

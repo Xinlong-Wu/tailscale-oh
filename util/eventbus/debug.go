@@ -14,8 +14,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // slowSubscriberTimeout is a timeout after which a subscriber that does not

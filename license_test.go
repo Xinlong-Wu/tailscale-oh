@@ -12,7 +12,7 @@ import (
 	"strings"
 	"testing"
 
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 func normalizeLineEndings(b []byte) []byte {

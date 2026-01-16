@@ -11,8 +11,8 @@ import (
 	"expvar"
 	"fmt"
 
-	"tailscale.com/metrics"
-	"tailscale.com/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/metrics"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 )
 
 type Buffer interface {

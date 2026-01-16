@@ -10,10 +10,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/jsonoutput"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
 )
 
 func init() {

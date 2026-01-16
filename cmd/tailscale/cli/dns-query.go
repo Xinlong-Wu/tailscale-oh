@@ -15,7 +15,7 @@ import (
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/cmd/tailscale/cli/jsonoutput"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/jsonoutput"
 )
 
 var dnsQueryArgs struct {

@@ -14,7 +14,7 @@ import (
 	"os/exec"
 
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/feature/capture/dissector"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/capture/dissector"
 )
 
 func init() {

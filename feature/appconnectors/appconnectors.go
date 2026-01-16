@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"tailscale.com/ipn/ipnlocal"
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 func init() {

@@ -6,8 +6,8 @@ package ipn
 import (
 	"testing"
 
-	"tailscale.com/health"
-	"tailscale.com/types/empty"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/types/empty"
 )
 
 func TestNotifyString(t *testing.T) {

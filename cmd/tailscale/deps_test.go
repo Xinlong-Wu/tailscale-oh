@@ -6,7 +6,7 @@ package main
 import (
 	"testing"
 
-	"tailscale.com/tstest/deptest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/deptest"
 )
 
 func TestOmitQRCodes(t *testing.T) {

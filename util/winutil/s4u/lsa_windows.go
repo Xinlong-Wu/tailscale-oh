@@ -15,9 +15,9 @@ import (
 
 	"github.com/dblohm7/wingoes"
 	"golang.org/x/sys/windows"
-	"tailscale.com/types/lazy"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/winenv"
+	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/winenv"
 )
 
 const (

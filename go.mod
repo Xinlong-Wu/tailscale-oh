@@ -1,4 +1,4 @@
-module tailscale.com
+module github.com/Xinlong-Wu/tailscale-oh
 
 go 1.26.3
 

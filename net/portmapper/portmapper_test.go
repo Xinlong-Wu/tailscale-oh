@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/net/portmapper/portmappertype"
-	"tailscale.com/util/eventbus/eventbustest"
+	"github.com/Xinlong-Wu/tailscale-oh/net/portmapper/portmappertype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus/eventbustest"
 )
 
 func TestCreateOrGetMapping(t *testing.T) {

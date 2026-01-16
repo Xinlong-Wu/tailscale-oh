@@ -13,7 +13,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"tailscale.com/tsnet"
+	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
 )
 
 // ExampleServer shows you how to construct a ready-to-use tsnet instance.

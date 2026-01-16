@@ -11,9 +11,9 @@ import (
 	"net/url"
 
 	"github.com/coder/websocket"
-	"tailscale.com/control/controlbase"
-	"tailscale.com/control/controlhttp/controlhttpcommon"
-	"tailscale.com/net/wsconn"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlbase"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlhttp/controlhttpcommon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/wsconn"
 )
 
 // Variant of Dial that tunnels the request over WebSockets, since we cannot do

@@ -21,7 +21,7 @@ import (
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
-	"tailscale.com/net/stun"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
 )
 
 const (

@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 // Ensure that the Proto type implements encoding.TextMarshaler and

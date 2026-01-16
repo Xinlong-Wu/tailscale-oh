@@ -12,8 +12,8 @@ import (
 	"regexp"
 	"strings"
 
-	"tailscale.com/net/dns/resolvconffile"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dns/resolvconffile"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 func newResolvdManager(logf logger.Logf, interfaceName string) (*resolvdManager, error) {

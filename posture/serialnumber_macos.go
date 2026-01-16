@@ -58,8 +58,8 @@ import (
 	"fmt"
 	"strings"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 )
 
 // GetSerialNumber returns the platform serial sumber as reported by IOKit.

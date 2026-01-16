@@ -8,9 +8,9 @@ package posture
 import (
 	"fmt"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 )
 
 // GetSerialNumbers returns the serial number of the device as reported by an

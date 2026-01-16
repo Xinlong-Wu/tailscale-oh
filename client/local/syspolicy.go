@@ -9,7 +9,7 @@ import (
 	"context"
 	"net/http"
 
-	"tailscale.com/util/syspolicy/setting"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
 )
 
 // GetEffectivePolicy returns the effective policy for the specified scope.

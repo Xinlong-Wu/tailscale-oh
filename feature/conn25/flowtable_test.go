@@ -7,9 +7,9 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/net/flowtrack"
-	"tailscale.com/net/packet"
-	"tailscale.com/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/net/flowtrack"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
 )
 
 func TestFlowTable(t *testing.T) {

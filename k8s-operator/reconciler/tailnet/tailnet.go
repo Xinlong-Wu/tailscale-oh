@@ -25,17 +25,17 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"tailscale.com/client/tailscale/v2"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
 
-	"tailscale.com/ipn"
-	operatorutils "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/reconciler"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tstime"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	operatorutils "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/reconciler"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/tsclient"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 type (

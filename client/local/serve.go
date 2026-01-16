@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"tailscale.com/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 )
 
 // GetServeConfig return the current serve config.

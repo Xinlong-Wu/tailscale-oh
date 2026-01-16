@@ -30,10 +30,10 @@ import (
 	"time"
 
 	"go4.org/mem"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 // SelfUserID is the synthetic [tailcfg.UserID] assigned to the self node and

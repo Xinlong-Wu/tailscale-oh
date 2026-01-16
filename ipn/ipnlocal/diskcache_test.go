@@ -7,11 +7,11 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/netmap"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/wgengine/magicsock"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/magicsock"
 )
 
 // newCacheTestNetmap returns a minimal valid netmap suitable for testing disk

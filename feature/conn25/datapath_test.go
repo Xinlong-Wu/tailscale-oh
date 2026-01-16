@@ -8,9 +8,9 @@ import (
 	"net/netip"
 	"testing"
 
-	"tailscale.com/net/packet"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
 )
 
 type testConn25 struct {

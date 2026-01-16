@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus/eventbustest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 func TestMonitorStartClose(t *testing.T) {

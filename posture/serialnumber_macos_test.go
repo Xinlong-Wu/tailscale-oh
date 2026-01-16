@@ -9,9 +9,9 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/types/logger"
-	"tailscale.com/util/cibuild"
-	"tailscale.com/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cibuild"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 )
 
 func TestGetSerialNumberMac(t *testing.T) {

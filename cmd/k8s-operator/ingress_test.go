@@ -21,14 +21,14 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	"tailscale.com/client/tailscale/v2"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
 
-	"tailscale.com/ipn"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tstest"
-	"tailscale.com/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/tsclient"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 func TestTailscaleIngress(t *testing.T) {
@@ -94,7 +94,7 @@ func TestTailscaleIngress(t *testing.T) {
 
 	// Get the ingress and update it with expected changes
 	ing := ingress()
-	ing.Finalizers = append(ing.Finalizers, "tailscale.com/finalizer")
+	ing.Finalizers = append(ing.Finalizers, "github.com/Xinlong-Wu/tailscale-oh/finalizer")
 	ing.Status.LoadBalancer = networkingv1.IngressLoadBalancerStatus{
 		Ingress: []networkingv1.IngressLoadBalancerIngress{
 			{Hostname: "foo.tailnetxyz.ts.net", Ports: []networkingv1.IngressPortStatus{{Port: 443, Protocol: "TCP"}}},
@@ -190,7 +190,7 @@ func TestTailscaleIngressHostname(t *testing.T) {
 
 	// Get the ingress and update it with expected changes
 	ing := ingress()
-	ing.Finalizers = append(ing.Finalizers, "tailscale.com/finalizer")
+	ing.Finalizers = append(ing.Finalizers, "github.com/Xinlong-Wu/tailscale-oh/finalizer")
 	expectEqual(t, fc, ing)
 
 	// 3. Ingress proxy with capability version >= 110 advertises HTTPS endpoint
@@ -336,7 +336,7 @@ func TestTailscaleIngressWithProxyClass(t *testing.T) {
 	opts.proxyClass = pc.Name
 	expectEqual(t, fc, expectedSTSUserspace(t, fc, opts))
 
-	// 4. tailscale.com/proxy-class label is removed from the Ingress, the
+	// 4. github.com/Xinlong-Wu/tailscale-oh/proxy-class label is removed from the Ingress, the
 	// Ingress gets reconciled and the custom ProxyClass configuration is
 	// removed from the proxy resources.
 	mustUpdate(t, fc, "default", "test", func(ing *networkingv1.Ingress) {
@@ -767,7 +767,7 @@ func TestEmptyPath(t *testing.T) {
 func ingressClass() *networkingv1.IngressClass {
 	return &networkingv1.IngressClass{
 		ObjectMeta: metav1.ObjectMeta{Name: "tailscale"},
-		Spec:       networkingv1.IngressClassSpec{Controller: "tailscale.com/ts-ingress"},
+		Spec:       networkingv1.IngressClassSpec{Controller: "github.com/Xinlong-Wu/tailscale-oh/ts-ingress"},
 	}
 }
 

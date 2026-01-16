@@ -13,13 +13,13 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsnet"
-	"tailscale.com/tstest/integration"
-	"tailscale.com/tstest/integration/testcontrol"
-	"tailscale.com/tstest/largetailnet"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/largetailnet"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // tsnet.Server.Up handles the wait-for-ipn.Running step itself: it

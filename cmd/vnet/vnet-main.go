@@ -22,9 +22,9 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
-	"tailscale.com/tstest/natlab/vnet"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/natlab/vnet"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 var (

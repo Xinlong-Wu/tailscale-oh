@@ -10,7 +10,7 @@ import (
 	"math/rand/v2"
 
 	"golang.org/x/exp/constraints"
-	"tailscale.com/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 // IntSet is a set optimized for integer values close to zero

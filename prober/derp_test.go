@@ -14,12 +14,12 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/derp"
-	"tailscale.com/derp/derphttp"
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/net/netmon"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/derp"
+	"github.com/Xinlong-Wu/tailscale-oh/derp/derphttp"
+	"github.com/Xinlong-Wu/tailscale-oh/derp/derpserver"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 func TestDerpProber(t *testing.T) {

@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 // ServerInfo identifies a coordination server by its URL and Noise public key.

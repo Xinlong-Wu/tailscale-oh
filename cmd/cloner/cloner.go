@@ -21,7 +21,7 @@ import (
 	"os"
 	"strings"
 
-	"tailscale.com/util/codegen"
+	"github.com/Xinlong-Wu/tailscale-oh/util/codegen"
 )
 
 var (
@@ -83,7 +83,7 @@ func main() {
 		cloneOutput += "_test"
 	}
 	cloneOutput += ".go"
-	if err := codegen.WritePackageFile("tailscale.com/cmd/cloner", pkg, cloneOutput, it, buf); err != nil {
+	if err := codegen.WritePackageFile("github.com/Xinlong-Wu/tailscale-oh/cmd/cloner", pkg, cloneOutput, it, buf); err != nil {
 		log.Fatal(err)
 	}
 }

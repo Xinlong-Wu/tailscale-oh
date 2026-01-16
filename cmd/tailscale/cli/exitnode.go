@@ -15,10 +15,10 @@ import (
 
 	"github.com/kballard/go-shellquote"
 	"github.com/peterbourgon/ff/v3/ffcli"
-	"tailscale.com/envknob"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
 )
 
 func exitNodeCmd() *ffcli.Command {

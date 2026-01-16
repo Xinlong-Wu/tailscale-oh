@@ -18,9 +18,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/net/netx"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/httpm"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
 )
 
 const (

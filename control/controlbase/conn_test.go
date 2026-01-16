@@ -19,8 +19,8 @@ import (
 
 	chp "golang.org/x/crypto/chacha20poly1305"
 	"golang.org/x/net/nettest"
-	"tailscale.com/net/memnet"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/net/memnet"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 const testProtocolVersion = 1

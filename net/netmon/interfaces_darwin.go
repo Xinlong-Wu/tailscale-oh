@@ -12,8 +12,8 @@ import (
 
 	"golang.org/x/net/route"
 	"golang.org/x/sys/unix"
-	"tailscale.com/syncs"
-	"tailscale.com/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 // fetchRoutingTable calls route.FetchRIB, fetching NET_RT_DUMP2.

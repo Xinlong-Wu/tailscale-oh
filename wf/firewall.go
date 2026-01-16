@@ -13,7 +13,7 @@ import (
 
 	"github.com/tailscale/wf"
 	"golang.org/x/sys/windows"
-	"tailscale.com/net/netaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
 )
 
 // Known addresses.

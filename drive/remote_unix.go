@@ -5,7 +5,7 @@
 
 package drive
 
-import "tailscale.com/version"
+import "github.com/Xinlong-Wu/tailscale-oh/version"
 
 func doAllowShareAs() bool {
 	// All UNIX platforms use user servers (sub-processes) to access the OS

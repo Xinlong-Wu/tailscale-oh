@@ -11,7 +11,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/types/tkatype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 )
 
 func TestSerialization(t *testing.T) {

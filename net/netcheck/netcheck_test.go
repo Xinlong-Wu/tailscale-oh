@@ -18,11 +18,11 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/derp"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/stun/stuntest"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest/nettest"
+	"github.com/Xinlong-Wu/tailscale-oh/derp"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun/stuntest"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/nettest"
 )
 
 func newTestClient(t testing.TB) *Client {

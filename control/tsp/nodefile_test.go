@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 func TestNodeFileRoundTrip(t *testing.T) {

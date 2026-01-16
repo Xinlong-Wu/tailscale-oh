@@ -15,8 +15,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"golang.org/x/crypto/blake2s"
-	"tailscale.com/types/key"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 // This package has implementation-specific tests for Mem and FS.

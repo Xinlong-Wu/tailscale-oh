@@ -14,10 +14,10 @@ import (
 	"testing"
 	"time"
 
-	"tailscale.com/envknob"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/backoff"
-	"tailscale.com/util/cibuild"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cibuild"
 )
 
 // AssertNotParallel asserts that t has not been marked as parallel.

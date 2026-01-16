@@ -22,9 +22,9 @@ import (
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"software.sslmate.com/src/go-pkcs12"
-	"tailscale.com/atomicfile"
-	"tailscale.com/ipn"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/atomicfile"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 func init() {

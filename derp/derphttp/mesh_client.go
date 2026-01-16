@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/derp"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/derp"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 var retryInterval = 5 * time.Second

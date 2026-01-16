@@ -25,15 +25,15 @@ import (
 	"sync/atomic"
 	"time"
 
-	"tailscale.com/atomicfile"
-	"tailscale.com/feature"
-	"tailscale.com/health"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netns"
-	"tailscale.com/net/tlsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/logger"
-	"tailscale.com/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/atomicfile"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tlsdial"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
 )
 
 // MakeLookupFunc creates a function that can be used to resolve hostnames
@@ -161,7 +161,7 @@ func bootstrapDNSMap(ctx context.Context, serverName string, serverIP netip.Addr
 }
 
 // dnsMap is the JSON type returned by the DERP /bootstrap-dns handler:
-// https://derp10.tailscale.com/bootstrap-dns
+// https://derp10.github.com/Xinlong-Wu/tailscale-oh/bootstrap-dns
 type dnsMap map[string][]netip.Addr
 
 // GetDERPMap returns a fallback DERP map that is always available, useful for basic

@@ -15,10 +15,10 @@ import (
 
 	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/util/remotecommand"
-	"tailscale.com/k8s-operator/sessionrecording/fakes"
-	"tailscale.com/k8s-operator/sessionrecording/tsrecorder"
-	"tailscale.com/sessionrecording"
-	"tailscale.com/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording/fakes"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording/tsrecorder"
+	"github.com/Xinlong-Wu/tailscale-oh/sessionrecording"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 func Test_conn_Read(t *testing.T) {

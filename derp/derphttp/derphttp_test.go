@@ -22,15 +22,15 @@ import (
 	"testing/synctest"
 	"time"
 
-	"tailscale.com/derp"
-	"tailscale.com/derp/derphttp"
-	"tailscale.com/derp/derpserver"
-	"tailscale.com/net/memnet"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netx"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/derp"
+	"github.com/Xinlong-Wu/tailscale-oh/derp/derphttp"
+	"github.com/Xinlong-Wu/tailscale-oh/derp/derpserver"
+	"github.com/Xinlong-Wu/tailscale-oh/net/memnet"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 func TestSendRecv(t *testing.T) {
@@ -565,7 +565,7 @@ func TestManualDial(t *testing.T) {
 		t.Skip("skipping live network test without --live-net-tests")
 	}
 	dm := &tailcfg.DERPMap{}
-	res, err := http.Get("https://controlplane.tailscale.com/derpmap/default")
+	res, err := http.Get("https://controlplane.github.com/Xinlong-Wu/tailscale-oh/derpmap/default")
 	if err != nil {
 		t.Fatalf("fetching DERPMap: %v", err)
 	}
@@ -592,7 +592,7 @@ func TestURLDial(t *testing.T) {
 		t.Skip("skipping live network test without --live-net-tests")
 	}
 	dm := &tailcfg.DERPMap{}
-	res, err := http.Get("https://controlplane.tailscale.com/derpmap/default")
+	res, err := http.Get("https://controlplane.github.com/Xinlong-Wu/tailscale-oh/derpmap/default")
 	if err != nil {
 		t.Fatalf("fetching DERPMap: %v", err)
 	}

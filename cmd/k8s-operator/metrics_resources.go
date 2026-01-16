@@ -19,13 +19,13 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	kube "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
+	kube "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 )
 
 const (
-	labelMetricsTarget = "tailscale.com/metrics-target"
+	labelMetricsTarget = "github.com/Xinlong-Wu/tailscale-oh/metrics-target"
 
 	// These labels get transferred from the metrics Service to the ingested Prometheus metrics.
 	labelPromProxyType            = "ts_proxy_type"

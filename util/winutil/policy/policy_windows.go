@@ -7,7 +7,7 @@ package policy
 import (
 	"time"
 
-	"tailscale.com/util/winutil"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 )
 
 // PreferenceOptionPolicy is a policy that governs whether a boolean variable

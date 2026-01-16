@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"net/netip"
 
-	"tailscale.com/tailcfg"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/preftype"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
 )
 
 // ConfigVAlpha is the config file format for the "alpha0" version.

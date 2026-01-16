@@ -12,8 +12,8 @@ import (
 
 	"github.com/hashicorp/raft"
 	"go4.org/netipx"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 // Snapshot and Restore enable the raft lib to do log compaction.

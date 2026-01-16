@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"tailscale.com/tsnet"
+	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
 )
 
 func generateName(prefix string) string {

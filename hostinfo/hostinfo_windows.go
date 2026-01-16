@@ -11,8 +11,8 @@ import (
 
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
-	"tailscale.com/util/winutil"
-	"tailscale.com/util/winutil/winenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/winenv"
 )
 
 func init() {

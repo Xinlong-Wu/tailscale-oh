@@ -24,14 +24,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/net/dns/resolvconffile"
-	"tailscale.com/tstime"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/set"
+	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dns/resolvconffile"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 const (
@@ -430,14 +430,14 @@ func isTailscaleLoadBalancerService(svc *corev1.Service, isDefaultLoadBalancer b
 			svc.Spec.LoadBalancerClass == nil && isDefaultLoadBalancer)
 }
 
-// hasExposeAnnotation reports whether Service has the tailscale.com/expose
+// hasExposeAnnotation reports whether Service has the github.com/Xinlong-Wu/tailscale-oh/expose
 // annotation set
 func hasExposeAnnotation(svc *corev1.Service) bool {
 	return svc != nil && svc.Annotations[AnnotationExpose] == "true"
 }
 
-// tailnetTargetAnnotation returns the value of tailscale.com/tailnet-ip
-// annotation or of the deprecated tailscale.com/ts-tailnet-target-ip
+// tailnetTargetAnnotation returns the value of github.com/Xinlong-Wu/tailscale-oh/tailnet-ip
+// annotation or of the deprecated github.com/Xinlong-Wu/tailscale-oh/ts-tailnet-target-ip
 // annotation. If neither is set, it returns an empty string. If both are set,
 // it returns the value of the new annotation.
 func tailnetTargetAnnotation(svc *corev1.Service) string {

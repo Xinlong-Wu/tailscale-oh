@@ -6,7 +6,7 @@ package magicsock
 import (
 	"testing"
 
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 func TestDiscoAtomic(t *testing.T) {

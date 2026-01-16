@@ -8,8 +8,8 @@ import (
 	"flag"
 	"strings"
 
-	"tailscale.com/util/prompt"
-	"tailscale.com/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/prompt"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 var (

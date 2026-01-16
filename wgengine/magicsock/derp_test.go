@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"testing"
 
-	"tailscale.com/health"
-	"tailscale.com/net/netcheck"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tstest"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/eventbus/eventbustest"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netcheck"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus/eventbustest"
 )
 
 func CheckDERPHeuristicTimes(t *testing.T) {

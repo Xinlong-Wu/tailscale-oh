@@ -14,7 +14,7 @@ import (
 	"net"
 	"syscall"
 
-	"tailscale.com/net/netns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
 )
 
 func init() {

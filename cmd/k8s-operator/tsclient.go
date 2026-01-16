@@ -11,9 +11,9 @@ import (
 	"os"
 
 	"go.uber.org/zap"
-	"tailscale.com/client/tailscale/v2"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
 
-	"tailscale.com/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 )
 
 const (

@@ -29,53 +29,53 @@ import (
 	memro "go4.org/mem"
 	"go4.org/netipx"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/appc"
-	"tailscale.com/appc/appctest"
-	"tailscale.com/control/controlclient"
-	"tailscale.com/drive"
-	"tailscale.com/drive/driveimpl"
-	"tailscale.com/feature"
-	_ "tailscale.com/feature/condregister/portmapper"
-	"tailscale.com/health"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/conffile"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/ipn/ipnlocal/netmapcache"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/net/netcheck"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/tstest"
-	"tailscale.com/tstest/deptest"
-	"tailscale.com/tstest/typewalk"
-	"tailscale.com/types/appctype"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/views"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/eventbus/eventbustest"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/must"
-	"tailscale.com/util/set"
-	"tailscale.com/util/syspolicy"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policytest"
-	"tailscale.com/util/syspolicy/source"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/filter/filtertype"
-	"tailscale.com/wgengine/wgcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/appc"
+	"github.com/Xinlong-Wu/tailscale-oh/appc/appctest"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
+	"github.com/Xinlong-Wu/tailscale-oh/drive"
+	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/portmapper"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/conffile"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnauth"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal/netmapcache"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netcheck"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsdial"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/deptest"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest/typewalk"
+	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus/eventbustest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policytest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/source"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter/filtertype"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/wgcfg"
 )
 
 func inRemove(ip netip.Addr) bool {
@@ -2853,7 +2853,7 @@ func TestReconfigureAppConnector(t *testing.T) {
 			Name: "example.ts.net",
 			Tags: []string{"tag:example"},
 			CapMap: (tailcfg.NodeCapMap)(map[tailcfg.NodeCapability][]tailcfg.RawMessage{
-				"tailscale.com/app-connectors": {tailcfg.RawMessage(appCfg)},
+				"github.com/Xinlong-Wu/tailscale-oh/app-connectors": {tailcfg.RawMessage(appCfg)},
 			}),
 		}).View(),
 	}
@@ -4665,9 +4665,9 @@ func TestValidPopBrowserURL(t *testing.T) {
 		popBrowserURL string
 		want          bool
 	}{
-		{"saas_login", "https://login.tailscale.com", "https://login.tailscale.com/a/foo", true},
-		{"saas_controlplane", "https://controlplane.tailscale.com", "https://controlplane.tailscale.com/a/foo", true},
-		{"saas_root", "https://login.tailscale.com", "https://tailscale.com/", true},
+		{"saas_login", "https://login.tailscale.com", "https://login.github.com/Xinlong-Wu/tailscale-oh/a/foo", true},
+		{"saas_controlplane", "https://controlplane.tailscale.com", "https://controlplane.github.com/Xinlong-Wu/tailscale-oh/a/foo", true},
+		{"saas_root", "https://login.tailscale.com", "https://github.com/Xinlong-Wu/tailscale-oh/", true},
 		{"saas_bad_hostname", "https://login.tailscale.com", "https://example.com/a/foo", false},
 		{"localhost", "http://localhost", "http://localhost/a/foo", true},
 		{"custom_control_url_https", "https://example.com", "https://example.com/a/foo", true},
@@ -7541,9 +7541,9 @@ func TestDeps(t *testing.T) {
 	deptest.DepChecker{
 		OnImport: func(pkg string) {
 			switch pkg {
-			case "tailscale.com/util/syspolicy",
-				"tailscale.com/util/syspolicy/setting",
-				"tailscale.com/util/syspolicy/rsop":
+			case "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy",
+				"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting",
+				"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/rsop":
 				t.Errorf("ipn/ipnlocal: importing syspolicy package %q is not allowed; only policyclient and its deps should be used by ipn/ipnlocal", pkg)
 			}
 		},

@@ -21,16 +21,16 @@ import (
 	"github.com/creachadair/mds/mtest"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"tailscale.com/ipn/ipnlocal/netmapcache"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tka"
-	"tailscale.com/types/ipproto"
-	"tailscale.com/types/key"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/views"
-	"tailscale.com/util/set"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/filter/filtertype"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal/netmapcache"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tka"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter/filtertype"
 )
 
 // Input values for valid-looking placeholder values for keys, hashes, etc.
@@ -83,7 +83,7 @@ func init() {
 			CapGrant: []tailcfg.CapGrant{{
 				Dsts: []netip.Prefix{netip.MustParsePrefix("192.168.4.0/24")},
 				CapMap: tailcfg.PeerCapMap{
-					"tailscale.com/testcap": []tailcfg.RawMessage{`"apple"`, `"pear"`},
+					"github.com/Xinlong-Wu/tailscale-oh/testcap": []tailcfg.RawMessage{`"apple"`, `"pear"`},
 				},
 			}},
 		},

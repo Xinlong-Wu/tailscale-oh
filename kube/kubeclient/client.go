@@ -28,8 +28,8 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/kube/kubeapi"
-	"tailscale.com/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeapi"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
 )
 
 const (

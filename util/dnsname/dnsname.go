@@ -7,7 +7,7 @@ package dnsname
 import (
 	"strings"
 
-	"tailscale.com/util/vizerror"
+	"github.com/Xinlong-Wu/tailscale-oh/util/vizerror"
 )
 
 const (

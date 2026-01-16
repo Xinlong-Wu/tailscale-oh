@@ -35,78 +35,78 @@ import (
 	"go4.org/mem"
 	"go4.org/netipx"
 	"golang.org/x/net/dns/dnsmessage"
-	"tailscale.com/appc"
-	"tailscale.com/client/tailscale/apitype"
-	"tailscale.com/control/controlclient"
-	"tailscale.com/control/controlknobs"
-	"tailscale.com/drive"
-	"tailscale.com/envknob"
-	"tailscale.com/envknob/featureknob"
-	"tailscale.com/feature"
-	"tailscale.com/feature/buildfeatures"
-	"tailscale.com/health"
-	"tailscale.com/health/healthmsg"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn"
-	"tailscale.com/ipn/conffile"
-	"tailscale.com/ipn/ipnauth"
-	"tailscale.com/ipn/ipnext"
-	"tailscale.com/ipn/ipnstate"
-	"tailscale.com/log/sockstatlog"
-	"tailscale.com/logpolicy"
-	"tailscale.com/net/dns"
-	"tailscale.com/net/dnscache"
-	"tailscale.com/net/dnsfallback"
-	"tailscale.com/net/ipset"
-	"tailscale.com/net/netcheck"
-	"tailscale.com/net/netkernelconf"
-	"tailscale.com/net/netmon"
-	"tailscale.com/net/netns"
-	"tailscale.com/net/netutil"
-	"tailscale.com/net/packet"
-	"tailscale.com/net/tsaddr"
-	"tailscale.com/net/tsdial"
-	"tailscale.com/paths"
-	"tailscale.com/syncs"
-	"tailscale.com/tailcfg"
-	"tailscale.com/tsd"
-	"tailscale.com/tstime"
-	"tailscale.com/types/appctype"
-	"tailscale.com/types/dnstype"
-	"tailscale.com/types/empty"
-	"tailscale.com/types/key"
-	"tailscale.com/types/logger"
-	"tailscale.com/types/logid"
-	"tailscale.com/types/netmap"
-	"tailscale.com/types/opt"
-	"tailscale.com/types/persist"
-	"tailscale.com/types/preftype"
-	"tailscale.com/types/views"
-	"tailscale.com/util/checkchange"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/eventbus"
-	"tailscale.com/util/execqueue"
-	"tailscale.com/util/goroutines"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/osuser"
-	"tailscale.com/util/rands"
-	"tailscale.com/util/set"
-	"tailscale.com/util/slicesx"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/util/syspolicy/ptype"
-	"tailscale.com/util/testenv"
-	"tailscale.com/util/usermetric"
-	"tailscale.com/util/vizerror"
-	"tailscale.com/version"
-	"tailscale.com/version/distro"
-	"tailscale.com/wgengine"
-	"tailscale.com/wgengine/filter"
-	"tailscale.com/wgengine/magicsock"
-	"tailscale.com/wgengine/router"
-	"tailscale.com/wgengine/wgcfg"
-	"tailscale.com/wgengine/wgcfg/nmcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/appc"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlknobs"
+	"github.com/Xinlong-Wu/tailscale-oh/drive"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob/featureknob"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/health/healthmsg"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/conffile"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnauth"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/log/sockstatlog"
+	"github.com/Xinlong-Wu/tailscale-oh/logpolicy"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dnscache"
+	"github.com/Xinlong-Wu/tailscale-oh/net/dnsfallback"
+	"github.com/Xinlong-Wu/tailscale-oh/net/ipset"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netcheck"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netkernelconf"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netutil"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsdial"
+	"github.com/Xinlong-Wu/tailscale-oh/paths"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tsd"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/empty"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
+	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
+	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"github.com/Xinlong-Wu/tailscale-oh/util/checkchange"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/Xinlong-Wu/tailscale-oh/util/execqueue"
+	"github.com/Xinlong-Wu/tailscale-oh/util/goroutines"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/osuser"
+	"github.com/Xinlong-Wu/tailscale-oh/util/rands"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/ptype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
+	"github.com/Xinlong-Wu/tailscale-oh/util/usermetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/vizerror"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/magicsock"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/wgcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/wgengine/wgcfg/nmcfg"
 )
 
 var controlDebugFlags = getControlDebugFlags()
@@ -4368,7 +4368,7 @@ func (b *LocalBackend) checkSSHPrefsLocked(p *ipn.Prefs) error {
 	// Assume that we do have the SSH capability if don't have a netmap yet.
 	if !b.currentNode().SelfHasCapOr(tailcfg.CapabilitySSH, true) {
 		if b.isDefaultServerLocked() {
-			return errors.New("Unable to enable local Tailscale SSH server; not enabled on Tailnet. See https://tailscale.com/s/ssh")
+			return errors.New("Unable to enable local Tailscale SSH server; not enabled on Tailnet. See https://github.com/Xinlong-Wu/tailscale-oh/s/ssh")
 		}
 		return errors.New("Unable to enable local Tailscale SSH server; not enabled on Tailnet.")
 	}
@@ -4397,7 +4397,7 @@ func (b *LocalBackend) sshOnButUnusableHealthCheckMessageLocked() (healthMessage
 	if !isDefault {
 		return healthmsg.TailscaleSSHOnBut + "access controls don't allow anyone to access this device. Update your tailnet's ACLs to allow access."
 	}
-	return healthmsg.TailscaleSSHOnBut + "access controls don't allow anyone to access this device. Update your tailnet's ACLs at https://tailscale.com/s/ssh-policy"
+	return healthmsg.TailscaleSSHOnBut + "access controls don't allow anyone to access this device. Update your tailnet's ACLs at https://github.com/Xinlong-Wu/tailscale-oh/s/ssh-policy"
 }
 
 func (b *LocalBackend) isDefaultServerLocked() bool {
@@ -5225,7 +5225,7 @@ func (b *LocalBackend) reconfigAppConnectorLocked(nm *netmap.NetworkMap, prefs i
 	if !buildfeatures.HasAppConnectors {
 		return
 	}
-	const appConnectorCapName = "tailscale.com/app-connectors"
+	const appConnectorCapName = "github.com/Xinlong-Wu/tailscale-oh/app-connectors"
 	defer func() {
 		if b.hostinfo != nil {
 			b.hostinfo.AppConnector.Set(b.appConnector != nil)
@@ -6951,7 +6951,7 @@ func (b *LocalBackend) CheckUDPGROForwarding() error {
 // acting as Tailscale subnet routers or exit nodes. Currently (9/5/2024) this
 // functionality is considered experimental and only safe to use via explicit
 // user opt-in for ephemeral devices, such as containers.
-// https://tailscale.com/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
+// https://github.com/Xinlong-Wu/tailscale-oh/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
 func (b *LocalBackend) SetUDPGROForwarding() error {
 	if b.sys.IsNetstackRouter() {
 		return errors.New("UDP GRO forwarding cannot be enabled in userspace mode")
@@ -7290,7 +7290,7 @@ var warnSSHSELinuxWarnable = health.Register(&health.Warnable{
 	Code:     "ssh-unavailable-selinux-enabled",
 	Title:    "Tailscale SSH and SELinux",
 	Severity: health.SeverityLow,
-	Text:     health.StaticMessage("SELinux is enabled; Tailscale SSH may not work. See https://tailscale.com/s/ssh-selinux"),
+	Text:     health.StaticMessage("SELinux is enabled; Tailscale SSH may not work. See https://github.com/Xinlong-Wu/tailscale-oh/s/ssh-selinux"),
 })
 
 // warnNoSNATWithExitNode is a warnable for when a node is advertising as an

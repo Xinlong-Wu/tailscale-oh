@@ -19,10 +19,10 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"sigs.k8s.io/yaml"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/kube/egressservices"
-	"tailscale.com/kube/ingressservices"
-	"tailscale.com/kube/kubetypes"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/egressservices"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/ingressservices"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 )
 
 const (

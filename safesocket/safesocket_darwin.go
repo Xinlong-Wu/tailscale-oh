@@ -21,7 +21,7 @@ import (
 	"time"
 
 	"golang.org/x/sys/unix"
-	"tailscale.com/version"
+	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 
 func init() {

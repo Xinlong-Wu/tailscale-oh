@@ -7,7 +7,7 @@ package events
 import (
 	"net/netip"
 
-	"tailscale.com/types/key"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 // DiscoKeyAdvertisement is an event sent on the [eventbus.Bus] when a disco

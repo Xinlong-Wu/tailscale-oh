@@ -9,13 +9,13 @@ import (
 	"sync"
 	"time"
 
-	"tailscale.com/syncs"
-	"tailscale.com/util/set"
-	"tailscale.com/util/syspolicy/internal/loggerx"
-	"tailscale.com/util/syspolicy/pkey"
-	"tailscale.com/util/syspolicy/policyclient"
-	"tailscale.com/util/syspolicy/ptype"
-	"tailscale.com/util/syspolicy/setting"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal/loggerx"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/ptype"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
 )
 
 // Change represents a change from the Old to the New value of type T.

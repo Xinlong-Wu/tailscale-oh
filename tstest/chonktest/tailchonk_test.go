@@ -6,8 +6,8 @@ package chonktest
 import (
 	"testing"
 
-	"tailscale.com/tka"
-	"tailscale.com/util/must"
+	"github.com/Xinlong-Wu/tailscale-oh/tka"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 func TestImplementsChonk(t *testing.T) {

@@ -15,7 +15,7 @@ import (
 
 const (
 	// FinalizerName is the common finalizer used across all Tailscale Kubernetes resources.
-	FinalizerName = "tailscale.com/finalizer"
+	FinalizerName = "github.com/Xinlong-Wu/tailscale-oh/finalizer"
 )
 
 // SetFinalizer adds the finalizer to the resource if not already present.

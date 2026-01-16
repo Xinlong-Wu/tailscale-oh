@@ -29,29 +29,29 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"tailscale.com/client/tailscale/v2"
+	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
 
-	"tailscale.com/ipn"
-	tsoperator "tailscale.com/k8s-operator"
-	tsapi "tailscale.com/k8s-operator/apis/v1alpha1"
-	"tailscale.com/k8s-operator/tsclient"
-	"tailscale.com/kube/kubetypes"
-	"tailscale.com/tailcfg"
-	"tailscale.com/util/clientmetric"
-	"tailscale.com/util/dnsname"
-	"tailscale.com/util/mak"
-	"tailscale.com/util/set"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/tsclient"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 )
 
 const (
 	serveConfigKey = "serve-config.json"
 	// FinalizerNamePG is the finalizer used by the IngressPGReconciler
-	FinalizerNamePG        = "tailscale.com/ingress-pg-finalizer"
+	FinalizerNamePG        = "github.com/Xinlong-Wu/tailscale-oh/ingress-pg-finalizer"
 	indexIngressProxyGroup = ".metadata.annotations.ingress-proxy-group"
 	// annotationHTTPEndpoint can be used to configure the Ingress to expose an HTTP endpoint to tailnet (as
 	// well as the default HTTPS endpoint).
-	annotationHTTPEndpoint  = "tailscale.com/http-endpoint"
-	labelDomain             = "tailscale.com/domain"
+	annotationHTTPEndpoint  = "github.com/Xinlong-Wu/tailscale-oh/http-endpoint"
+	labelDomain             = "github.com/Xinlong-Wu/tailscale-oh/domain"
 	managedTSServiceComment = "This Tailscale Service is managed by the Tailscale Kubernetes Operator, do not modify"
 )
 
@@ -79,7 +79,7 @@ type HAIngressReconciler struct {
 
 // Reconcile reconciles Ingresses that should be exposed over Tailscale in HA
 // mode (on a ProxyGroup). It looks at all Ingresses with
-// tailscale.com/proxy-group annotation. For each such Ingress, it ensures that
+// github.com/Xinlong-Wu/tailscale-oh/proxy-group annotation. For each such Ingress, it ensures that
 // a TailscaleService named after the hostname of the Ingress exists and is up to
 // date. It also ensures that the serve config for the ingress ProxyGroup is
 // updated to route traffic for the Tailscale Service to the Ingress's backend
@@ -647,7 +647,7 @@ func (r *HAIngressReconciler) shouldExpose(ing *networkingv1.Ingress) bool {
 
 // validateIngress validates that the Ingress is properly configured.
 // Currently validates:
-// - Any tags provided via tailscale.com/tags annotation are valid Tailscale ACL tags
+// - Any tags provided via github.com/Xinlong-Wu/tailscale-oh/tags annotation are valid Tailscale ACL tags
 // - The derived hostname is a valid DNS label
 // - The referenced ProxyGroup exists and is of type 'ingress'
 // - Ingress' TLS block is invalid
@@ -842,7 +842,7 @@ func numberPodsAdvertising(ctx context.Context, cl client.Client, tsNamespace, p
 	return count, nil
 }
 
-const ownerAnnotation = "tailscale.com/owner-references"
+const ownerAnnotation = "github.com/Xinlong-Wu/tailscale-oh/owner-references"
 
 // ownerAnnotationValue is the content of the TailscaleService.Annotation[ownerAnnotation] field.
 type ownerAnnotationValue struct {

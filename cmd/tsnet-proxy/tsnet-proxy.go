@@ -36,8 +36,8 @@ import (
 	"strconv"
 	"unicode/utf8"
 
-	"tailscale.com/client/local"
-	"tailscale.com/tsnet"
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
 )
 
 func main() {

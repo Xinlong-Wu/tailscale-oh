@@ -5,4 +5,4 @@
 
 package identityfederation
 
-import _ "tailscale.com/feature/identityfederation"
+import _ "github.com/Xinlong-Wu/tailscale-oh/feature/identityfederation"

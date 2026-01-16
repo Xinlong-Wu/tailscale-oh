@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"tailscale.com/cmd/cloner/clonerex"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/cloner/clonerex"
 )
 
 func TestSliceContainer(t *testing.T) {

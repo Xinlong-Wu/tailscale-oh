@@ -827,19 +827,22 @@ func (b *LocalBackend) getServeHandler(r *http.Request) (_ ipn.HTTPHandlerView, 
 		return z, "", false
 	}
 
-	if h, ok := wsc.Handlers().GetOk(r.URL.Path); ok {
-		return h, r.URL.Path, true
-	}
-	pth := path.Clean(r.URL.Path)
-	// A well-formed origin-form request path is absolute. Malformed request
-	// targets — "*" (e.g. "GET *") and "" (e.g. "CONNECT" authority-form),
-	// clean to "*" and "." respectively. Those are path.Dir fixed points that
-	// never equal "/" and match no mount, so without this guard the loop below
-	// would spin forever on one CPU core (a remote DoS via serve, or via funnel
-	// from the internet).
-	if !strings.HasPrefix(pth, "/") {
+	rawPath := r.URL.Path
+	// A well-formed origin-form request path is absolute and cannot start with
+	// "//" or `/\`, which user agents can interpret as an external redirect.
+	// Reject those forms before path.Clean collapses a leading double slash.
+	// Other malformed targets — "*" (e.g. "GET *") and "" (e.g. "CONNECT"
+	// authority-form) — are rejected here too; otherwise they clean to path.Dir
+	// fixed points and make the loop below spin forever.
+	if !strings.HasPrefix(rawPath, "/") ||
+		strings.HasPrefix(rawPath, "//") ||
+		strings.HasPrefix(rawPath, `/\`) {
 		return z, "", false
 	}
+	if h, ok := wsc.Handlers().GetOk(rawPath); ok {
+		return h, rawPath, true
+	}
+	pth := path.Clean(rawPath)
 	for {
 		withSlash := pth + "/"
 		if h, ok := wsc.Handlers().GetOk(withSlash); ok {

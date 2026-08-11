@@ -25,7 +25,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
 	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
 	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/tsclient"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
@@ -1118,7 +1117,7 @@ func TestServiceProxyClassAnnotation(t *testing.T) {
 		Spec: tsapi.ProxyClassSpec{
 			StatefulSet: &tsapi.StatefulSet{
 				Pod: &tsapi.Pod{
-					TailscaleContainer: &v1alpha1.Container{
+					TailscaleContainer: &tsapi.Container{
 						ImagePullPolicy: corev1.PullIfNotPresent,
 					},
 				},
@@ -1133,7 +1132,7 @@ func TestServiceProxyClassAnnotation(t *testing.T) {
 		Spec: tsapi.ProxyClassSpec{
 			StatefulSet: &tsapi.StatefulSet{
 				Pod: &tsapi.Pod{
-					TailscaleContainer: &v1alpha1.Container{
+					TailscaleContainer: &tsapi.Container{
 						ImagePullPolicy: corev1.PullAlways,
 					},
 				},

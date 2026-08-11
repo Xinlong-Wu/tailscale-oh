@@ -190,6 +190,18 @@ func TestGetServeHandler(t *testing.T) {
 			path: "/foo/../../../../../../../../etc/passwd",
 			want: "/",
 		},
+		{
+			name: "scheme-relative",
+			conf: conf1,
+			path: "//example.com/foo",
+			want: "",
+		},
+		{
+			name: "slash-backslash",
+			conf: conf1,
+			path: `/\example.com/foo`,
+			want: "",
+		},
 		// Malformed request targets that net/http hands the handler verbatim.
 		// These clean to a path.Dir fixed point ("*" or ".") that never reaches
 		// "/", and once spun the getServeHandler loop below forever (a remote

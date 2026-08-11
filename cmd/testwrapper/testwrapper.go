@@ -225,7 +225,7 @@ func testsForShard(ctx context.Context, pkg, shardSpec string) ([]string, error)
 				seen[name] = true
 				h := fnv.New32a()
 				io.WriteString(h, name)
-				if int(h.Sum32()%uint32(shards)) == wantShard-1 {
+				if uint64(h.Sum32())%uint64(shards) == uint64(wantShard-1) {
 					result = append(result, name)
 				}
 			}

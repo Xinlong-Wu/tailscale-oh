@@ -225,7 +225,7 @@ jobs:
     # ci-windows-github-1 is a 2022 GitHub-managed runner in our org with 8 cores
     # and 32 GB of RAM. It is connected to a private Azure VNet that hosts cigocached.
     # https://github.com/organizations/tailscale/settings/actions/github-hosted-runners/5
-    runs-on: ci-windows-github-1
+    runs-on: ${{ github.repository == 'tailscale/tailscale' && 'ci-windows-github-1' || 'windows-2025' }}
     needs: gomod-cache
     name: Windows (${{ matrix.name || matrix.shard}})
     strategy:
@@ -252,6 +252,7 @@ jobs:
         enableCrossOsArchive: true
 
     - name: Set up cigocacher
+      if: github.repository == 'tailscale/tailscale'
       id: cigocacher-setup
       uses: ./src/.github/actions/go-cache
       with:

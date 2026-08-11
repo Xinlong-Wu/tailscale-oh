@@ -88,13 +88,6 @@ linters:
       - common-false-positives
       - legacy
       - std-error-handling
-    rules:
-      # These are forks of an upstream package and thus are exempt from stylistic
-      # changes that would make pulling in upstream changes harder.
-      - path: tempfork/.*\.go
-        text: File is not `gofmt`-ed with `-s` `-r 'interface{} -> any'`
-      - path: util/singleflight/.*\.go
-        text: File is not `gofmt`-ed with `-s` `-r 'interface{} -> any'`
     paths:
       - third_party$
       - builtin$
@@ -111,6 +104,10 @@ formatters:
   exclusions:
     generated: lax
     paths:
+      # These are forks of upstream packages and thus are exempt from stylistic
+      # changes that would make pulling in upstream changes harder.
+      - tempfork/.*\.go
+      - util/singleflight/.*\.go
       - third_party$
       - builtin$
       - examples$

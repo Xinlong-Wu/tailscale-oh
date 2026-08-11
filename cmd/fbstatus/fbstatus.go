@@ -43,15 +43,15 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/util/cloudenv"
 	"github.com/skip2/go-qrcode"
 	xdraw "golang.org/x/image/draw"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
 	"golang.org/x/image/math/fixed"
 	"golang.org/x/sys/unix"
-	"github.com/Xinlong-Wu/tailscale-oh/client/local"
-	"github.com/Xinlong-Wu/tailscale-oh/ipn"
-	"github.com/Xinlong-Wu/tailscale-oh/util/cloudenv"
 )
 
 //go:embed tailscale.png

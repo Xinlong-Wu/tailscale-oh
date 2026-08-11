@@ -10,6 +10,10 @@ on:
 
 jobs:
   source-scan:
+    # A fork sync PR changes this upstream workflow and would otherwise be
+    # blocked by vulnerabilities inherited from the synchronized release.
+    # Keep scheduled and manual scans enabled in the fork.
+    if: github.event_name != 'pull_request' || github.repository == 'tailscale/tailscale'
     runs-on: ubuntu-latest
 
     steps:

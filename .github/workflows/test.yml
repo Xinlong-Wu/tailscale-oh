@@ -673,7 +673,7 @@ jobs:
     # Practically, this means that all steps after 'build fuzzers' must have an
     # explicit 'if' condition, because the default condition for steps is
     # 'success()', meaning "only run this if no previous steps failed".
-    if: github.event_name == 'pull_request'
+    if: github.repository == 'tailscale/tailscale' && github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
     steps:
     - name: build fuzzers

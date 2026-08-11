@@ -9,10 +9,10 @@ import (
 	"net/netip"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 	"gvisor.dev/gvisor/pkg/tcpip"
 	"gvisor.dev/gvisor/pkg/tcpip/checksum"
 	"gvisor.dev/gvisor/pkg/tcpip/header"
-	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 )
 
 func fullHeaderChecksumV4(b []byte) uint16 {

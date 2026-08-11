@@ -11,7 +11,6 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/Xinlong-Wu/tailscale-oh/metrics"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
@@ -19,6 +18,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 var tsMBox = dnsmessage.MustNewName("support.tailscale.com.")

@@ -16,7 +16,6 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/tailscale/wireguard-go/conn"
 	"github.com/Xinlong-Wu/tailscale-oh/derp"
 	"github.com/Xinlong-Wu/tailscale-oh/derp/derphttp"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
@@ -32,6 +31,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 	"github.com/Xinlong-Wu/tailscale-oh/util/rands"
 	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
+	"github.com/tailscale/wireguard-go/conn"
 )
 
 // frameReceiveRecordRate is the minimum time between updates to last frame
@@ -414,6 +414,7 @@ func (c *Conn) derpWriteChanForRegion(regionID int, peer key.NodePublic) chan de
 		return derpMap.Regions[regionID]
 	})
 	dc.HealthTracker = c.health
+	dc.AppName = c.derpAppName
 	if c.extraRootCAs != nil {
 		dc.TLSConfig = &tls.Config{RootCAs: c.extraRootCAs}
 	}

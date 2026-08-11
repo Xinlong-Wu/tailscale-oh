@@ -12,13 +12,13 @@ import (
 	"net/netip"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/cilium/ebpf"
 	"golang.org/x/sys/unix"
 	"gvisor.dev/gvisor/pkg/tcpip"
 	"gvisor.dev/gvisor/pkg/tcpip/checksum"
 	"gvisor.dev/gvisor/pkg/tcpip/header"
-	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
-	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 )
 
 type xdpAction uint32

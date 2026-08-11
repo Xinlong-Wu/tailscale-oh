@@ -132,7 +132,7 @@ func InfoFrom(dir string) (VersionInfo, error) {
 	if modPath == "" {
 		return VersionInfo{}, fmt.Errorf("no module path in go.mod")
 	}
-	if modPath == "tailscale.com" {
+	if modPath == "github.com/Xinlong-Wu/tailscale-oh" {
 		// Invoked in the tailscale.com repo directly, just no further info to
 		// collect.
 		v, err := infoFromDir(gitRoot)
@@ -184,7 +184,7 @@ func tailscaleModuleRef(modBs []byte) (string, error) {
 		return "", err
 	}
 	for _, req := range mod.Require {
-		if req.Mod.Path != "tailscale.com" {
+		if req.Mod.Path != "github.com/Xinlong-Wu/tailscale-oh" {
 			continue
 		}
 		// Get the last - separated part of req.Mod.Version
@@ -289,7 +289,7 @@ func mkOutput(v verInfo) (VersionInfo, error) {
 		// We started to need to do this in 2023, and the last Apple-generated
 		// incrementing build number was 273. To avoid using up the space, we
 		// use <year - 1750> as the major version (thus 273.*, 274.* in 2024, etc.),
-		// so that we we're still in the same range. This way if Apple goes back to
+		// so that we're still in the same range. This way if Apple goes back to
 		// auto-incrementing the number for us, we can go back to it with
 		// reasonable-looking numbers.
 		// In May 2024, a build with version number 275 was uploaded to the App Store
@@ -305,7 +305,7 @@ func mkOutput(v verInfo) (VersionInfo, error) {
 // url that would be used for the current version, thus ensuring that product IDs
 // are mapped 1:1 to a unique version number.
 func makeMSIProductCodes(v verInfo, track string) map[string]string {
-	urlBase := fmt.Sprintf("https://pkgs.github.com/Xinlong-Wu/tailscale-oh/%s/tailscale-setup-%d.%d.%d-", track, v.major, v.minor, v.patch)
+	urlBase := fmt.Sprintf("https://pkgs.tailscale.com/%s/tailscale-setup-%d.%d.%d-", track, v.major, v.minor, v.patch)
 
 	result := map[string]string{}
 

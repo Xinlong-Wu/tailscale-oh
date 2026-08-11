@@ -12,12 +12,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/source"
 )

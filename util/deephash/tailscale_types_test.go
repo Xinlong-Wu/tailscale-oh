@@ -11,7 +11,6 @@ import (
 	"net/netip"
 	"testing"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
 	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
@@ -21,6 +20,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/wgcfg"
+	"go4.org/mem"
 
 	. "github.com/Xinlong-Wu/tailscale-oh/util/deephash"
 )
@@ -86,11 +86,6 @@ func getVal() *tailscaleTypes {
 	return &tailscaleTypes{
 		&wgcfg.Config{
 			Addresses: []netip.Prefix{netip.PrefixFrom(netip.AddrFrom16([16]byte{3: 3}).Unmap(), 5)},
-			Peers: []wgcfg.Peer{
-				{
-					PublicKey: key.NodePublic{},
-				},
-			},
 		},
 		&router.Config{
 			Routes: []netip.Prefix{

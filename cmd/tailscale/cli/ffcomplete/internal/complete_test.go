@@ -9,10 +9,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/ffcomplete"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/ffcomplete/internal"
+	"github.com/google/go-cmp/cmp"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 func newFlagSet(name string, errh flag.ErrorHandling, flags func(fs *flag.FlagSet)) *flag.FlagSet {

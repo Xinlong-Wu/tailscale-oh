@@ -29,11 +29,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"go4.org/mem"
 )
 
 // SelfUserID is the synthetic [tailcfg.UserID] assigned to the self node and

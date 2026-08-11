@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"testing"
 
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/Xinlong-Wu/tailscale-oh/net/dns/publicdns"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 var testDoH = flag.Bool("test-doh", false, "do real DoH tests against the network")

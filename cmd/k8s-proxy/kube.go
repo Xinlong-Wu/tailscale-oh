@@ -12,7 +12,6 @@ import (
 	"sync"
 	"time"
 
-	"go.uber.org/zap"
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
@@ -22,6 +21,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeclient"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"go.uber.org/zap"
 )
 
 const k8sProxyFieldManager = "tailscale-k8s-proxy"

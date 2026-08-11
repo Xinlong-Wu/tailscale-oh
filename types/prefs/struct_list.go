@@ -8,10 +8,10 @@ import (
 	"reflect"
 	"slices"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 // StructList is a preference type that holds zero or more potentially mutable struct values.

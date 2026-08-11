@@ -15,13 +15,13 @@ import (
 	"strings"
 	"syscall"
 
-	"golang.org/x/net/route"
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"golang.org/x/net/route"
+	"golang.org/x/sys/unix"
 )
 
 func control(logf logger.Logf, netMon *netmon.Monitor) func(network, address string, c syscall.RawConn) error {
@@ -85,7 +85,7 @@ func getInterfaceIndex(logf logger.Logf, netMon *netmon.Monitor, address string)
 		// Preferentially choose the OS's view of the default if index.  Due to the way darwin sets the delegated
 		// interface on tunnel creation only, it is possible for netmon to have a stale view of the default and
 		// netmon's view is often temporarily wrong during network transitions, or for us to not have the
-		// the the oses view of the defaultIf yet.
+		// the oses view of the defaultIf yet.
 		if osIferr == nil {
 			idx = osIf.InterfaceIndex
 			errOut = nil

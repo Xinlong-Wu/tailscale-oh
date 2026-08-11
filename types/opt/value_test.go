@@ -8,9 +8,9 @@ import (
 	"reflect"
 	"testing"
 
-	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/Xinlong-Wu/tailscale-oh/types/bools"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	jsonv2 "github.com/go-json-experiment/json"
 )
 
 var (

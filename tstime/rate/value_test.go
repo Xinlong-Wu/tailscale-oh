@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	qt "github.com/frankban/quicktest"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/Xinlong-Wu/tailscale-oh/tstime/mono"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	qt "github.com/frankban/quicktest"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 const (

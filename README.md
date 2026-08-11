@@ -42,15 +42,15 @@ releases with our [Go fork](https://github.com/tailscale/go/), its use is not
 required.)
 
 ```
-go install tailscale.com/cmd/tailscale{,d}
+go install github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale{,d}
 ```
 
 If you're packaging Tailscale for distribution, use `build_dist.sh`
 instead, to burn commit IDs and version info into the binaries:
 
 ```
-./build_dist.sh tailscale.com/cmd/tailscale
-./build_dist.sh tailscale.com/cmd/tailscaled
+./build_dist.sh github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale
+./build_dist.sh github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled
 ```
 
 If your distro has conventions that preclude the use of

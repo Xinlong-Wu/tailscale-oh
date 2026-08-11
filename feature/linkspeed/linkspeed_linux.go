@@ -6,11 +6,11 @@
 package linkspeed
 
 import (
+	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
 	"github.com/mdlayher/genetlink"
 	"github.com/mdlayher/netlink"
 	"github.com/tailscale/wireguard-go/tun"
 	"golang.org/x/sys/unix"
-	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
 )
 
 func init() {

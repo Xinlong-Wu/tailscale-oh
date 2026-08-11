@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/fs"
 	"maps"
 	"net/netip"
 	"os"
@@ -19,9 +20,6 @@ import (
 	"syscall"
 	"time"
 
-	"golang.org/x/sys/windows"
-	"golang.org/x/sys/windows/registry"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/atomicfile"
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlknobs"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
@@ -35,6 +33,9 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/ptype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/winenv"
+	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/registry"
+	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 )
 
 const (
@@ -77,7 +78,7 @@ func NewOSConfigurator(logf logger.Logf, health *health.Tracker, bus *eventbus.B
 	}
 
 	var err error
-	if ret.unregisterPolicyChangeCb, err = polc.RegisterChangeCallback(ret.sysPolicyChanged); err != nil {
+	if ret.unregisterPolicyChangeCb, err = polc.RegisterChangeCallback("", ret.sysPolicyChanged); err != nil {
 		logf("error registering policy change callback: %v", err) // non-fatal
 	}
 
@@ -146,7 +147,7 @@ func (m *windowsManager) setSplitDNS(resolvers []netip.Addr, domains []dnsname.F
 		return fmt.Errorf("Split DNS unsupported on this Windows version")
 	}
 
-	defer m.nrptDB.Refresh()
+	defer m.nrptDB.NotifyPolicyChanged()
 	if len(resolvers) == 0 {
 		return m.nrptDB.DelAllRuleKeys()
 	}
@@ -246,7 +247,13 @@ func (m *windowsManager) setHosts(hosts []*HostEntry) error {
 	}
 	hostsFile := filepath.Join(systemDir, "drivers", "etc", "hosts")
 	b, err := os.ReadFile(hostsFile)
-	if err != nil {
+	switch {
+	case err == nil:
+		// Continue.
+	case errors.Is(err, fs.ErrNotExist):
+		// Non-fatal, we'll just create a new hosts file.
+		m.logf("failed to read the hosts file: %v", err)
+	default:
 		return err
 	}
 	outB, err := setTailscaleHosts(m.logf, b, hosts)

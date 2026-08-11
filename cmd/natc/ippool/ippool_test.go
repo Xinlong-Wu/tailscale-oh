@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"go4.org/netipx"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"go4.org/netipx"
 )
 
 func TestIPPoolExhaustion(t *testing.T) {

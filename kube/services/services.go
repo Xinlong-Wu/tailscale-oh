@@ -88,7 +88,7 @@ func EnsureServicesNotAdvertised(ctx context.Context, lc *local.Client, logf log
 	// primary no matter how long we wait. We would need a mechanism to await
 	// netmap updates for peers to know for sure.
 	//
-	// See https://github.com/Xinlong-Wu/tailscale-oh/kb/1115/high-availability for more details.
+	// See https://tailscale.com/kb/1115/high-availability for more details.
 	// TODO(tomhjp): Wait for a netmap update instead of sleeping when control
 	// supports that.
 	select {

@@ -22,12 +22,12 @@ import (
 	"testing"
 	"time"
 
-	"golang.org/x/crypto/ssh"
-	"golang.org/x/net/proxy"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
 	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
+	"golang.org/x/crypto/ssh"
+	"golang.org/x/net/proxy"
 )
 
 type Harness struct {

@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	qt "github.com/frankban/quicktest"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	qt "github.com/frankban/quicktest"
 )
 
 // loggerForTest creates an auditLogger for you and cleans it up

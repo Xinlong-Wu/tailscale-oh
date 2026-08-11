@@ -14,8 +14,8 @@ import (
 	"slices"
 	"text/tabwriter"
 
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 var syspolicyArgs struct {

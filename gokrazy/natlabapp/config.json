@@ -9,12 +9,12 @@
     ],
     "Packages": [
         "github.com/gokrazy/serial-busybox",
-        "tailscale.com/cmd/tailscale",
-        "tailscale.com/cmd/tailscaled",
-        "tailscale.com/cmd/tta"
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale",
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled",
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/tta"
     ],
     "PackageConfig": {
-        "tailscale.com/cmd/tailscale": {
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale": {
             "ExtraFilePaths": {
                 "/usr": "usr-dir"
             }
@@ -24,7 +24,7 @@
         "GOOS=linux",
         "GOARCH=amd64"
     ],
-    "KernelPackage": "github.com/tailscale/gokrazy-kernel",
+    "KernelPackage": "github.com/gokrazy/kernel.amd64",
     "FirmwarePackage": "",
     "EEPROMPackage": "",
     "InternalCompatibilityFlags": {

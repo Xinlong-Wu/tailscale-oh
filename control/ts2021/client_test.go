@@ -15,7 +15,6 @@ import (
 	"testing"
 	"time"
 
-	"golang.org/x/net/http2"
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlhttp/controlhttpserver"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsdial"
@@ -24,6 +23,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"golang.org/x/net/http2"
 )
 
 // maxAllowedNoiseVersion is the highest we expect the Tailscale

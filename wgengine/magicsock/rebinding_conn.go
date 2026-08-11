@@ -11,12 +11,13 @@ import (
 	"sync/atomic"
 	"syscall"
 
-	"golang.org/x/net/ipv6"
+	"github.com/Xinlong-Wu/tailscale-oh/control/controlknobs"
 	"github.com/Xinlong-Wu/tailscale-oh/net/batching"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
+	"golang.org/x/net/ipv6"
 )
 
 // RebindingUDPConn is a UDP socket that can be re-bound.
@@ -41,9 +42,9 @@ type RebindingUDPConn struct {
 // nettype.PacketConn to a batchingConn when appropriate. This upgrade is
 // intentionally pushed closest to where read/write ops occur in order to avoid
 // disrupting surrounding code that assumes nettype.PacketConn is a
-// *net.UDPConn.
-func (c *RebindingUDPConn) setConnLocked(p nettype.PacketConn, network string, batchSize int) {
-	upc := batching.TryUpgradeToConn(p, network, batchSize, "magicsock_udp_rxq_overflows")
+// *net.UDPConn. knobs may be nil.
+func (c *RebindingUDPConn) setConnLocked(p nettype.PacketConn, network string, batchSize int, knobs *controlknobs.Knobs) {
+	upc := batching.TryUpgradeToConn(p, network, batchSize, "magicsock_udp_rxq_overflows", knobs)
 	c.pconn = upc
 	c.pconnAtomic.Store(&upc)
 	c.port = uint16(c.localAddrLocked().Port)

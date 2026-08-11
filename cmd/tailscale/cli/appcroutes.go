@@ -11,8 +11,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 var appcRoutesArgs struct {
@@ -28,9 +28,9 @@ var appcRoutesCmd = &ffcli.Command{
 	ShortHelp:  "Print the current app connector routes",
 	FlagSet: (func() *flag.FlagSet {
 		fs := newFlagSet("appc-routes")
-		fs.BoolVar(&appcRoutesArgs.all, "all", false, "Print learned domains and routes and extra policy configured routes.")
-		fs.BoolVar(&appcRoutesArgs.domainMap, "map", false, "Print the map of learned domains: [routes].")
-		fs.BoolVar(&appcRoutesArgs.n, "n", false, "Print the total number of routes this node advertises.")
+		fs.BoolVar(&appcRoutesArgs.all, "all", false, "print learned domains and routes and extra policy configured routes.")
+		fs.BoolVar(&appcRoutesArgs.domainMap, "map", false, "print the map of learned domains: [routes].")
+		fs.BoolVar(&appcRoutesArgs.n, "n", false, "print the total number of routes this node advertises.")
 		return fs
 	})(),
 	LongHelp: strings.TrimSpace(`
@@ -40,14 +40,14 @@ By default this command prints the domains configured in the app connector confi
 learned for each domain.
 
 --all prints the routes learned from the domains configured in the app connector configuration; and any extra routes provided
-in the the policy app connector 'routes' field.
+in the policy app connector 'routes' field.
 
 --map prints the routes learned from the domains configured in the app connector configuration.
 
 -n prints the total number of routes advertised by this device, whether learned, set in the policy, or set locally.
 
 For more information about App Connectors, refer to
-https://github.com/Xinlong-Wu/tailscale-oh/kb/1281/app-connectors
+https://tailscale.com/kb/1281/app-connectors
 `),
 }
 

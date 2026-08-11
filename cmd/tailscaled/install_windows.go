@@ -12,12 +12,12 @@ import (
 	"os"
 	"time"
 
-	"golang.org/x/sys/windows"
-	"golang.org/x/sys/windows/svc"
-	"golang.org/x/sys/windows/svc/mgr"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled/tailscaledhooks"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
+	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/svc"
+	"golang.org/x/sys/windows/svc/mgr"
 )
 
 func init() {

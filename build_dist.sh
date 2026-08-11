@@ -29,7 +29,7 @@ EOF
 fi
 
 tags="${TAGS:-}"
-ldflags="-X tailscale.com/version.longStamp=${VERSION_LONG} -X tailscale.com/version.shortStamp=${VERSION_SHORT}"
+ldflags="-X github.com/Xinlong-Wu/tailscale-oh/version.longStamp=${VERSION_LONG} -X github.com/Xinlong-Wu/tailscale-oh/version.shortStamp=${VERSION_SHORT}"
 
 # build_dist.sh arguments must precede go build arguments.
 while [ "$#" -gt 1 ]; do
@@ -50,6 +50,13 @@ while [ "$#" -gt 1 ]; do
 		shift
 		ldflags="$ldflags -w -s"
 		tags="${tags:+$tags,},$(GOOS= GOARCH= $go run ./cmd/featuretags --min)"
+		;;
+	--strip)
+		# --min overrides your flags, when you're using custom tags and want to
+		# additionally strip symbols to help reduce the size, this is the easiest
+		# way to do it.
+		shift
+		ldflags="$ldflags -w -s"
 		;;
 	--box)
 		if [ ! -z "${TAGS:-}" ]; then

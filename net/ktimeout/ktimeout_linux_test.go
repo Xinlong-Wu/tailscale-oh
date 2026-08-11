@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"golang.org/x/sys/unix"
 )
 
 func TestSetUserTimeout(t *testing.T) {

@@ -22,9 +22,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/raft"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
@@ -38,6 +35,9 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 	"github.com/Xinlong-Wu/tailscale-oh/util/cibuild"
 	"github.com/Xinlong-Wu/tailscale-oh/util/racebuild"
+	"github.com/google/go-cmp/cmp"
+	"github.com/hashicorp/go-hclog"
+	"github.com/hashicorp/raft"
 )
 
 type fsm struct {

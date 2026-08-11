@@ -11,11 +11,11 @@ import (
 	"net/netip"
 	"strconv"
 
-	"github.com/tailscale/netlink"
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/tailscale/netlink"
+	"golang.org/x/sys/unix"
 )
 
 // RouteEntryLinux is the structure that makes up the Sys field of the

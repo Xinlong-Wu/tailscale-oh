@@ -16,12 +16,12 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
 	"github.com/mdlayher/socket"
 	"golang.org/x/net/icmp"
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
 	"golang.org/x/sys/unix"
-	"github.com/Xinlong-Wu/tailscale-oh/net/stun"
 )
 
 const (

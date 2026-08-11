@@ -22,8 +22,8 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/net/speedtest"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 // Runs the speedtest command as a commandline program

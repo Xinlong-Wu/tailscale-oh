@@ -21,16 +21,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pires/go-proxyproto"
-	"go.uber.org/zap"
-	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/apiserver/pkg/endpoints/request"
-	"k8s.io/client-go/rest"
-	"k8s.io/client-go/transport"
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	ksr "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netutil"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
 	"github.com/Xinlong-Wu/tailscale-oh/sessionrecording"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
@@ -38,6 +33,12 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
 	"github.com/Xinlong-Wu/tailscale-oh/util/ctxkey"
 	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/pires/go-proxyproto"
+	"go.uber.org/zap"
+	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/apiserver/pkg/endpoints/request"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/transport"
 )
 
 var (
@@ -64,7 +65,7 @@ func NewAPIServerProxy(zlog *zap.SugaredLogger, restConfig *rest.Config, ts *tsn
 		return nil, fmt.Errorf("could not get rest.TransportConfig(): %w", err)
 	}
 
-	tr := http.DefaultTransport.(*http.Transport).Clone()
+	tr := netutil.NewDefaultTransport()
 	tr.TLSClientConfig, err = transport.TLSConfigFor(cfg)
 	if err != nil {
 		return nil, fmt.Errorf("could not get transport.TLSConfigFor(): %w", err)

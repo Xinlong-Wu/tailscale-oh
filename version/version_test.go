@@ -10,7 +10,7 @@ import (
 	"runtime/debug"
 	"testing"
 
-	ts "tailscale.com"
+	ts "github.com/Xinlong-Wu/tailscale-oh"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
 )
 

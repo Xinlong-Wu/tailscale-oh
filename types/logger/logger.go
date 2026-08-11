@@ -21,10 +21,12 @@ import (
 
 	"context"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/util/ctxkey"
 	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
+	jsonv2 "github.com/go-json-experiment/json"
+	jsonv1 "github.com/go-json-experiment/json/v1"
+	"go4.org/mem"
 )
 
 // Logf is the basic Tailscale logger type: a printf-like func.
@@ -141,6 +143,7 @@ var rateFree = []string{
 	"magicsock: disco: ",
 	"magicsock: ParseEndpoint:",
 	// grinder stats lines
+	"magicsock: new contact: ",
 	"SetPrefs: %v",
 	"peer keys: %s",
 	"v%v peers: %v",
@@ -378,12 +381,13 @@ func AsJSON(v any) fmt.Formatter {
 type asJSONResult struct{ v any }
 
 func (a asJSONResult) Format(s fmt.State, verb rune) {
-	v, err := json.Marshal(a.v)
+	// Write directly to s rather than going through json.Marshal's
+	// returned []byte to avoid an allocation. The explicit v1
+	// options keep the output identical to encoding/json.
+	err := jsonv2.MarshalWrite(s, a.v, jsonv1.DefaultOptionsV1())
 	if err != nil {
 		fmt.Fprintf(s, "%%!JSON-ERROR:%v", err)
-		return
 	}
-	s.Write(v)
 }
 
 // TestLogger returns a logger that logs to tb.Logf

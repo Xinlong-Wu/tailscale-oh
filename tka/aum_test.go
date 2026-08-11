@@ -9,9 +9,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 	"github.com/google/go-cmp/cmp"
 	"golang.org/x/crypto/blake2s"
-	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 )
 
 func TestSerialization(t *testing.T) {

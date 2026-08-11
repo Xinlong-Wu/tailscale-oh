@@ -11,9 +11,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/digitalocean/go-smbios/smbios"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
+	"github.com/digitalocean/go-smbios/smbios"
 )
 
 // getByteFromSmbiosStructure retrieves a 8-bit unsigned integer at the given specOffset.

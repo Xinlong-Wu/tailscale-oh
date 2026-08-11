@@ -7,8 +7,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 var idTokenCmd = &ffcli.Command{

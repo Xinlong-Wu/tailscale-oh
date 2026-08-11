@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/godbus/dbus/v5"
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
 	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/godbus/dbus/v5"
+	"golang.org/x/sys/unix"
 )
 
 // DBus entities we talk to.

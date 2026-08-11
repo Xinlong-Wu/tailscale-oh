@@ -29,7 +29,7 @@ import (
 	"k8s.io/apiserver/pkg/storage/names"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
-	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
+	"tailscale.com/client/tailscale/v2"
 
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
@@ -46,31 +46,31 @@ const (
 	// Labels that the operator sets on StatefulSets and Pods. If you add a
 	// new label here, do also add it to tailscaleManagedLabels var to
 	// ensure that it does not get overwritten by ProxyClass configuration.
-	LabelParentType      = "github.com/Xinlong-Wu/tailscale-oh/parent-resource-type"
-	LabelParentName      = "github.com/Xinlong-Wu/tailscale-oh/parent-resource"
-	LabelParentNamespace = "github.com/Xinlong-Wu/tailscale-oh/parent-resource-ns"
+	LabelParentType      = "tailscale.com/parent-resource-type"
+	LabelParentName      = "tailscale.com/parent-resource"
+	LabelParentNamespace = "tailscale.com/parent-resource-ns"
 
 	// LabelProxyClass can be set by users on tailscale Ingresses and Services that define cluster ingress or
 	// cluster egress, to specify that configuration in this ProxyClass should be applied to resources created for
 	// the Ingress or Service.
-	LabelAnnotationProxyClass = "github.com/Xinlong-Wu/tailscale-oh/proxy-class"
+	LabelAnnotationProxyClass = "tailscale.com/proxy-class"
 
-	FinalizerName = "github.com/Xinlong-Wu/tailscale-oh/finalizer"
+	FinalizerName = "tailscale.com/finalizer"
 
 	// Annotations settable by users on services.
-	AnnotationExpose             = "github.com/Xinlong-Wu/tailscale-oh/expose"
-	AnnotationTags               = "github.com/Xinlong-Wu/tailscale-oh/tags"
-	AnnotationHostname           = "github.com/Xinlong-Wu/tailscale-oh/hostname"
-	annotationTailnetTargetIPOld = "github.com/Xinlong-Wu/tailscale-oh/ts-tailnet-target-ip"
-	AnnotationTailnetTargetIP    = "github.com/Xinlong-Wu/tailscale-oh/tailnet-ip"
+	AnnotationExpose             = "tailscale.com/expose"
+	AnnotationTags               = "tailscale.com/tags"
+	AnnotationHostname           = "tailscale.com/hostname"
+	annotationTailnetTargetIPOld = "tailscale.com/ts-tailnet-target-ip"
+	AnnotationTailnetTargetIP    = "tailscale.com/tailnet-ip"
 	// MagicDNS name of tailnet node.
-	AnnotationTailnetTargetFQDN = "github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn"
+	AnnotationTailnetTargetFQDN = "tailscale.com/tailnet-fqdn"
 
-	AnnotationProxyGroup = "github.com/Xinlong-Wu/tailscale-oh/proxy-group"
+	AnnotationProxyGroup = "tailscale.com/proxy-group"
 
 	// Annotations settable by users on ingresses.
-	AnnotationFunnel       = "github.com/Xinlong-Wu/tailscale-oh/funnel"
-	AnnotationHTTPRedirect = "github.com/Xinlong-Wu/tailscale-oh/http-redirect"
+	AnnotationFunnel       = "tailscale.com/funnel"
+	AnnotationHTTPRedirect = "tailscale.com/http-redirect"
 
 	// If set to true, set up iptables/nftables rules in the proxy forward
 	// cluster traffic to the tailnet IP of that proxy. This can only be set
@@ -83,17 +83,17 @@ const (
 	// container and will also run a privileged init container that enables
 	// forwarding.
 	// Eventually this behaviour might become the default.
-	AnnotationExperimentalForwardClusterTrafficViaL7IngresProxy = "github.com/Xinlong-Wu/tailscale-oh/experimental-forward-cluster-traffic-via-ingress"
+	AnnotationExperimentalForwardClusterTrafficViaL7IngresProxy = "tailscale.com/experimental-forward-cluster-traffic-via-ingress"
 
 	// Annotations set by the operator on pods to trigger restarts when the
 	// hostname, IP, FQDN or tailscaled config changes. If you add a new
 	// annotation here, also add it to tailscaleManagedAnnotations var to
 	// ensure that it does not get removed when a ProxyClass configuration
 	// is applied.
-	podAnnotationLastSetClusterIP         = "github.com/Xinlong-Wu/tailscale-oh/operator-last-set-cluster-ip"
-	podAnnotationLastSetClusterDNSName    = "github.com/Xinlong-Wu/tailscale-oh/operator-last-set-cluster-dns-name"
-	podAnnotationLastSetTailnetTargetIP   = "github.com/Xinlong-Wu/tailscale-oh/operator-last-set-ts-tailnet-target-ip"
-	podAnnotationLastSetTailnetTargetFQDN = "github.com/Xinlong-Wu/tailscale-oh/operator-last-set-ts-tailnet-target-fqdn"
+	podAnnotationLastSetClusterIP         = "tailscale.com/operator-last-set-cluster-ip"
+	podAnnotationLastSetClusterDNSName    = "tailscale.com/operator-last-set-cluster-dns-name"
+	podAnnotationLastSetTailnetTargetIP   = "tailscale.com/operator-last-set-ts-tailnet-target-ip"
+	podAnnotationLastSetTailnetTargetFQDN = "tailscale.com/operator-last-set-ts-tailnet-target-fqdn"
 
 	proxyTypeEgress          = "egress_service"
 	proxyTypeIngressService  = "ingress_service"
@@ -783,7 +783,7 @@ func (r *tailscaleSTSReconciler) reconcileSTS(ctx context.Context, logger *zap.S
 		// No need to error out if now or in future we end up in a
 		// situation where app info cannot be determined for one of the
 		// many proxy configurations that the operator can produce.
-		logger.Error("[unexpected] unable to determine proxy type")
+		logger.Error("unable to determine proxy type")
 	} else {
 		container.Env = append(container.Env, corev1.EnvVar{
 			Name:  "TS_INTERNAL_APP",
@@ -866,7 +866,7 @@ func applyProxyClassToStatefulSet(pc *tsapi.ProxyClass, ss *appsv1.StatefulSet, 
 		if isEgress {
 			// TODO (irbekrm): fix this
 			// For Ingress proxies that have been configured with
-			// github.com/Xinlong-Wu/tailscale-oh/experimental-forward-cluster-traffic-via-ingress
+			// tailscale.com/experimental-forward-cluster-traffic-via-ingress
 			// annotation, all cluster traffic is forwarded to the
 			// Ingress backend(s).
 			logger.Info("ProxyClass specifies that metrics should be enabled, but this is currently not supported for egress proxies.")
@@ -993,7 +993,7 @@ func enableEndpoints(ss *appsv1.StatefulSet, metrics, debug bool) {
 		if isMainContainer(&c) {
 			if debug {
 				ss.Spec.Template.Spec.Containers[i].Env = append(ss.Spec.Template.Spec.Containers[i].Env,
-					// Serve tailscaled's debug metrics on on
+					// Serve tailscaled's debug metrics on
 					// <pod-ip>:9001/debug/metrics. If we didn't specify Pod IP
 					// here, the proxy would, in some cases, also listen to its
 					// Tailscale IP- we don't want folks to start relying on this
@@ -1321,7 +1321,7 @@ func proxyCapVer(sec *corev1.Secret, podUID string, log *zap.SugaredLogger) tail
 	}
 	capVer, err := strconv.Atoi(string(sec.Data[kubetypes.KeyCapVer]))
 	if err != nil {
-		log.Infof("[unexpected]: unexpected capability version in proxy's state Secret, expected an integer, got %q", string(sec.Data[kubetypes.KeyCapVer]))
+		log.Warnf("unexpected capability version in proxy's state Secret, expected an integer, got %q", string(sec.Data[kubetypes.KeyCapVer]))
 		return tailcfg.CapabilityVersion(-1)
 	}
 	if !strings.EqualFold(podUID, string(sec.Data[kubetypes.KeyPodUID])) {

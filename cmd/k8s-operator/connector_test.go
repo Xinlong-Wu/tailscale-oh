@@ -37,7 +37,7 @@ func TestConnector(t *testing.T) {
 		},
 		TypeMeta: metav1.TypeMeta{
 			Kind:       tsapi.ConnectorKind,
-			APIVersion: "github.com/Xinlong-Wu/tailscale-oh/v1alpha1",
+			APIVersion: "tailscale.com/v1alpha1",
 		},
 		Spec: tsapi.ConnectorSpec{
 			Replicas: new(int32(1)),
@@ -97,7 +97,7 @@ func TestConnector(t *testing.T) {
 		mak.Set(&secret.Data, "device_ips", []byte(`["127.0.0.1", "::1"]`))
 	})
 	expectReconciled(t, cr, "", "test")
-	cn.Finalizers = append(cn.Finalizers, "github.com/Xinlong-Wu/tailscale-oh/finalizer")
+	cn.Finalizers = append(cn.Finalizers, "tailscale.com/finalizer")
 	cn.Status.IsExitNode = cn.Spec.ExitNode
 	cn.Status.SubnetRoutes = cn.Spec.SubnetRouter.AdvertiseRoutes.Stringify()
 	cn.Status.Hostname = hostname
@@ -142,6 +142,22 @@ func TestConnector(t *testing.T) {
 		}
 	})
 	opts.subnetRoutes = "10.44.0.0/20"
+	expectReconciled(t, cr, "", "test")
+	expectEqual(t, fc, expectedSTS(t, fc, opts), removeResourceReqs)
+
+	// Set an invalid 4via6 route (site ID too large).
+	mustUpdate[tsapi.Connector](t, fc, "", "test", func(conn *tsapi.Connector) {
+		conn.Spec.SubnetRouter.AdvertiseRoutes = []tsapi.Route{"fd7a:115c:a1e0:b1a:1:0:a2c:0/116"}
+	})
+	expectReconciled(t, cr, "", "test")
+	// STS should still have the previous valid route, unchanged.
+	expectEqual(t, fc, expectedSTS(t, fc, opts), removeResourceReqs)
+
+	// Set a valid 4via6 route.
+	mustUpdate[tsapi.Connector](t, fc, "", "test", func(conn *tsapi.Connector) {
+		conn.Spec.SubnetRouter.AdvertiseRoutes = []tsapi.Route{"fd7a:115c:a1e0:b1a:0:1:a2c:0/116"}
+	})
+	opts.subnetRoutes = "fd7a:115c:a1e0:b1a:0:1:a2c:0/116"
 	expectReconciled(t, cr, "", "test")
 	expectEqual(t, fc, expectedSTS(t, fc, opts), removeResourceReqs)
 
@@ -373,7 +389,7 @@ func TestConnectorWithAppConnector(t *testing.T) {
 	expectEqual(t, fc, expectedSTS(t, fc, opts), removeResourceReqs)
 	// Connector's ready condition should be set to true
 
-	cn.ObjectMeta.Finalizers = append(cn.ObjectMeta.Finalizers, "github.com/Xinlong-Wu/tailscale-oh/finalizer")
+	cn.ObjectMeta.Finalizers = append(cn.ObjectMeta.Finalizers, "tailscale.com/finalizer")
 	cn.Status.IsAppConnector = true
 	cn.Status.Devices = []tsapi.ConnectorDevice{}
 	cn.Status.Conditions = []metav1.Condition{{

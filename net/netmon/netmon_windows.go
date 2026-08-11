@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 )
 
 var (

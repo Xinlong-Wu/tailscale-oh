@@ -10,8 +10,8 @@ import (
 	"math/rand"
 	"testing"
 
-	qt "github.com/frankban/quicktest"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	qt "github.com/frankban/quicktest"
 )
 
 // naiveHash is an obviously correct implementation of Hash.

@@ -15,8 +15,8 @@ import (
 	"time"
 	"unsafe"
 
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/natlab/vnet"
+	"golang.org/x/sys/unix"
 )
 
 const (

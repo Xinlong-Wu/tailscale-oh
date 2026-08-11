@@ -11,13 +11,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeapi"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeclient"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestKubernetesPodMigrationWithTPMAttestationKey(t *testing.T) {
@@ -172,6 +172,32 @@ func TestWriteState(t *testing.T) {
 			},
 			allowPatch: true,
 		},
+		{
+			name: "delete_with_patch",
+			initial: map[string][]byte{
+				"foo": []byte("bar"),
+				"baz": []byte("quux"),
+			},
+			key:   "foo",
+			value: nil,
+			wantData: map[string][]byte{
+				"baz": []byte("quux"),
+			},
+			allowPatch: true,
+		},
+		{
+			name: "delete_with_update",
+			initial: map[string][]byte{
+				"foo": []byte("bar"),
+				"baz": []byte("quux"),
+			},
+			key:   "foo",
+			value: nil,
+			wantData: map[string][]byte{
+				"baz": []byte("quux"),
+			},
+			allowPatch: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -208,6 +234,9 @@ func TestWriteState(t *testing.T) {
 						} else if p.Op == "add" && strings.HasPrefix(p.Path, "/data/") {
 							key := strings.TrimPrefix(p.Path, "/data/")
 							secret[key] = p.Value.([]byte)
+						} else if p.Op == "remove" && strings.HasPrefix(p.Path, "/data/") {
+							key := strings.TrimPrefix(p.Path, "/data/")
+							delete(secret, key)
 						}
 					}
 					return nil
@@ -234,11 +263,17 @@ func TestWriteState(t *testing.T) {
 
 			// Verify memory store was updated
 			got, err := s.memory.ReadState(ipn.StateKey(sanitizeKey(string(tt.key))))
-			if err != nil {
-				t.Errorf("reading from memory store: %v", err)
-			}
-			if !cmp.Equal(got, tt.value) {
-				t.Errorf("memory store key %q = %v, want %v", tt.key, got, tt.value)
+			if tt.value == nil {
+				if err != ipn.ErrStateNotExist {
+					t.Errorf("reading deleted key from memory store: got err %v, want ErrStateNotExist", err)
+				}
+			} else {
+				if err != nil {
+					t.Errorf("reading from memory store: %v", err)
+				}
+				if !cmp.Equal(got, tt.value) {
+					t.Errorf("memory store key %q = %v, want %v", tt.key, got, tt.value)
+				}
 			}
 		})
 	}
@@ -608,9 +643,9 @@ func TestNewWithClient(t *testing.T) {
 	)
 
 	certSecretsLabels := map[string]string{
-		"github.com/Xinlong-Wu/tailscale-oh/secret-type": kubetypes.LabelSecretTypeCerts,
-		"github.com/Xinlong-Wu/tailscale-oh/managed":     "true",
-		"github.com/Xinlong-Wu/tailscale-oh/proxy-group": "ingress-proxies",
+		"tailscale.com/secret-type": kubetypes.LabelSecretTypeCerts,
+		"tailscale.com/managed":     "true",
+		"tailscale.com/proxy-group": "ingress-proxies",
 	}
 
 	// Helper function to create Secret objects for testing
@@ -674,9 +709,9 @@ func TestNewWithClient(t *testing.T) {
 				makeSecret("app2.tailnetxyz.ts.net", certSecretsLabels, "2"),
 				makeSecret("some-other-secret", nil, "3"),
 				makeSecret("app3.other-proxies.ts.net", map[string]string{
-					"github.com/Xinlong-Wu/tailscale-oh/secret-type": kubetypes.LabelSecretTypeCerts,
-					"github.com/Xinlong-Wu/tailscale-oh/managed":     "true",
-					"github.com/Xinlong-Wu/tailscale-oh/proxy-group": "some-other-proxygroup",
+					"tailscale.com/secret-type": kubetypes.LabelSecretTypeCerts,
+					"tailscale.com/managed":     "true",
+					"tailscale.com/proxy-group": "some-other-proxygroup",
 				}, "4"),
 			},
 			wantMemoryStoreContents: map[ipn.StateKey][]byte{
@@ -698,9 +733,9 @@ func TestNewWithClient(t *testing.T) {
 				makeSecret("app2.tailnetxyz.ts.net", certSecretsLabels, "2"),
 				makeSecret("some-other-secret", nil, "3"),
 				makeSecret("app3.other-proxies.ts.net", map[string]string{
-					"github.com/Xinlong-Wu/tailscale-oh/secret-type": kubetypes.LabelSecretTypeCerts,
-					"github.com/Xinlong-Wu/tailscale-oh/managed":     "true",
-					"github.com/Xinlong-Wu/tailscale-oh/proxy-group": "some-other-proxygroup",
+					"tailscale.com/secret-type": kubetypes.LabelSecretTypeCerts,
+					"tailscale.com/managed":     "true",
+					"tailscale.com/proxy-group": "some-other-proxygroup",
 				}, "4"),
 			},
 			wantMemoryStoreContents: map[ipn.StateKey][]byte{

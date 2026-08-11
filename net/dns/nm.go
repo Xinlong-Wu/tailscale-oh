@@ -15,10 +15,10 @@ import (
 	"sort"
 	"time"
 
-	"github.com/godbus/dbus/v5"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/util/cmpver"
 	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
+	"github.com/godbus/dbus/v5"
 )
 
 const (

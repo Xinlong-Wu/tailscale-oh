@@ -14,12 +14,12 @@ import (
 	"strconv"
 	"strings"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
 	"github.com/Xinlong-Wu/tailscale-oh/util/lineiter"
 	"github.com/Xinlong-Wu/tailscale-oh/util/osuser"
 	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
+	"go4.org/mem"
 )
 
 // userMeta is a wrapper around *user.User with extra fields.
@@ -93,7 +93,7 @@ func defaultPathForUser(u *user.User) string {
 	}
 	isRoot := u.Uid == "0"
 	switch distro.Get() {
-	case distro.Debian:
+	case distro.Debian, distro.Crostini:
 		hi := hostinfo.New()
 		if hi.Distro == "ubuntu" {
 			// distro.Get's Debian includes Ubuntu. But see if it's actually Ubuntu.

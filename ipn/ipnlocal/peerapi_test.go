@@ -13,8 +13,6 @@ import (
 	"strings"
 	"testing"
 
-	"go4.org/netipx"
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/Xinlong-Wu/tailscale-oh/appc"
 	"github.com/Xinlong-Wu/tailscale-oh/appc/appctest"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
@@ -31,6 +29,8 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/usermetric"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
+	"go4.org/netipx"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 type peerAPITestEnv struct {

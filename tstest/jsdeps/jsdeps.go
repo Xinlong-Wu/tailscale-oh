@@ -19,7 +19,6 @@ import (
 	_ "strings"
 	_ "time"
 
-	_ "golang.org/x/crypto/ssh"
 	_ "github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
 	_ "github.com/Xinlong-Wu/tailscale-oh/ipn"
 	_ "github.com/Xinlong-Wu/tailscale-oh/ipn/ipnserver"
@@ -32,4 +31,5 @@ import (
 	_ "github.com/Xinlong-Wu/tailscale-oh/wgengine"
 	_ "github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack"
 	_ "github.com/Xinlong-Wu/tailscale-oh/words"
+	_ "golang.org/x/crypto/ssh"
 )

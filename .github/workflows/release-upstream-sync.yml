@@ -1,0 +1,135 @@
+name: Release synchronized upstream version
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/upstream-release.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-upstream-sync
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == 'Xinlong-Wu/tailscale-oh' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out main
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Validate upstream release metadata
+        id: metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          manifest=.github/upstream-release.json
+          upstream_repository="$(jq -er '.upstream_repository | select(type == "string" and length > 0)' "$manifest")"
+          upstream_tag="$(jq -er '.upstream_tag | select(type == "string" and length > 0)' "$manifest")"
+          upstream_commit="$(jq -er '.upstream_commit | select(type == "string" and length == 40)' "$manifest")"
+          prerelease="$(jq -er 'if .prerelease == true then "true" elif .prerelease == false then "false" else error("prerelease must be a boolean") end' "$manifest")"
+
+          if [[ "$upstream_repository" != "tailscale/tailscale" ]]; then
+            echo "unexpected upstream repository: $upstream_repository" >&2
+            exit 1
+          fi
+          if [[ ! "$upstream_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "invalid upstream tag: $upstream_tag" >&2
+            exit 1
+          fi
+          if [[ ! "$upstream_commit" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "invalid upstream commit: $upstream_commit" >&2
+            exit 1
+          fi
+
+          version="$(tr -d '[:space:]' < VERSION.txt)"
+          if [[ "$upstream_tag" != "v${version}" ]]; then
+            echo "VERSION.txt ($version) does not match $upstream_tag" >&2
+            exit 1
+          fi
+          module="$(sed -n 's/^module[[:space:]]\+//p' go.mod | sed -n '1p')"
+          if [[ "$module" != "github.com/Xinlong-Wu/tailscale-oh" ]]; then
+            echo "unexpected Go module path: $module" >&2
+            exit 1
+          fi
+          if [[ "$(git rev-parse HEAD)" != "$GITHUB_SHA" ]]; then
+            echo "checked-out commit does not match the triggering commit" >&2
+            exit 1
+          fi
+
+          upstream_url="https://github.com/${upstream_repository}.git"
+          resolved_commit="$(git ls-remote "$upstream_url" "refs/tags/${upstream_tag}^{}" | awk 'NR == 1 {print $1}')"
+          if [[ -z "$resolved_commit" ]]; then
+            resolved_commit="$(git ls-remote "$upstream_url" "refs/tags/${upstream_tag}" | awk 'NR == 1 {print $1}')"
+          fi
+          if [[ "$resolved_commit" != "$upstream_commit" ]]; then
+            echo "upstream tag resolves to $resolved_commit, expected $upstream_commit" >&2
+            exit 1
+          fi
+
+          echo "tag=$upstream_tag" >> "$GITHUB_OUTPUT"
+          echo "upstream_repository=$upstream_repository" >> "$GITHUB_OUTPUT"
+          echo "upstream_commit=$upstream_commit" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag and GitHub Release
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
+          UPSTREAM_REPOSITORY: ${{ steps.metadata.outputs.upstream_repository }}
+          UPSTREAM_COMMIT: ${{ steps.metadata.outputs.upstream_commit }}
+          PRERELEASE: ${{ steps.metadata.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+
+          existing_commit="$(git ls-remote origin "refs/tags/${RELEASE_TAG}^{}" | awk 'NR == 1 {print $1}')"
+          if [[ -z "$existing_commit" ]]; then
+            existing_commit="$(git ls-remote origin "refs/tags/${RELEASE_TAG}" | awk 'NR == 1 {print $1}')"
+          fi
+
+          if [[ -n "$existing_commit" && "$existing_commit" != "$GITHUB_SHA" ]]; then
+            echo "$RELEASE_TAG already points to $existing_commit, not $GITHUB_SHA" >&2
+            exit 1
+          fi
+
+          if [[ -z "$existing_commit" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag -a "$RELEASE_TAG" "$GITHUB_SHA" -m "Release $RELEASE_TAG"
+            git push origin "refs/tags/$RELEASE_TAG"
+          else
+            echo "$RELEASE_TAG already points to the current main commit"
+          fi
+
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "GitHub Release $RELEASE_TAG already exists"
+            exit 0
+          fi
+
+          upstream_release="https://github.com/${UPSTREAM_REPOSITORY}/releases/tag/${RELEASE_TAG}"
+          printf -v notes '%s\n\n%s\n\n- Upstream commit: `%s`\n- OpenHarmony fork commit: `%s`\n' \
+            "OpenHarmony fork release synchronized from [${UPSTREAM_REPOSITORY} ${RELEASE_TAG}](${upstream_release})." \
+            "This release keeps the fork-specific OpenHarmony adaptations on top of the upstream release." \
+            "$UPSTREAM_COMMIT" \
+            "$GITHUB_SHA"
+
+          release_flags=(--latest)
+          if [[ "$PRERELEASE" == "true" ]]; then
+            release_flags=(--prerelease)
+          fi
+          gh release create "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
+            --title "$RELEASE_TAG" \
+            --notes "$notes" \
+            "${release_flags[@]}"

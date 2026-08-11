@@ -22,6 +22,7 @@ import (
 	"k8s.io/utils/net"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+
 	operatorutils "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
 	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
@@ -29,8 +30,8 @@ import (
 )
 
 const (
-	dnsRecordsRecocilerFinalizer = "github.com/Xinlong-Wu/tailscale-oh/dns-records-reconciler"
-	annotationTSMagicDNSName     = "github.com/Xinlong-Wu/tailscale-oh/magic-dnsname"
+	dnsRecordsRecocilerFinalizer = "tailscale.com/dns-records-reconciler"
+	annotationTSMagicDNSName     = "tailscale.com/magic-dnsname"
 
 	// Service types for consistent string usage
 	serviceTypeIngress = "ingress"
@@ -42,11 +43,11 @@ const (
 // The records that it creates are:
 //   - For tailscale Ingress, a mapping of the Ingress's MagicDNSName to the IP addresses
 //     (both IPv4 and IPv6) of the ingress proxy Pod.
-//   - For egress proxies configured via github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn annotation, a
+//   - For egress proxies configured via tailscale.com/tailnet-fqdn annotation, a
 //     mapping of the tailnet FQDN to the IP addresses (both IPv4 and IPv6) of the egress proxy Pod.
 //
 // Records will only be created if there is exactly one ready
-// github.com/Xinlong-Wu/tailscale-oh/v1alpha1.DNSConfig instance in the cluster (so that we know
+// tailscale.com/v1alpha1.DNSConfig instance in the cluster (so that we know
 // that there is a ts.net nameserver deployed in the cluster).
 type dnsRecordsReconciler struct {
 	client.Client
@@ -83,7 +84,7 @@ func (dnsRR *dnsRecordsReconciler) Reconcile(ctx context.Context, req reconcile.
 	}
 
 	// Check that there is a ts.net nameserver deployed to the cluster by
-	// checking that there is github.com/Xinlong-Wu/tailscale-oh/v1alpha1.DNSConfig resource in a
+	// checking that there is tailscale.com/v1alpha1.DNSConfig resource in a
 	// Ready state.
 	dnsCfgLst := new(tsapi.DNSConfigList)
 	if err = dnsRR.List(ctx, dnsCfgLst); err != nil {
@@ -106,6 +107,7 @@ func (dnsRR *dnsRecordsReconciler) Reconcile(ctx context.Context, req reconcile.
 	if err := dnsRR.maybeProvision(ctx, proxySvc, logger); err != nil {
 		if strings.Contains(err.Error(), optimisticLockErrorMsg) {
 			logger.Infof("optimistic lock error, retrying: %s", err)
+			return reconcile.Result{RequeueAfter: shortRequeue}, nil
 		} else {
 			return reconcile.Result{}, err
 		}
@@ -117,24 +119,24 @@ func (dnsRR *dnsRecordsReconciler) Reconcile(ctx context.Context, req reconcile.
 // maybeProvision ensures that dnsrecords ConfigMap contains a record for the
 // proxy associated with the Service.
 // The record is only provisioned if the proxy is for a tailscale Ingress or
-// egress configured via github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn annotation.
+// egress configured via tailscale.com/tailnet-fqdn annotation.
 //
 // For Ingress, the record is a mapping between the MagicDNSName of the Ingress, retrieved from
 // ingress.status.loadBalancer.ingress.hostname field and the proxy Pod IP addresses
 // retrieved from the EndpointSlice associated with this Service, i.e
 // Records{IP4: {<MagicDNS name>: <[IPv4 addresses]>}, IP6: {<MagicDNS name>: <[IPv6 addresses]>}}
 //
-// For egress, the record is a mapping between github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn
+// For egress, the record is a mapping between tailscale.com/tailnet-fqdn
 // annotation and the proxy Pod IP addresses, retrieved from the EndpointSlice
 // associated with this Service, i.e
 // Records{IP4: {<tailnet-fqdn>: <[IPv4 addresses]>}, IP6: {<tailnet-fqdn>: <[IPv6 addresses]>}}
 //
-// For ProxyGroup egress, the record is a mapping between github.com/Xinlong-Wu/tailscale-oh/magic-dnsname
+// For ProxyGroup egress, the record is a mapping between tailscale.com/magic-dnsname
 // annotation and the ClusterIP Service IPs (which provides portmapping), i.e
 // Records{IP4: {<magic-dnsname>: <[IPv4 ClusterIPs]>}, IP6: {<magic-dnsname>: <[IPv6 ClusterIPs]>}}
 //
 // If records need to be created for this proxy, maybeProvision will also:
-// - update the Service with a github.com/Xinlong-Wu/tailscale-oh/magic-dnsname annotation
+// - update the Service with a tailscale.com/magic-dnsname annotation
 // - update the Service with a finalizer
 func (dnsRR *dnsRecordsReconciler) maybeProvision(ctx context.Context, proxySvc *corev1.Service, logger *zap.SugaredLogger) error {
 	if !dnsRR.isInterestingService(ctx, proxySvc) {
@@ -160,7 +162,7 @@ func (dnsRR *dnsRecordsReconciler) maybeProvision(ctx context.Context, proxySvc 
 	// name to help with records cleanup when proxy resources are deleted or
 	// MagicDNS name changes.
 	oldFqdn := proxySvc.Annotations[annotationTSMagicDNSName]
-	if oldFqdn != "" && oldFqdn != fqdn { // i.e user has changed the value of github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn annotation
+	if oldFqdn != "" && oldFqdn != fqdn { // i.e user has changed the value of tailscale.com/tailnet-fqdn annotation
 		logger.Debugf("MagicDNS name has changed, removing record for %s", oldFqdn)
 		updateFunc := func(rec *operatorutils.Records) {
 			delete(rec.IP4, oldFqdn)
@@ -213,10 +215,10 @@ func epIsReady(ep *discoveryv1.Endpoint) bool {
 }
 
 // maybeCleanup ensures that the DNS record for the proxy has been removed from
-// dnsrecords ConfigMap and the github.com/Xinlong-Wu/tailscale-oh/dns-records-reconciler finalizer
+// dnsrecords ConfigMap and the tailscale.com/dns-records-reconciler finalizer
 // has been removed from the Service. If the record is not found in the
 // ConfigMap, the ConfigMap does not exist, or the Service does not have
-// github.com/Xinlong-Wu/tailscale-oh/magic-dnsname annotation, just remove the finalizer.
+// tailscale.com/magic-dnsname annotation, just remove the finalizer.
 func (dnsRR *dnsRecordsReconciler) maybeCleanup(ctx context.Context, proxySvc *corev1.Service, logger *zap.SugaredLogger) error {
 	ix := slices.Index(proxySvc.Finalizers, dnsRecordsRecocilerFinalizer)
 	if ix == -1 {
@@ -269,7 +271,7 @@ func (dnsRR *dnsRecordsReconciler) removeProxySvcFinalizer(ctx context.Context, 
 
 // fqdnForDNSRecord returns MagicDNS name associated with a given proxy Service.
 // If the proxy Service is for a tailscale Ingress proxy, returns ingress.status.loadBalancer.ingress.hostname.
-// If the proxy Service is for an tailscale egress proxy configured via github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn annotation, returns the annotation value.
+// If the proxy Service is for an tailscale egress proxy configured via tailscale.com/tailnet-fqdn annotation, returns the annotation value.
 // For ProxyGroup egress Services, returns the tailnet-fqdn annotation from the parent Service.
 // This function is not expected to be called with proxy Services for other
 // proxy types, or any other Services, but it just returns an empty string if
@@ -281,19 +283,26 @@ func (dnsRR *dnsRecordsReconciler) fqdnForDNSRecord(ctx context.Context, proxySv
 		if err := dnsRR.Get(ctx, parentName, ing); err != nil {
 			return "", err
 		}
+
 		if len(ing.Status.LoadBalancer.Ingress) == 0 {
 			return "", nil
 		}
+
 		return ing.Status.LoadBalancer.Ingress[0].Hostname, nil
 	}
+
 	if isManagedByType(proxySvc, serviceTypeSvc) {
-		svc := new(corev1.Service)
-		if err := dnsRR.Get(ctx, parentName, svc); apierrors.IsNotFound(err) {
-			logger.Infof("[unexpected] parent Service for egress proxy %s not found", proxySvc.Name)
+		var svc corev1.Service
+
+		err := dnsRR.Get(ctx, parentName, &svc)
+		switch {
+		case apierrors.IsNotFound(err):
+			logger.Warnf("parent Service for egress proxy %q not found", proxySvc.Name)
 			return "", nil
-		} else if err != nil {
+		case err != nil:
 			return "", err
 		}
+
 		return svc.Annotations[AnnotationTailnetTargetFQDN], nil
 	}
 	return "", nil
@@ -303,33 +312,36 @@ func (dnsRR *dnsRecordsReconciler) fqdnForDNSRecord(ctx context.Context, proxySv
 // ConfigMap. At this point the in-cluster ts.net nameserver is expected to be
 // successfully created together with the ConfigMap.
 func (dnsRR *dnsRecordsReconciler) updateDNSConfig(ctx context.Context, update func(*operatorutils.Records)) error {
-	cm := &corev1.ConfigMap{}
-	err := dnsRR.Get(ctx, types.NamespacedName{Name: operatorutils.DNSRecordsCMName, Namespace: dnsRR.tsNamespace}, cm)
-	if apierrors.IsNotFound(err) {
-		dnsRR.logger.Info("[unexpected] dnsrecords ConfigMap not found in cluster. Not updating DNS records. Please open an issue and attach operator logs.")
+	var cm corev1.ConfigMap
+	err := dnsRR.Get(ctx, types.NamespacedName{Name: operatorutils.DNSRecordsCMName, Namespace: dnsRR.tsNamespace}, &cm)
+	switch {
+	case apierrors.IsNotFound(err):
+		dnsRR.logger.Warn("dnsrecords ConfigMap not found in cluster. Not updating DNS records. Please open an issue and attach operator logs.")
 		return nil
+	case err != nil:
+		return fmt.Errorf("failed to retrieve dnsrecords ConfigMap: %w", err)
 	}
-	if err != nil {
-		return fmt.Errorf("error retrieving dnsrecords ConfigMap: %w", err)
-	}
+
 	dnsRecords := operatorutils.Records{Version: operatorutils.Alpha1Version, IP4: map[string][]string{}}
 	if cm.Data != nil && cm.Data[operatorutils.DNSRecordsCMKey] != "" {
-		if err := json.Unmarshal([]byte(cm.Data[operatorutils.DNSRecordsCMKey]), &dnsRecords); err != nil {
+		if err = json.Unmarshal([]byte(cm.Data[operatorutils.DNSRecordsCMKey]), &dnsRecords); err != nil {
 			return err
 		}
 	}
+
 	update(&dnsRecords)
 	dnsRecordsBs, err := json.Marshal(dnsRecords)
 	if err != nil {
 		return fmt.Errorf("error marshalling DNS records: %w", err)
 	}
+
 	mak.Set(&cm.Data, operatorutils.DNSRecordsCMKey, string(dnsRecordsBs))
-	return dnsRR.Update(ctx, cm)
+	return dnsRR.Update(ctx, &cm)
 }
 
 // isSvcForFQDNEgressProxy returns true if the Service is a headless Service
 // created for a proxy for a tailscale egress Service configured via
-// github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn annotation.
+// tailscale.com/tailnet-fqdn annotation.
 func (dnsRR *dnsRecordsReconciler) isSvcForFQDNEgressProxy(ctx context.Context, svc *corev1.Service) (bool, error) {
 	if !isManagedByType(svc, "svc") {
 		return false, nil

@@ -18,10 +18,10 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"go.uber.org/zap"
-	corev1 "k8s.io/api/core/v1"
 	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording/tsrecorder"
 	"github.com/Xinlong-Wu/tailscale-oh/sessionrecording"
+	"go.uber.org/zap"
+	corev1 "k8s.io/api/core/v1"
 )
 
 // New wraps the provided network connection and returns a connection whose reads and writes will get triggered as data is received on the hijacked connection.

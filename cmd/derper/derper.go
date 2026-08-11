@@ -5,8 +5,8 @@
 //
 // For more information, see:
 //
-//   - About: https://github.com/Xinlong-Wu/tailscale-oh/kb/1232/derp-servers
-//   - Protocol & Go docs: https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/derp
+//   - About: https://tailscale.com/kb/1232/derp-servers
+//   - Protocol & Go docs: https://pkg.go.dev/tailscale.com/derp
 //   - Running a DERP server: https://github.com/tailscale/tailscale/tree/main/cmd/derper#derp
 package main // import "github.com/Xinlong-Wu/tailscale-oh/cmd/derper"
 
@@ -37,8 +37,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/tailscale/setec/client/setec"
-	"golang.org/x/time/rate"
 	"github.com/Xinlong-Wu/tailscale-oh/atomicfile"
 	"github.com/Xinlong-Wu/tailscale-oh/derp/derpserver"
 	"github.com/Xinlong-Wu/tailscale-oh/metrics"
@@ -48,6 +46,8 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"github.com/tailscale/setec/client/setec"
+	"golang.org/x/time/rate"
 
 	// Support for prometheus varz in tsweb
 	_ "github.com/Xinlong-Wu/tailscale-oh/tsweb/promvarz"
@@ -62,10 +62,11 @@ var (
 	configPath  = flag.String("c", "", "config file path")
 	certMode    = flag.String("certmode", "letsencrypt", "mode for getting a cert. possible options: manual, letsencrypt, gcp")
 	certDir     = flag.String("certdir", tsweb.DefaultCertDir("derper-certs"), "directory to store ACME (e.g. LetsEncrypt) certs, if addr's port is :443")
-	hostname    = flag.String("hostname", "derp.tailscale.com", "TLS host name for certs, if addr's port is :443. When --certmode=manual, this can be an IP address to avoid SNI checks")
+	hostname    = flag.String("hostname", "derp.tailscale.com", "TLS host name for certs, if addr's port is :443. It can be an IP address when --certmode=manual (to avoid SNI checks) or when --acme-ip-certs is set (to run an IP-only server with no hostname cert)")
 	acmeEABKid  = flag.String("acme-eab-kid", "", "ACME External Account Binding (EAB) Key ID (required for --certmode=gcp)")
 	acmeEABKey  = flag.String("acme-eab-key", "", "ACME External Account Binding (EAB) HMAC key, base64-encoded (required for --certmode=gcp)")
 	acmeEmail   = flag.String("acme-email", "", "ACME account contact email address (required for --certmode=gcp, optional for letsencrypt)")
+	acmeIPCerts = flag.Bool("acme-ip-certs", false, "whether to serve LetsEncrypt certs for the server's IP addresses: when a client connects by IP address (sending no TLS SNI, or an IP address SNI matching the connection's destination IP), get and serve a LetsEncrypt cert for that IP, using the short-lived (~6 day) ACME certificate profile. This works for both IPv4 and IPv6 with no per-address configuration. It requires --certmode=letsencrypt and the ACME server must be able to reach port 80 at each such IP for the HTTP-01 challenge.")
 	runSTUN     = flag.Bool("stun", true, "whether to run a STUN server. It will bind to the same IP (if any) as the --addr flag value.")
 	runDERP     = flag.Bool("derp", true, "whether to run a DERP server. The only reason to set this false is if you're decommissioning a server but want to keep its bootstrap DNS functionality still running.")
 	flagHome    = flag.String("home", "", "what to serve at the root path. It may be left empty (the default, for a default homepage), \"blank\" for a blank page, or a URL to redirect to")
@@ -262,7 +263,7 @@ func main() {
 	mux := http.NewServeMux()
 	if *runDERP {
 		derpHandler := derpserver.Handler(s)
-		derpHandler = addWebSocketSupport(s, derpHandler)
+		derpHandler = derpserver.AddWebSocketSupport(s, derpHandler)
 		mux.Handle("/derp", derpHandler)
 	} else {
 		mux.Handle("/derp", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -349,20 +350,12 @@ func main() {
 	if serveTLS {
 		log.Printf("derper: serving on %s with TLS", *addr)
 		var certManager certProvider
-		certManager, err = certProviderByCertMode(*certMode, *certDir, *hostname, *acmeEABKid, *acmeEABKey, *acmeEmail)
+		certManager, err = certProviderByCertMode(*certMode, *certDir, *hostname, *acmeIPCerts, *acmeEABKid, *acmeEABKey, *acmeEmail)
 		if err != nil {
 			log.Fatalf("derper: can not start cert provider: %v", err)
 		}
 		httpsrv.TLSConfig = certManager.TLSConfig()
-		getCert := httpsrv.TLSConfig.GetCertificate
-		httpsrv.TLSConfig.GetCertificate = func(hi *tls.ClientHelloInfo) (*tls.Certificate, error) {
-			cert, err := getCert(hi)
-			if err != nil {
-				return nil, err
-			}
-			cert.Certificate = append(cert.Certificate, s.MetaCert())
-			return cert, nil
-		}
+		s.ModifyTLSConfigToAddMetaCert(httpsrv.TLSConfig)
 		// Disable TLS 1.0 and 1.1, which are obsolete and have security issues.
 		httpsrv.TLSConfig.MinVersion = tls.VersionTLS12
 		httpsrv.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -560,7 +553,7 @@ type templateData struct {
 var homePageTemplate = template.Must(template.New("home").Parse(`<html><body>
 <h1>DERP</h1>
 <p>
-  This is a <a href="https://github.com/Xinlong-Wu/tailscale-oh/">Tailscale</a> DERP server.
+  This is a <a href="https://tailscale.com/">Tailscale</a> DERP server.
 </p>
 
 <p>
@@ -580,11 +573,11 @@ var homePageTemplate = template.Must(template.New("home").Parse(`<html><body>
 
 <ul>
 {{if .ShowAbuseInfo }}
-  <li><a href="https://github.com/Xinlong-Wu/tailscale-oh/security-policies">Tailscale Security Policies</a></li>
-  <li><a href="https://github.com/Xinlong-Wu/tailscale-oh/tailscale-aup">Tailscale Acceptable Use Policies</a></li>
+  <li><a href="https://tailscale.com/security-policies">Tailscale Security Policies</a></li>
+  <li><a href="https://tailscale.com/tailscale-aup">Tailscale Acceptable Use Policies</a></li>
 {{end}}
-  <li><a href="https://github.com/Xinlong-Wu/tailscale-oh/kb/1232/derp-servers">About DERP</a></li>
-  <li><a href="https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/derp">Protocol & Go docs</a></li>
+  <li><a href="https://tailscale.com/kb/1232/derp-servers">About DERP</a></li>
+  <li><a href="https://pkg.go.dev/tailscale.com/derp">Protocol & Go docs</a></li>
   <li><a href="https://github.com/tailscale/tailscale/tree/main/cmd/derper#derp">How to run a DERP server</a></li>
 </ul>
 

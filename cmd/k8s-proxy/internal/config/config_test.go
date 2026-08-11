@@ -11,6 +11,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/kube/k8s-proxy/conf"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"github.com/google/go-cmp/cmp"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
@@ -18,8 +20,6 @@ import (
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes/fake"
 	ktesting "k8s.io/client-go/testing"
-	"github.com/Xinlong-Wu/tailscale-oh/kube/k8s-proxy/conf"
-	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 )
 
 func TestWatchConfig(t *testing.T) {

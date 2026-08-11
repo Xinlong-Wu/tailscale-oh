@@ -5,4 +5,8 @@
 
 package tstun
 
-func (t *Wrapper) SetLinkFeaturesPostUp() {}
+import "github.com/Xinlong-Wu/tailscale-oh/control/controlknobs"
+
+func (t *Wrapper) SetLinkFeaturesPostUp(_ *controlknobs.Knobs) {}
+
+func (t *Wrapper) ApplyGROKnobs(_ *controlknobs.Knobs) {}

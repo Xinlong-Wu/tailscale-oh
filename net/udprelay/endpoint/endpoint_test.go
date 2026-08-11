@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/Xinlong-Wu/tailscale-oh/tstime"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestServerEndpointJSONUnmarshal(t *testing.T) {

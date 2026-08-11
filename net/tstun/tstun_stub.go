@@ -6,8 +6,8 @@
 package tstun
 
 import (
-	"github.com/tailscale/wireguard-go/tun"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/tailscale/wireguard-go/tun"
 )
 
 func New(logf logger.Logf, tunName string) (tun.Device, string, error) {

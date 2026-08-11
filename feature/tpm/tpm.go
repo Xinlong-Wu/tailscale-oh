@@ -19,9 +19,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/go-tpm/tpm2"
-	"github.com/google/go-tpm/tpm2/transport"
-	"golang.org/x/crypto/nacl/secretbox"
 	"github.com/Xinlong-Wu/tailscale-oh/atomicfile"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/feature"
@@ -33,6 +30,9 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
+	"github.com/google/go-tpm/tpm2"
+	"github.com/google/go-tpm/tpm2/transport"
+	"golang.org/x/crypto/nacl/secretbox"
 )
 
 var (
@@ -49,7 +49,7 @@ func init() {
 		hi.TPM = infoOnce()
 	})
 	store.Register(store.TPMPrefix, newStore)
-	if (runtime.GOOS == "linux" && !runtime.IsOpenharmony) || runtime.GOOS == "windows" {
+	if (runtime.GOOS == "linux" && !isOpenHarmony) || runtime.GOOS == "windows" {
 		key.RegisterHardwareAttestationKeyFns(
 			func() key.HardwareAttestationKey { return &attestationKey{} },
 			func() (key.HardwareAttestationKey, error) { return newAttestationKey() },
@@ -243,8 +243,11 @@ func (s *tpmStore) WriteState(k ipn.StateKey, bs []byte) error {
 	if bytes.Equal(s.cache[k], bs) {
 		return nil
 	}
-	s.cache[k] = bytes.Clone(bs)
-
+	if bs == nil {
+		delete(s.cache, k)
+	} else {
+		s.cache[k] = bytes.Clone(bs)
+	}
 	return s.writeSealed()
 }
 

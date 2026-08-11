@@ -11,8 +11,8 @@ import (
 	"os"
 	"sync"
 
-	"github.com/mdlayher/sdnotify"
 	"github.com/Xinlong-Wu/tailscale-oh/feature"
+	"github.com/mdlayher/sdnotify"
 )
 
 func init() {

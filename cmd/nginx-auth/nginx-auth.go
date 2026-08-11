@@ -20,8 +20,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/coreos/go-systemd/activation"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale"
+	"github.com/coreos/go-systemd/activation"
 )
 
 var (

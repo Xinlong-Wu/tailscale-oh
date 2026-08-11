@@ -8,8 +8,8 @@ import (
 	"slices"
 	"testing"
 
-	qt "github.com/frankban/quicktest"
 	"github.com/Xinlong-Wu/tailscale-oh/util/usermetric"
+	qt "github.com/frankban/quicktest"
 )
 
 func TestMetricsLifecycle(t *testing.T) {

@@ -13,11 +13,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tailscale/certstore"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
+	"github.com/tailscale/certstore"
 )
 
 // getMachineCertificateSubject returns the exact name of a Subject that needs

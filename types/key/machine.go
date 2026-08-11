@@ -8,10 +8,10 @@ import (
 	"crypto/subtle"
 	"encoding/hex"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
 	"go4.org/mem"
 	"golang.org/x/crypto/curve25519"
 	"golang.org/x/crypto/nacl/box"
-	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
 )
 
 const (
@@ -167,7 +167,7 @@ func (k MachinePrivate) OpenFrom(p MachinePublic, ciphertext []byte) (cleartext 
 	return box.Open(nil, ciphertext[len(nonce):], &nonce, &p.k, &k.k)
 }
 
-// MachinePublic is the public portion of a a MachinePrivate.
+// MachinePublic is the public portion of a MachinePrivate.
 type MachinePublic struct {
 	k [32]byte
 }

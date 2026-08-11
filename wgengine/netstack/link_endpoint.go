@@ -7,14 +7,14 @@ import (
 	"context"
 	"sync"
 
-	"gvisor.dev/gvisor/pkg/buffer"
-	"gvisor.dev/gvisor/pkg/tcpip"
-	"gvisor.dev/gvisor/pkg/tcpip/header"
-	"gvisor.dev/gvisor/pkg/tcpip/stack"
 	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
 	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack/gro"
+	"gvisor.dev/gvisor/pkg/buffer"
+	"gvisor.dev/gvisor/pkg/tcpip"
+	"gvisor.dev/gvisor/pkg/tcpip/header"
+	"gvisor.dev/gvisor/pkg/tcpip/stack"
 )
 
 type queue struct {

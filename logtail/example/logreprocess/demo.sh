@@ -9,7 +9,7 @@
 #
 # To run this demo, first install the example applications:
 #
-#        go install tailscale.com/logtail/example/...
+#        go install github.com/Xinlong-Wu/tailscale-oh/logtail/example/...
 #
 # Then generate a LOGTAIL_API_KEY and two test collections by visiting:
 #

@@ -7,10 +7,10 @@ package main
 import (
 	_ "embed"
 
-	"golang.org/x/tools/go/analysis/unitchecker"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/vet/jsontags"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/vet/lowerell"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/vet/subtestnames"
+	"golang.org/x/tools/go/analysis/unitchecker"
 )
 
 //go:embed jsontags_allowlist

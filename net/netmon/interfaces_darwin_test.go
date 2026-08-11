@@ -9,9 +9,9 @@ import (
 	"os/exec"
 	"testing"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/util/lineiter"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"go4.org/mem"
 )
 
 func TestLikelyHomeRouterIPSyscallExec(t *testing.T) {

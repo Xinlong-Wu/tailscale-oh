@@ -14,8 +14,6 @@ import (
 	"testing"
 	"time"
 
-	"golang.org/x/sys/windows"
-	"golang.org/x/sys/windows/registry"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/util/cibuild"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
@@ -23,6 +21,8 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/gp"
+	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/registry"
 )
 
 // subkeyStrings is a test type indicating that a string slice should be written

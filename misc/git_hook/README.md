@@ -9,7 +9,7 @@ The shared logic lives in the `githook/` package and is also imported by
 
 From the repo root:
 
-    ./tool/go run ./misc/install-git-hooks.go
+    ./tool/go run ./misc/add-git-hooks.go
 
 The script auto-updates in the future.
 
@@ -29,7 +29,7 @@ the concatenation of two files:
 
 * `githook/HOOK_VERSION` (shared): bump when changing anything under
   `githook/` or `git-hook.go`. Downstream repos pick it up after
-  bumping their `tailscale.com` dependency.
+  bumping their `github.com/Xinlong-Wu/tailscale-oh` dependency.
 * `misc/git_hook/HOOK_VERSION` (repo-local, optional): bump to force a
   rebuild for repo-specific config changes without touching the shared
   version. This repo does not use one.

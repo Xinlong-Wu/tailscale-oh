@@ -22,12 +22,12 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/pkg/sftp"
 	expect "github.com/tailscale/goexpect"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/sync/semaphore"
-	"github.com/Xinlong-Wu/tailscale-oh/tstest"
-	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 const (

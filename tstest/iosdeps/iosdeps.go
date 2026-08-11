@@ -41,9 +41,6 @@ import (
 	_ "time"
 	_ "unsafe"
 
-	_ "github.com/tailscale/wireguard-go/device"
-	_ "github.com/tailscale/wireguard-go/tun"
-	_ "golang.org/x/sys/unix"
 	_ "github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	_ "github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl"
 	_ "github.com/Xinlong-Wu/tailscale-oh/envknob"
@@ -87,4 +84,7 @@ import (
 	_ "github.com/Xinlong-Wu/tailscale-oh/wgengine"
 	_ "github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack"
 	_ "github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	_ "github.com/tailscale/wireguard-go/device"
+	_ "github.com/tailscale/wireguard-go/tun"
+	_ "golang.org/x/sys/unix"
 )

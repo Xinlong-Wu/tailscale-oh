@@ -10,9 +10,9 @@ import (
 	"io"
 	"os"
 
+	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 	"github.com/dblohm7/wingoes"
 	"golang.org/x/sys/windows"
-	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 )
 
 var (

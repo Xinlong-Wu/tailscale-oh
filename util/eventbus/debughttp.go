@@ -21,8 +21,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/coder/websocket"
 	"github.com/Xinlong-Wu/tailscale-oh/tsweb"
+	"github.com/coder/websocket"
 )
 
 type httpDebugger struct {

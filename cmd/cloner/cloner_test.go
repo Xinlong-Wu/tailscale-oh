@@ -7,8 +7,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/cloner/clonerex"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestSliceContainer(t *testing.T) {
@@ -281,5 +281,15 @@ func TestDeeplyNestedMap(t *testing.T) {
 	cloned.FourLevels["l1a"]["l2a"]["l3a"]["l4c"] = &clonerex.SliceContainer{Slice: []*int{&newNum}}
 	if _, exists := orig.FourLevels["l1a"]["l2a"]["l3a"]["l4c"]; exists {
 		t.Errorf("Clone() aliased FourLevels map: new nested key appeared in original")
+	}
+}
+
+func TestMapWithNamedSliceValues(t *testing.T) {
+	orig := &clonerex.MapWithNamedSliceValues{
+		M: map[string]clonerex.NamedSlice{"k": {"foo", "bar"}},
+	}
+	cloned := orig.Clone()
+	if diff := cmp.Diff(orig, cloned); diff != "" {
+		t.Errorf("Clone() mismatch (-orig +cloned):\n%s", diff)
 	}
 }

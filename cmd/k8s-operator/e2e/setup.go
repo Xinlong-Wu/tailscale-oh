@@ -54,13 +54,13 @@ import (
 	"sigs.k8s.io/kind/pkg/cluster/nodeutils"
 	"sigs.k8s.io/kind/pkg/cmd"
 
-	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
 	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
 	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
 	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"tailscale.com/client/tailscale/v2"
 )
 
 const (

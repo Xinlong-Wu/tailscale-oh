@@ -1,4 +1,4 @@
-name: tailscale.com/cmd/vet
+name: github.com/Xinlong-Wu/tailscale-oh/cmd/vet
 
 env:
   HOME: ${{ github.workspace }}
@@ -14,15 +14,17 @@ on:
       - main
       - "release-branch/*"
     paths:
+      - .github/workflows/vet.yml
       - "**.go"
   pull_request:
     paths:
+      - .github/workflows/vet.yml
       - "**.go"
 
 jobs:
   vet:
-    runs-on: [ self-hosted, linux ]
-    timeout-minutes: 5
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
 
     steps:
       - name: Check out code
@@ -32,7 +34,7 @@ jobs:
 
       - name: Build 'go vet' tool
         working-directory: src
-        run: ./tool/go build -o /tmp/vettool tailscale.com/cmd/vet
+        run: ./tool/go build -o /tmp/vettool github.com/Xinlong-Wu/tailscale-oh/cmd/vet
 
       - name: Run 'go vet'
         working-directory: src

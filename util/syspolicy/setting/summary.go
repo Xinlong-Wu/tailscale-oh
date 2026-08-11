@@ -4,9 +4,9 @@
 package setting
 
 import (
+	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
-	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 )
 
 // Summary is an immutable [PolicyScope] and [Origin].

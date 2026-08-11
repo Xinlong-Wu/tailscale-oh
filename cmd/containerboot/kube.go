@@ -18,7 +18,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fsnotify/fsnotify"
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/authkey"
@@ -30,6 +29,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
+	"github.com/fsnotify/fsnotify"
 )
 
 const fieldManager = "tailscale-container"

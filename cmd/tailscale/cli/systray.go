@@ -9,8 +9,8 @@ import (
 	"context"
 	"flag"
 
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/client/systray"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 var systrayCmd = &ffcli.Command{

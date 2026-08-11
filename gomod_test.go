@@ -19,7 +19,12 @@ func TestGoMod(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(f.Replace) > 0 {
-		t.Errorf("go.mod has %d replace directives; expect zero in this repo", len(f.Replace))
+	if len(f.Replace) != 1 {
+		t.Fatalf("go.mod has %d replace directives; expect the setec compatibility replacement", len(f.Replace))
+	}
+	r := f.Replace[0]
+	if r.Old.Path != "tailscale.com" || r.Old.Version != "" ||
+		r.New.Path != "./compat/tailscale" || r.New.Version != "" {
+		t.Errorf("unexpected go.mod replace directive: %s %s => %s %s", r.Old.Path, r.Old.Version, r.New.Path, r.New.Version)
 	}
 }

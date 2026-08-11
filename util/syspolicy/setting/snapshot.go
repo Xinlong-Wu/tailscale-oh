@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/util/deephash"
+	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
 	xmaps "golang.org/x/exp/maps"
-	"github.com/Xinlong-Wu/tailscale-oh/util/deephash"
-	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 )
 
 // Snapshot is an immutable collection of ([Key], [RawItem]) pairs, representing

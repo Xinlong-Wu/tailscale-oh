@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 // get-authkey allocates an authkey using an OAuth API client
-// https://github.com/Xinlong-Wu/tailscale-oh/s/oauth-clients and prints it
+// https://tailscale.com/s/oauth-clients and prints it
 // to stdout for scripts to capture and use.
 package main
 
@@ -15,8 +15,8 @@ import (
 	"os"
 	"strings"
 
-	"golang.org/x/oauth2/clientcredentials"
 	"github.com/Xinlong-Wu/tailscale-oh/internal/client/tailscale"
+	"golang.org/x/oauth2/clientcredentials"
 )
 
 func main() {

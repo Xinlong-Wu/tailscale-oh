@@ -10,9 +10,9 @@ import (
 	"os"
 	"strings"
 
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/util/lineiter"
 	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
+	"golang.org/x/sys/unix"
 )
 
 func init() {

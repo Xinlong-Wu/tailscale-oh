@@ -9,10 +9,10 @@ import (
 	"net/netip"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/disco"
 	"golang.org/x/net/bpf"
 	"golang.org/x/sys/cpu"
 	"golang.org/x/sys/unix"
-	"github.com/Xinlong-Wu/tailscale-oh/disco"
 )
 
 func TestParseUDPPacket(t *testing.T) {

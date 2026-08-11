@@ -20,7 +20,6 @@ import (
 	"net/netip"
 	"strings"
 
-	"go.uber.org/zap"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording/spdy"
 	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording/tsrecorder"
@@ -31,6 +30,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
 	"github.com/Xinlong-Wu/tailscale-oh/tstime"
 	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"go.uber.org/zap"
 )
 
 const (

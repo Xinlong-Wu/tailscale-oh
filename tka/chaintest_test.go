@@ -13,9 +13,9 @@ import (
 	"testing"
 	"text/scanner"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 )
 
 // chaintest_test.go implements test helpers for concisely describing
@@ -321,10 +321,8 @@ func optTemplate(name string, template AUM) testchainOpt {
 }
 
 func genesisTemplate(key Key) testchainOpt {
-	return optTemplate("genesis", AUM{MessageKind: AUMCheckpoint, State: &State{
-		Keys:              []Key{key},
-		DisablementValues: [][]byte{DisablementKDF([]byte{1, 2, 3})},
-	}})
+	state := CreateStateForTest(key)
+	return optTemplate("genesis", AUM{MessageKind: AUMCheckpoint, State: &state})
 }
 
 func checkpointTemplate() testchainOpt {

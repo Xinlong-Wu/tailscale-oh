@@ -17,7 +17,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
@@ -31,6 +30,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"go4.org/mem"
 )
 
 var (

@@ -10,14 +10,6 @@ import (
 	// Otherwise cmd/go never sees that we depend on these packages'
 	// transitive deps when we run "go install tailscaled" in a child
 	// process and can cache a prior success when a dependency changes.
-	_ "github.com/dblohm7/wingoes/com"
-	_ "github.com/tailscale/wireguard-go/tun"
-	_ "golang.org/x/sys/windows"
-	_ "golang.org/x/sys/windows/svc"
-	_ "golang.org/x/sys/windows/svc/eventlog"
-	_ "golang.org/x/sys/windows/svc/mgr"
-	_ "golang.zx2c4.com/wintun"
-	_ "golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	_ "github.com/Xinlong-Wu/tailscale-oh/client/local"
 	_ "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled/childproc"
 	_ "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled/tailscaledhooks"
@@ -62,6 +54,7 @@ import (
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/osdiag"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/osshare"
+	_ "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/winutil"
@@ -72,4 +65,12 @@ import (
 	_ "github.com/Xinlong-Wu/tailscale-oh/wgengine"
 	_ "github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack"
 	_ "github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	_ "github.com/dblohm7/wingoes/com"
+	_ "github.com/tailscale/wireguard-go/tun"
+	_ "golang.org/x/sys/windows"
+	_ "golang.org/x/sys/windows/svc"
+	_ "golang.org/x/sys/windows/svc/eventlog"
+	_ "golang.org/x/sys/windows/svc/mgr"
+	_ "golang.zx2c4.com/wintun"
+	_ "golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 )

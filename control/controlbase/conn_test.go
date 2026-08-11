@@ -17,10 +17,10 @@ import (
 	"testing/iotest"
 	"testing/synctest"
 
-	chp "golang.org/x/crypto/chacha20poly1305"
-	"golang.org/x/net/nettest"
 	"github.com/Xinlong-Wu/tailscale-oh/net/memnet"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	chp "golang.org/x/crypto/chacha20poly1305"
+	"golang.org/x/net/nettest"
 )
 
 const testProtocolVersion = 1

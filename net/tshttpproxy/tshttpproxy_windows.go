@@ -17,14 +17,14 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/alexbrainman/sspi/negotiate"
-	"github.com/dblohm7/wingoes"
-	"golang.org/x/sys/windows"
 	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
 	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
 	"github.com/Xinlong-Wu/tailscale-oh/util/cmpver"
+	"github.com/alexbrainman/sspi/negotiate"
+	"github.com/dblohm7/wingoes"
+	"golang.org/x/sys/windows"
 )
 
 func init() {

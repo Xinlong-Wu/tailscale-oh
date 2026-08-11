@@ -113,7 +113,7 @@ func (a *NameserverReconciler) Reconcile(ctx context.Context, req reconcile.Requ
 		return res, fmt.Errorf("error listing DNSConfigs: %w", err)
 	}
 	if len(dnsCfgs.Items) > 1 { // enforce DNSConfig to be a singleton
-		msg := "invalid cluster configuration: more than one github.com/Xinlong-Wu/tailscale-oh/dnsconfigs found. Please ensure that no more than one is created."
+		msg := "invalid cluster configuration: more than one tailscale.com/dnsconfigs found. Please ensure that no more than one is created."
 		logger.Error(msg)
 		a.recorder.Event(&dnsCfg, corev1.EventTypeWarning, reasonMultipleDNSConfigsPresent, messageMultipleDNSConfigsPresent)
 		setStatus(&dnsCfg, metav1.ConditionFalse, reasonMultipleDNSConfigsPresent, messageMultipleDNSConfigsPresent)

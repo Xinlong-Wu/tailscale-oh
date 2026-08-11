@@ -17,12 +17,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/ec2/imds"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/smithy-go"
-	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
 )
 
 type Environment string

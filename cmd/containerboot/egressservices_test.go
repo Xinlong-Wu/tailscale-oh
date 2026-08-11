@@ -15,6 +15,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/Xinlong-Wu/tailscale-oh/kube/egressservices"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
@@ -269,7 +270,8 @@ func TestWaitTillSafeToShutdown(t *testing.T) {
 			}
 
 			ep := &egressProxy{
-				podIPv4: podIP,
+				podIPv4:    podIP,
+				shortSleep: time.Millisecond,
 				client: &mockHTTPClient{
 					podIP:     podIP,
 					anotherIP: anotherIP,

@@ -8,9 +8,9 @@ package magicsock
 import (
 	"errors"
 
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/disco"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
+	"golang.org/x/sys/unix"
 )
 
 // Peer path MTU routines shared by platforms that implement it.

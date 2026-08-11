@@ -12,8 +12,8 @@ import (
 	"os"
 	"syscall"
 
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"golang.org/x/sys/unix"
 )
 
 const (

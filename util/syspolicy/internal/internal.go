@@ -8,10 +8,10 @@ package internal
 import (
 	"bytes"
 
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
 	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 // Init facilitates deferred invocation of initializers.

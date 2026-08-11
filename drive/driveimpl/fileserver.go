@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/tailscale/xnet/webdav"
 	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl/shared"
+	"github.com/tailscale/xnet/webdav"
 )
 
 // FileServer is a standalone WebDAV server that dynamically serves up shares.
@@ -102,7 +102,7 @@ func (s *FileServer) ClearSharesLocked() {
 // has been called first.
 func (s *FileServer) AddShareLocked(share, path string) {
 	s.shareHandlers[share] = &webdav.Handler{
-		FileSystem: &birthTimingFS{webdav.Dir(path)},
+		FileSystem: &birthTimingFS{&normalizingFS{webdav.Dir(path)}},
 		LockSystem: webdav.NewMemLS(),
 	}
 }

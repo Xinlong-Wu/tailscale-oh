@@ -7,11 +7,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/net/sockstats"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestResourceCleanup(t *testing.T) {

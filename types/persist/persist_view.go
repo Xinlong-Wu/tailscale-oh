@@ -9,12 +9,12 @@ import (
 	jsonv1 "encoding/json"
 	"errors"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
 	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 //go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/cloner  -clonefunc=false -type=Persist
@@ -96,7 +96,7 @@ func (v PersistView) NodeID() tailcfg.StableNodeID         { return v.ж.NodeID 
 func (v PersistView) AttestationKey() tailcfg.StableNodeID { panic("unsupported") }
 
 // DisallowedTKAStateIDs stores the tka.State.StateID values which
-// this node will not operate network lock on. This is used to
+// this node will not operate tailnet lock on. This is used to
 // prevent bootstrapping TKA onto a key authority which was forcibly
 // disabled.
 func (v PersistView) DisallowedTKAStateIDs() views.Slice[string] {

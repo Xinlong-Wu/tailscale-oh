@@ -9,8 +9,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"go4.org/netipx"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"go4.org/netipx"
 )
 
 func TestV4ToNum(t *testing.T) {

@@ -19,7 +19,7 @@ The core type is [Server](https://pkg.go.dev/tailscale.com/tsnet#Server), which 
 
 ## Usage
 
-	import "tailscale.com/tsnet"
+	import "github.com/Xinlong-Wu/tailscale-oh/tsnet"
 
 	s := &tsnet.Server{
 		Hostname: "my-service",
@@ -49,7 +49,7 @@ A [Server](https://pkg.go.dev/tailscale.com/tsnet#Server) authenticates using, i
 
  5. Workload identity federation ([Server.ClientID](https://pkg.go.dev/tailscale.com/tsnet#Server.ClientID) plus [Server.IDToken](https://pkg.go.dev/tailscale.com/tsnet#Server.IDToken) or [Server.Audience](https://pkg.go.dev/tailscale.com/tsnet#Server.Audience)). Available only if the program imports the feature:
 
-    import \_ "tailscale.com/feature/identityfederation"
+    import \_ "github.com/Xinlong-Wu/tailscale-oh/feature/identityfederation"
 
     The feature is not linked by default to keep the AWS SDK and other cloud-provider dependencies out of programs that don't use workload identity federation.
 

@@ -11,11 +11,11 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/localclient"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUpdateServeConfig(t *testing.T) {

@@ -15,8 +15,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/coder/websocket"
 	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/coder/websocket"
 )
 
 // NetConn converts a *websocket.Conn into a net.Conn.

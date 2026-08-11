@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestLRU(t *testing.T) {

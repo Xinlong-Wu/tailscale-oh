@@ -16,9 +16,9 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/Xinlong-Wu/tailscale-oh/tsweb"
 	"github.com/andybalholm/brotli"
 	"golang.org/x/sync/errgroup"
-	"github.com/Xinlong-Wu/tailscale-oh/tsweb"
 )
 
 // PrecompressDir compresses static assets in dirPath using Gzip and Brotli, so

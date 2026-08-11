@@ -19,7 +19,7 @@
 //
 // Or run directly from the module, no checkout required:
 //
-//	go run tailscale.com/cmd/tsnet-proxy@latest myapp 8080
+//	go run github.com/Xinlong-Wu/tailscale-oh/cmd/tsnet-proxy@latest myapp 8080
 package main
 
 import (

@@ -66,9 +66,9 @@ ENV VERSION_GIT_HASH=$VERSION_GIT_HASH
 ARG TARGETARCH
 
 RUN GOARCH=$TARGETARCH go install -ldflags="\
-      -X tailscale.com/version.longStamp=$VERSION_LONG \
-      -X tailscale.com/version.shortStamp=$VERSION_SHORT \
-      -X tailscale.com/version.gitCommitStamp=$VERSION_GIT_HASH" \
+      -X github.com/Xinlong-Wu/tailscale-oh/version.longStamp=$VERSION_LONG \
+      -X github.com/Xinlong-Wu/tailscale-oh/version.shortStamp=$VERSION_SHORT \
+      -X github.com/Xinlong-Wu/tailscale-oh/version.gitCommitStamp=$VERSION_GIT_HASH" \
       -v ./cmd/tailscale ./cmd/tailscaled ./cmd/containerboot
 
 FROM alpine:3.22

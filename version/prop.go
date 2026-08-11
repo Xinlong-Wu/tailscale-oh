@@ -33,7 +33,7 @@ const (
 
 // IsMobile reports whether this is a mobile client build.
 func IsMobile() bool {
-	return runtime.GOOS == "android" || runtime.GOOS == "ios" || runtime.IsOpenharmony
+	return runtime.GOOS == "android" || runtime.GOOS == "ios" || isOpenHarmony
 }
 
 // OS returns runtime.GOOS, except instead of returning "darwin" it returns
@@ -54,7 +54,7 @@ func OS() string {
 	if runtime.GOOS == "darwin" {
 		return "macOS"
 	}
-	if runtime.IsOpenharmony {
+	if isOpenHarmony {
 		return "OpenHarmony"
 	}
 	return runtime.GOOS

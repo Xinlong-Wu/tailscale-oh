@@ -18,7 +18,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
@@ -28,6 +27,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/lineiter"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
 	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
+	"go4.org/mem"
 )
 
 var started = time.Now()

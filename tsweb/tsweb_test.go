@@ -20,13 +20,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/Xinlong-Wu/tailscale-oh/metrics"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 	"github.com/Xinlong-Wu/tailscale-oh/util/vizerror"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 type noopHijacker struct {
@@ -1222,12 +1222,12 @@ func TestCleanRedirectURL(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		{"http://github.com/Xinlong-Wu/tailscale-oh/foo", tailscaleHost, "http://github.com/Xinlong-Wu/tailscale-oh/foo", false},
-		{"http://github.com/Xinlong-Wu/tailscale-oh/foo", tailscaleAndOtherHost, "http://github.com/Xinlong-Wu/tailscale-oh/foo", false},
+		{"http://tailscale.com/foo", tailscaleHost, "http://tailscale.com/foo", false},
+		{"http://tailscale.com/foo", tailscaleAndOtherHost, "http://tailscale.com/foo", false},
 		{"http://microsoft.com/foo", tailscaleAndOtherHost, "http://microsoft.com/foo", false},
-		{"https://github.com/Xinlong-Wu/tailscale-oh/foo", tailscaleHost, "https://github.com/Xinlong-Wu/tailscale-oh/foo", false},
+		{"https://tailscale.com/foo", tailscaleHost, "https://tailscale.com/foo", false},
 		{"/foo", tailscaleHost, "/foo", false},
-		{"//github.com/Xinlong-Wu/tailscale-oh/foo", tailscaleHost, "//github.com/Xinlong-Wu/tailscale-oh/foo", false},
+		{"//tailscale.com/foo", tailscaleHost, "//tailscale.com/foo", false},
 		{"/a/foobar", tailscaleHost, "/a/foobar", false},
 		{"http://127.0.0.1/a/foobar", localHost, "http://127.0.0.1/a/foobar", false},
 		{"http://127.0.0.1:123/a/foobar", localHost, "http://127.0.0.1:123/a/foobar", false},

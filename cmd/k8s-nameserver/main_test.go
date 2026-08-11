@@ -9,9 +9,9 @@ import (
 	"net"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
 	"github.com/google/go-cmp/cmp"
 	"github.com/miekg/dns"
-	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
 )
 
 func TestNameserver(t *testing.T) {

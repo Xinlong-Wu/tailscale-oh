@@ -12,7 +12,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/egressservices"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/ingressservices"
@@ -20,6 +19,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeclient"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestSetupKube(t *testing.T) {

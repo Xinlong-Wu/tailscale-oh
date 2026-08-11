@@ -14,6 +14,13 @@ import (
 	"os/exec"
 	"sync"
 
+	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
+	"github.com/Xinlong-Wu/tailscale-oh/syncs"
+	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/insomniacslk/dhcp/dhcpv4"
 	"github.com/tailscale/wireguard-go/tun"
 	"golang.org/x/sys/unix"
@@ -23,13 +30,6 @@ import (
 	"gvisor.dev/gvisor/pkg/tcpip/network/ipv4"
 	"gvisor.dev/gvisor/pkg/tcpip/network/ipv6"
 	"gvisor.dev/gvisor/pkg/tcpip/transport/udp"
-	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
-	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
-	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
-	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
-	"github.com/Xinlong-Wu/tailscale-oh/syncs"
-	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
-	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // TODO: this was randomly generated once. Maybe do it per process start? But

@@ -9,13 +9,13 @@ import (
 	"strings"
 	"sync"
 
-	"golang.org/x/sys/windows"
-	"golang.org/x/sys/windows/registry"
 	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal/loggerx"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/setting"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/gp"
+	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/registry"
 )
 
 const (

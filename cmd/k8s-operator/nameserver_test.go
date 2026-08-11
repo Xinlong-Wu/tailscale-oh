@@ -28,7 +28,7 @@ import (
 
 func TestNameserverReconciler(t *testing.T) {
 	dnsConfig := &tsapi.DNSConfig{
-		TypeMeta: metav1.TypeMeta{Kind: "DNSConfig", APIVersion: "github.com/Xinlong-Wu/tailscale-oh/v1alpha1"},
+		TypeMeta: metav1.TypeMeta{Kind: "DNSConfig", APIVersion: "tailscale.com/v1alpha1"},
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "test",
 		},

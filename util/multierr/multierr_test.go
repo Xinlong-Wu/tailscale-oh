@@ -9,10 +9,10 @@ import (
 	"io"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/util/multierr"
 	qt "github.com/frankban/quicktest"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/Xinlong-Wu/tailscale-oh/util/multierr"
 )
 
 func TestAll(t *testing.T) {

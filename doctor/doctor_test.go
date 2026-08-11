@@ -9,8 +9,8 @@ import (
 	"sync"
 	"testing"
 
-	qt "github.com/frankban/quicktest"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	qt "github.com/frankban/quicktest"
 )
 
 func TestRunChecks(t *testing.T) {

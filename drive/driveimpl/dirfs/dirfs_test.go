@@ -13,10 +13,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/tailscale/xnet/webdav"
 	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl/shared"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/google/go-cmp/cmp"
+	"github.com/tailscale/xnet/webdav"
 )
 
 func TestStat(t *testing.T) {

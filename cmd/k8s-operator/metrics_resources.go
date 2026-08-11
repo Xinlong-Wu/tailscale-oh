@@ -11,6 +11,9 @@ import (
 	"maps"
 	"reflect"
 
+	kube "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -19,13 +22,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	kube "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
-	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
-	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 )
 
 const (
-	labelMetricsTarget = "github.com/Xinlong-Wu/tailscale-oh/metrics-target"
+	labelMetricsTarget = "tailscale.com/metrics-target"
 
 	// These labels get transferred from the metrics Service to the ingested Prometheus metrics.
 	labelPromProxyType            = "ts_proxy_type"
@@ -55,7 +55,7 @@ type ServiceMonitorSpec struct {
 	JobLabel string `json:"jobLabel"`
 	// NamespaceSelector selects the namespace of Service(s) that this ServiceMonitor allows to scrape.
 	// https://github.com/prometheus-operator/prometheus-operator/blob/bb4514e0d5d69f20270e29cfd4ad39b87865ccdf/pkg/apis/monitoring/v1/servicemonitor_types.go#L88
-	NamespaceSelector ServiceMonitorNamespaceSelector `json:"namespaceSelector,omitempty"`
+	NamespaceSelector ServiceMonitorNamespaceSelector `json:"namespaceSelector"`
 	// Selector is the label selector for Service(s) that this ServiceMonitor allows to scrape.
 	// https://github.com/prometheus-operator/prometheus-operator/blob/bb4514e0d5d69f20270e29cfd4ad39b87865ccdf/pkg/apis/monitoring/v1/servicemonitor_types.go#L85
 	Selector metav1.LabelSelector `json:"selector"`

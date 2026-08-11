@@ -17,12 +17,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/coder/websocket"
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlbase"
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlhttp/controlhttpcommon"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netutil"
 	"github.com/Xinlong-Wu/tailscale-oh/net/wsconn"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"github.com/coder/websocket"
 )
 
 // AcceptHTTP upgrades the HTTP request given by w and r into a Tailscale

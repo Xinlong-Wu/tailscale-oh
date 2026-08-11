@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"syscall"
 
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"golang.org/x/sys/unix"
 )
 
 // bypassControlFunc is set as net.Dialer.Control so that sockets dialed by

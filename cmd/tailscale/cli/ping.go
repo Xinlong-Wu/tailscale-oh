@@ -15,11 +15,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/ffcomplete"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 var pingCmd = &ffcli.Command{

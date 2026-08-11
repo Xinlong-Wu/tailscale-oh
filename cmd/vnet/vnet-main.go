@@ -21,10 +21,10 @@ import (
 	"slices"
 	"time"
 
-	"github.com/coder/websocket"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/natlab/vnet"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/coder/websocket"
 )
 
 var (

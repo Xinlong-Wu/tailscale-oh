@@ -12,14 +12,14 @@ import (
 	"strconv"
 	"strings"
 
+	k8soperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	k8soperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
-	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
-	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 )
 
 const (

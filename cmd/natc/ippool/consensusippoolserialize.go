@@ -10,10 +10,10 @@ import (
 	"maps"
 	"net/netip"
 
-	"github.com/hashicorp/raft"
-	"go4.org/netipx"
 	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/hashicorp/raft"
+	"go4.org/netipx"
 )
 
 // Snapshot and Restore enable the raft lib to do log compaction.

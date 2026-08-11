@@ -12,11 +12,11 @@ import (
 	"log"
 	"sync"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/google/go-tpm/tpm2"
 	"github.com/google/go-tpm/tpm2/transport"
 	"golang.org/x/crypto/cryptobyte"
 	"golang.org/x/crypto/cryptobyte/asn1"
-	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 )
 
 type attestationKey struct {

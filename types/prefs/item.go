@@ -6,11 +6,11 @@ package prefs
 import (
 	"fmt"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 // Item is a single preference item that can be configured.

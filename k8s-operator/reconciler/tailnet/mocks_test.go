@@ -9,7 +9,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
+	"tailscale.com/client/tailscale/v2"
 
 	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/tsclient"
 )

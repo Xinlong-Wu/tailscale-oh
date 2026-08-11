@@ -11,14 +11,14 @@ import (
 	"net/netip"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
 	"github.com/Xinlong-Wu/tailscale-oh/types/tkatype"
 	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 //go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/cloner  -clonefunc=true -type=User,Node,Hostinfo,NetInfo,Login,DNSConfig,RegisterResponse,RegisterResponseAuth,RegisterRequest,DERPHomeParams,DERPRegion,DERPMap,DERPNode,SSHRule,SSHAction,SSHPrincipal,ControlDialPlan,Location,UserProfile,VIPService,SSHPolicy
@@ -273,8 +273,8 @@ func (v NodeView) MachineAuthorized() bool { return v.ж.MachineAuthorized }
 // They're free-form strings, but should be in the form of URLs/URIs
 // such as:
 //
-//	"https://github.com/Xinlong-Wu/tailscale-oh/cap/is-admin"
-//	"https://github.com/Xinlong-Wu/tailscale-oh/cap/file-sharing"
+//	"https://tailscale.com/cap/is-admin"
+//	"https://tailscale.com/cap/file-sharing"
 //
 // Deprecated: use CapMap instead. See https://github.com/tailscale/tailscale/issues/11508
 func (v NodeView) Capabilities() views.Slice[NodeCapability] { return views.SliceOf(v.ж.Capabilities) }
@@ -550,6 +550,14 @@ func (v HostinfoView) ShareeNode() bool { return v.ж.ShareeNode }
 // indicates that the user has opted out of sending logs and support
 func (v HostinfoView) NoLogsNoSupport() bool { return v.ж.NoLogsNoSupport }
 
+// RemoteConfig is whether the node has both linked
+// feature/remoteconfig into its binary and enabled
+// Prefs.RemoteConfig: it has delegated full remote management of
+// its prefs and LocalAPI to the tailnet admin via the
+// /remoteapi/localapi/* c2n endpoint. See feature/remoteconfig for
+// the trust model.
+func (v HostinfoView) RemoteConfig() bool { return v.ж.RemoteConfig }
+
 // WireIngress indicates that the node would like to be wired up server-side
 // (DNS, etc) to be able to use Tailscale Funnel, even if it's not currently
 // enabled. For example, the user might only use it for intermittent
@@ -562,7 +570,10 @@ func (v HostinfoView) WireIngress() bool { return v.ж.WireIngress }
 // if the node has any funnel endpoint enabled
 func (v HostinfoView) IngressEnabled() bool { return v.ж.IngressEnabled }
 
-// indicates that the node has opted-in to admin-console-drive remote updates
+// AllowsUpdate reports that the node has opted in to
+// admin-console-driven remote updates and that the running binary
+// includes client update support (the feature/clientupdate package,
+// which tsnet apps don't include).
 func (v HostinfoView) AllowsUpdate() bool { return v.ж.AllowsUpdate }
 
 // the current host's machine type (uname -m)
@@ -649,6 +660,7 @@ var _HostinfoViewNeedsRegeneration = Hostinfo(struct {
 	ShieldsUp       bool
 	ShareeNode      bool
 	NoLogsNoSupport bool
+	RemoteConfig    bool
 	WireIngress     bool
 	IngressEnabled  bool
 	AllowsUpdate    bool
@@ -777,7 +789,7 @@ func (v NetInfoView) PCP() opt.Bool { return v.ж.PCP }
 
 // PreferredDERP is this node's preferred (home) DERP region ID.
 // This is where the node expects to be contacted to begin a
-// peer-to-peer connection. The node might be be temporarily
+// peer-to-peer connection. The node might be temporarily
 // connected to multiple DERP servers (to speak to other nodes
 // that are located elsewhere) but PreferredDERP is the region ID
 // that the node subscribes to traffic at.
@@ -1349,7 +1361,7 @@ func (v RegisterRequestView) Hostinfo() HostinfoView { return v.ж.Hostinfo.View
 func (v RegisterRequestView) Ephemeral() bool { return v.ж.Ephemeral }
 
 // NodeKeySignature is the node's own node-key signature, re-signed
-// for its new node key using its network-lock key.
+// for its new node key using its tailnet-lock key.
 //
 // This field is set when the client retries registration after learning
 // its NodeKeySignature (which is in need of rotation).
@@ -2095,6 +2107,11 @@ func (v SSHActionView) Accept() bool { return v.ж.Accept }
 
 // SessionDuration, if non-zero, is how long the session can stay open
 // before being forcefully terminated.
+// It is encoded as an int64 of nanoseconds (Go's time.Duration
+// wire format for encoding/json v1). It must not use a jsonv2
+// format tag; the mere presence of one makes Go 1.27's
+// encoding/json fail to decode the struct. See
+// https://github.com/tailscale/tailscale/issues/20528.
 func (v SSHActionView) SessionDuration() time.Duration { return v.ж.SessionDuration }
 
 // AllowAgentForwarding, if true, allows accepted connections to forward

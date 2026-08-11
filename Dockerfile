@@ -41,6 +41,7 @@ FROM golang:1.26-alpine AS build-env
 WORKDIR /go/src/tailscale
 
 COPY go.mod go.sum ./
+COPY compat/tailscale/go.mod ./compat/tailscale/go.mod
 RUN go mod download
 
 # Pre-build some stuff before the following COPY line invalidates the Docker cache.

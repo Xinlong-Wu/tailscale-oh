@@ -7,27 +7,150 @@ on:
     paths:
       - .github/upstream-release.json
   workflow_dispatch:
+    inputs:
+      commit:
+        description: Exact main commit to release after its push CI succeeded
+        required: true
+        type: string
 
 permissions:
+  actions: read
   contents: write
 
 concurrency:
-  group: release-upstream-sync
+  group: release-upstream-sync-${{ github.event_name == 'push' && github.sha || inputs.commit }}
   cancel-in-progress: false
 
 jobs:
   release:
-    if: github.repository == 'Xinlong-Wu/tailscale-oh' && github.ref == 'refs/heads/main'
+    if: >-
+      github.repository == 'Xinlong-Wu/tailscale-oh' &&
+      ((github.event_name == 'push' &&
+        github.ref == 'refs/heads/main') ||
+       (github.event_name == 'workflow_dispatch' &&
+        github.ref == 'refs/heads/main'))
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
+      RELEASE_COMMIT: ${{ github.event_name == 'push' && github.sha || inputs.commit }}
     steps:
-      - name: Check out main
+      - name: Resolve release candidate
+        id: candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! "$RELEASE_COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "invalid release commit: $RELEASE_COMMIT" >&2
+            exit 1
+          fi
+          echo "commit=$RELEASE_COMMIT" >> "$GITHUB_OUTPUT"
+
+      - name: Check out validated CI commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ steps.candidate.outputs.commit }}
+
+      - name: Validate main history
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$(git rev-parse HEAD)" != "$RELEASE_COMMIT" ]]; then
+            echo "checked-out commit does not match $RELEASE_COMMIT" >&2
+            exit 1
+          fi
+
+          git fetch --no-tags --force origin main:refs/remotes/origin/main
+          if ! git merge-base --is-ancestor "$RELEASE_COMMIT" origin/main; then
+            echo "$RELEASE_COMMIT is not in the current main history" >&2
+            exit 1
+          fi
+
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            echo "manual recovery requested for main commit $RELEASE_COMMIT"
+          fi
+
+      - name: Wait for successful main CI
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          deadline=$((SECONDS + 10800))
+          ci_succeeded=false
+          while (( SECONDS < deadline )); do
+            run="$(gh api \
+              --method GET \
+              "repos/${GITHUB_REPOSITORY}/actions/workflows/test.yml/runs" \
+              -f branch=main \
+              -f event=push \
+              -f head_sha="$RELEASE_COMMIT" \
+              -f per_page=100 \
+              --jq ".workflow_runs | map(select(.head_sha == \"$RELEASE_COMMIT\" and .head_branch == \"main\" and .event == \"push\")) | sort_by(.created_at) | reverse | .[0] | if . == null then empty else [.id, .status, (.conclusion // \"\")] | @tsv end")"
+
+            if [[ -z "$run" ]]; then
+              echo "waiting for main CI to appear for $RELEASE_COMMIT"
+              sleep 15
+              continue
+            fi
+
+            IFS=$'\t' read -r run_id status conclusion <<<"$run"
+            case "$status:$conclusion" in
+              completed:success)
+                echo "main CI run $run_id succeeded"
+                ci_succeeded=true
+                break
+                ;;
+              completed:*)
+                echo "main CI run $run_id completed with $conclusion" >&2
+                exit 1
+                ;;
+              *)
+                echo "waiting for main CI run $run_id ($status)"
+                sleep 30
+                ;;
+            esac
+          done
+
+          if [[ "$ci_succeeded" != "true" ]]; then
+            echo "timed out waiting for main CI on $RELEASE_COMMIT" >&2
+            exit 1
+          fi
+
+      - name: Check whether release metadata changed
+        id: changed
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+
+          read -r -a parents <<<"$(git show -s --format=%P HEAD)"
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            # Manual dispatch is the recovery path when a later main commit
+            # fixes a failed release candidate without changing the manifest.
+            changed=true
+          elif (( ${#parents[@]} == 0 )); then
+            changed=true
+          elif git diff --quiet "${parents[0]}" HEAD -- .github/upstream-release.json; then
+            # For a PR merge, the first parent is the pre-merge main commit.
+            # Compare against that integration baseline, not the PR-head parent.
+            changed=false
+          else
+            changed=true
+          fi
+
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          if [[ "$changed" != "true" ]]; then
+            echo "release metadata did not change in $RELEASE_COMMIT; nothing to publish"
+          fi
 
       - name: Validate upstream release metadata
+        if: steps.changed.outputs.changed == 'true'
         id: metadata
         shell: bash
         run: |
@@ -62,7 +185,7 @@ jobs:
             echo "unexpected Go module path: $module" >&2
             exit 1
           fi
-          if [[ "$(git rev-parse HEAD)" != "$GITHUB_SHA" ]]; then
+          if [[ "$(git rev-parse HEAD)" != "$RELEASE_COMMIT" ]]; then
             echo "checked-out commit does not match the triggering commit" >&2
             exit 1
           fi
@@ -77,12 +200,15 @@ jobs:
             exit 1
           fi
 
-          echo "tag=$upstream_tag" >> "$GITHUB_OUTPUT"
-          echo "upstream_repository=$upstream_repository" >> "$GITHUB_OUTPUT"
-          echo "upstream_commit=$upstream_commit" >> "$GITHUB_OUTPUT"
-          echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
+          {
+            echo "tag=$upstream_tag"
+            echo "upstream_repository=$upstream_repository"
+            echo "upstream_commit=$upstream_commit"
+            echo "prerelease=$prerelease"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create tag and GitHub Release
+        if: steps.changed.outputs.changed == 'true'
         shell: bash
         env:
           RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
@@ -97,16 +223,16 @@ jobs:
             existing_commit="$(git ls-remote origin "refs/tags/${RELEASE_TAG}" | awk 'NR == 1 {print $1}')"
           fi
 
-          if [[ -n "$existing_commit" && "$existing_commit" != "$GITHUB_SHA" ]]; then
-            echo "$RELEASE_TAG already points to $existing_commit, not $GITHUB_SHA" >&2
+          if [[ -n "$existing_commit" && "$existing_commit" != "$RELEASE_COMMIT" ]]; then
+            echo "$RELEASE_TAG already points to $existing_commit, not $RELEASE_COMMIT" >&2
             exit 1
           fi
 
           if [[ -z "$existing_commit" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git tag -a "$RELEASE_TAG" "$GITHUB_SHA" -m "Release $RELEASE_TAG"
-            git push origin "refs/tags/$RELEASE_TAG"
+            git tag -a "$RELEASE_TAG" "$RELEASE_COMMIT" -m "Release $RELEASE_TAG"
+            git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "refs/tags/$RELEASE_TAG"
           else
             echo "$RELEASE_TAG already points to the current main commit"
           fi
@@ -117,11 +243,12 @@ jobs:
           fi
 
           upstream_release="https://github.com/${UPSTREAM_REPOSITORY}/releases/tag/${RELEASE_TAG}"
+          # shellcheck disable=SC2016 # Backticks are intentional Markdown delimiters.
           printf -v notes '%s\n\n%s\n\n- Upstream commit: `%s`\n- OpenHarmony fork commit: `%s`\n' \
             "OpenHarmony fork release synchronized from [${UPSTREAM_REPOSITORY} ${RELEASE_TAG}](${upstream_release})." \
             "This release keeps the fork-specific OpenHarmony adaptations on top of the upstream release." \
             "$UPSTREAM_COMMIT" \
-            "$GITHUB_SHA"
+            "$RELEASE_COMMIT"
 
           release_flags=(--latest)
           if [[ "$PRERELEASE" == "true" ]]; then

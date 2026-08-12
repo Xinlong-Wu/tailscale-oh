@@ -14,11 +14,11 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/tka"
+	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"golang.org/x/crypto/blake2s"
-	"github.com/Xinlong-Wu/tailscale-oh/tka"
-	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
 // returns a random source based on the test name + extraSeed.

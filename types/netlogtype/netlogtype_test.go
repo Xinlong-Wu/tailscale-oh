@@ -11,8 +11,8 @@ import (
 	"net/netip"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMaxSize(t *testing.T) {

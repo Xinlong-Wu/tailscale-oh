@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/internal"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/ptype"
+	jsonv2 "github.com/go-json-experiment/json"
 )
 
 const (

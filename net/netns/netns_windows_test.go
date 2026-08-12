@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/tsconst"
 	"golang.org/x/sys/windows"
 	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
-	"github.com/Xinlong-Wu/tailscale-oh/tsconst"
 )
 
 func TestGetInterfaceIndex(t *testing.T) {

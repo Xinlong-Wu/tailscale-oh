@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 	"golang.org/x/net/icmp"
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
-	"github.com/Xinlong-Wu/tailscale-oh/tstest"
-	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 )
 
 var (

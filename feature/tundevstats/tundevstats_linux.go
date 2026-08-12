@@ -15,12 +15,12 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/mdlayher/netlink"
-	"github.com/tailscale/wireguard-go/tun"
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
 	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/mdlayher/netlink"
+	"github.com/tailscale/wireguard-go/tun"
+	"golang.org/x/sys/unix"
 )
 
 func init() {
@@ -35,7 +35,7 @@ func init() {
 }
 
 // poller polls TUN device stats via netlink, and surfaces them via
-// [tailscale.com/util/clientmetric].
+// [github.com/Xinlong-Wu/tailscale-oh/util/clientmetric].
 type poller struct {
 	conn         *netlink.Conn
 	ifIndex      uint32
@@ -102,7 +102,7 @@ func newPoller(tdev tun.Device) (io.Closer, error) {
 
 const (
 	// pollInterval is how frequently [poller] polls TUN device statistics. Its
-	// value mirrors [tailscale.com/util/clientmetric.minMetricEncodeInterval],
+	// value mirrors [github.com/Xinlong-Wu/tailscale-oh/util/clientmetric.minMetricEncodeInterval],
 	// which is the minimum interval between clientmetrics emissions.
 	pollInterval = 15 * time.Second
 )

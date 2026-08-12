@@ -29,7 +29,7 @@ func TestFindModuleInfo(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefix := "path\tgithub.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled\nmod\ttailscale.com"
+	prefix := "path\tgithub.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled\nmod\tgithub.com/Xinlong-Wu/tailscale-oh"
 	if !strings.HasPrefix(modinfo, prefix) {
 		t.Errorf("unexpected modinfo contents %q", modinfo)
 	}

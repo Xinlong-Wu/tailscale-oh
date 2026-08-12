@@ -6,13 +6,13 @@ package wgengine_test
 import (
 	"testing"
 
-	"github.com/tailscale/wireguard-go/tun"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
 	"github.com/Xinlong-Wu/tailscale-oh/tsd"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	"github.com/tailscale/wireguard-go/tun"
 )
 
 func TestIsNetstack(t *testing.T) {

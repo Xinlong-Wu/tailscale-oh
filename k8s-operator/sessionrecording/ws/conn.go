@@ -17,10 +17,10 @@ import (
 	"net"
 	"sync"
 
-	"go.uber.org/zap"
-	"k8s.io/apimachinery/pkg/util/remotecommand"
 	"github.com/Xinlong-Wu/tailscale-oh/k8s-operator/sessionrecording/tsrecorder"
 	"github.com/Xinlong-Wu/tailscale-oh/sessionrecording"
+	"go.uber.org/zap"
+	"k8s.io/apimachinery/pkg/util/remotecommand"
 )
 
 // New wraps the provided network connection and returns a connection whose reads and writes will get triggered as data is received on the hijacked connection.
@@ -273,9 +273,12 @@ func (c *conn) processFrames(
 		// Control frames: pass through without inspection.
 		if isControlMessage(typ) {
 			maskSet := isMasked(b)
-			payloadLen, payloadOffset, _, err := fragmentDimensions(b, maskSet)
+			payloadLen, payloadOffset, _, ok, err := fragmentDimensions(b, maskSet)
 			if err != nil {
 				return nil, fmt.Errorf("error parsing control frame: %w", err)
+			}
+			if !ok {
+				return raw, nil // incomplete control frame header
 			}
 			frameLen := int(payloadOffset + payloadLen)
 			if len(b) < frameLen {

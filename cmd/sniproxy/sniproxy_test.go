@@ -18,7 +18,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
@@ -30,6 +29,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestPortForwardingArguments(t *testing.T) {

@@ -12,11 +12,6 @@ import (
 	"testing"
 	"time"
 
-	qt "github.com/frankban/quicktest"
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
-	"go4.org/mem"
-	"golang.org/x/crypto/blake2s"
 	"github.com/Xinlong-Wu/tailscale-oh/disco"
 	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 	"github.com/Xinlong-Wu/tailscale-oh/tstime/mono"
@@ -24,6 +19,11 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 	"github.com/Xinlong-Wu/tailscale-oh/util/usermetric"
+	qt "github.com/frankban/quicktest"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+	"go4.org/mem"
+	"golang.org/x/crypto/blake2s"
 )
 
 type testClient struct {
@@ -214,7 +214,7 @@ func TestServer(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			reg := new(usermetric.Registry)
 			deregisterMetrics()
-			server, err := NewServer(t.Logf, 0, true, reg)
+			server, err := NewServer(t.Logf, 0, true, reg, nil)
 			if err != nil {
 				t.Fatal(err)
 			}

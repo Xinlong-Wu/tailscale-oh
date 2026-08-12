@@ -21,9 +21,9 @@ import (
 	"strings"
 	"sync"
 
-	"golang.org/x/crypto/ssh"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"golang.org/x/crypto/ssh"
 )
 
 // keyTypes are the SSH key types that we either try to read from the

@@ -11,7 +11,6 @@ import (
 	"net"
 	"net/http"
 	"net/netip"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -20,6 +19,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/net/portmapper"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/util/def"
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 )
 
@@ -66,7 +66,7 @@ func serveDebugPortmap(h *localapi.Handler, w http.ResponseWriter, r *http.Reque
 		}
 	}
 
-	if defBool(r.FormValue("log_http"), false) {
+	if def.Bool(r.FormValue("log_http"), false) {
 		debugKnobs.LogHTTP = true
 	}
 
@@ -190,15 +190,4 @@ func serveDebugPortmap(h *localapi.Handler, w http.ResponseWriter, r *http.Reque
 			h.Logf("serveDebugPortmap: context done: %v", ctx.Err())
 		}
 	}
-}
-
-func defBool(a string, def bool) bool {
-	if a == "" {
-		return def
-	}
-	v, err := strconv.ParseBool(a)
-	if err != nil {
-		return def
-	}
-	return v
 }

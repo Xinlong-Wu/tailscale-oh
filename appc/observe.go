@@ -9,8 +9,8 @@ import (
 	"net/netip"
 	"strings"
 
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 // ObserveDNSResponse is a callback invoked by the DNS resolver when a DNS

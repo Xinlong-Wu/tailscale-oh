@@ -14,13 +14,13 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/kortschak/wol"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
+	"github.com/kortschak/wol"
 )
 
 func init() {

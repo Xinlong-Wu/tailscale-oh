@@ -11,11 +11,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/tailscale/wireguard-go/tun"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	"github.com/tailscale/wireguard-go/tun"
 )
 
 func init() {

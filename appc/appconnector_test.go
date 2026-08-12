@@ -13,9 +13,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/Xinlong-Wu/tailscale-oh/appc/appctest"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
@@ -24,6 +21,9 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 func TestUpdateDomains(t *testing.T) {

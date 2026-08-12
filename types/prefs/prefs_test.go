@@ -11,10 +11,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
 	"github.com/google/go-cmp/cmp"
-	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 )
 
 //go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/viewer --tags=test --type=TestPrefs,TestBundle,TestValueStruct,TestGenericStruct,TestPrefsGroup

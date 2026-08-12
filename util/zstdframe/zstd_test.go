@@ -12,8 +12,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/klauspost/compress/zstd"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/klauspost/compress/zstd"
 )
 
 // Use the concatenation of all Go source files in zstdframe as testdata.

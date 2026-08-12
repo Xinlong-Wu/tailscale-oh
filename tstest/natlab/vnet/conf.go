@@ -13,12 +13,12 @@ import (
 	"slices"
 	"time"
 
-	"github.com/google/gopacket/layers"
-	"github.com/google/gopacket/pcapgo"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"github.com/google/gopacket/layers"
+	"github.com/google/gopacket/pcapgo"
 )
 
 // Note: the exported Node and Network are the configuration types;
@@ -443,6 +443,12 @@ func (n *Network) CanTakeMoreNodes() bool {
 // implemented behavior is to conditionally blackhole traffic to control.
 func (n *Network) PostConnectedToControl() {
 	n.network.SetControlBlackholed(n.postConnectBlackholeControl)
+}
+
+// BlackholeControlForAddr sets weither the network should drop all control
+// traffic for the specified addr starting immediately.
+func (n *Network) BlackholeControlForAddr(addr netip.Addr) {
+	n.network.BlackholeControlForAddr(addr)
 }
 
 // NetworkService is a service that can be added to a network.

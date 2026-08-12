@@ -20,18 +20,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/tailscale/wireguard-go/conn"
-	"gvisor.dev/gvisor/pkg/refs"
-	"gvisor.dev/gvisor/pkg/tcpip"
-	"gvisor.dev/gvisor/pkg/tcpip/adapters/gonet"
-	"gvisor.dev/gvisor/pkg/tcpip/header"
-	"gvisor.dev/gvisor/pkg/tcpip/network/ipv4"
-	"gvisor.dev/gvisor/pkg/tcpip/network/ipv6"
-	"gvisor.dev/gvisor/pkg/tcpip/stack"
-	"gvisor.dev/gvisor/pkg/tcpip/transport/icmp"
-	"gvisor.dev/gvisor/pkg/tcpip/transport/tcp"
-	"gvisor.dev/gvisor/pkg/tcpip/transport/udp"
-	"gvisor.dev/gvisor/pkg/waiter"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
@@ -59,6 +47,18 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/magicsock"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack/gro"
+	"github.com/tailscale/wireguard-go/conn"
+	"gvisor.dev/gvisor/pkg/refs"
+	"gvisor.dev/gvisor/pkg/tcpip"
+	"gvisor.dev/gvisor/pkg/tcpip/adapters/gonet"
+	"gvisor.dev/gvisor/pkg/tcpip/header"
+	"gvisor.dev/gvisor/pkg/tcpip/network/ipv4"
+	"gvisor.dev/gvisor/pkg/tcpip/network/ipv6"
+	"gvisor.dev/gvisor/pkg/tcpip/stack"
+	"gvisor.dev/gvisor/pkg/tcpip/transport/icmp"
+	"gvisor.dev/gvisor/pkg/tcpip/transport/tcp"
+	"gvisor.dev/gvisor/pkg/tcpip/transport/udp"
+	"gvisor.dev/gvisor/pkg/waiter"
 )
 
 const debugPackets = false
@@ -216,6 +216,7 @@ type Impl struct {
 	dialer    *tsdial.Dialer
 	ctx       context.Context        // alive until Close
 	ctxCancel context.CancelFunc     // called on Close
+	injectWG  sync.WaitGroup         // wait for the inject goroutine
 	lb        *ipnlocal.LocalBackend // or nil
 	dns       *dns.Manager
 
@@ -450,6 +451,7 @@ func (ns *Impl) Close() error {
 	ns.ctxCancel()
 	ns.ipstack.Close()
 	ns.ipstack.Wait()
+	ns.injectWG.Wait()
 	return nil
 }
 
@@ -644,7 +646,9 @@ func (ns *Impl) Start(b LocalBackend) error {
 	udpFwd := udp.NewForwarder(ns.ipstack, ns.acceptUDPNoICMP)
 	ns.ipstack.SetTransportProtocolHandler(tcp.ProtocolNumber, ns.wrapTCPProtocolHandler(tcpFwd.HandlePacket))
 	ns.ipstack.SetTransportProtocolHandler(udp.ProtocolNumber, ns.wrapUDPProtocolHandler(udpFwd.HandlePacket))
-	go ns.inject()
+	ns.injectWG.Go(func() {
+		ns.inject()
+	})
 	if ns.ready.Swap(true) {
 		panic("already started")
 	}
@@ -876,7 +880,7 @@ func (ns *Impl) handleLocalPackets(p *packet.Parsed, t *tstun.Wrapper, gro *gro.
 			return filter.Accept, gro
 		}
 		if p.IPProto != ipproto.TCP {
-			// We currenly only support VIP services over TCP. If service is in Tun mode,
+			// We currently only support VIP services over TCP. If service is in Tun mode,
 			// it's up to the service host to set up local packet handling which shouldn't
 			// arrive here.
 			return filter.DropSilently, gro
@@ -1677,6 +1681,17 @@ func (ns *Impl) acceptTCP(r *tcp.ForwarderRequest) {
 		// whatever random service happens to be listening on the
 		// host's loopback at that port. Reject cleanly with a RST
 		// here instead.
+		r.Complete(true) // sends a RST
+		return
+	case ns.isVIPServiceIP(dialIP):
+		// TCP to a VIP service IP on a port the service does not serve. A served
+		// port returns early above (TCPHandlerForDst is non-nil), so reaching here
+		// means this node has no serve handler for this port. Don't fall through
+		// to the isTailscaleIP case below (a VIP is in the Tailscale IP range),
+		// which would rewrite the dial target to 127.0.0.1:<port> and forwardTCP
+		// the connection onto whatever unrelated service happens to be listening
+		// on the host's loopback at that port — reachable via the service IP by
+		// any peer, even one granted access only to the service. Reject with a RST.
 		r.Complete(true) // sends a RST
 		return
 	case isTailscaleIP:

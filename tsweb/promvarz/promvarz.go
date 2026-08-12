@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/common/expfmt"
 	"github.com/Xinlong-Wu/tailscale-oh/tsweb"
 	"github.com/Xinlong-Wu/tailscale-oh/tsweb/varz"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/common/expfmt"
 )
 
 func init() {

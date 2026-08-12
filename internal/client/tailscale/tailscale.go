@@ -3,7 +3,7 @@
 
 // Package tailscale provides a minimal control plane API client for internal
 // use. A full client for 3rd party use is available at
-// github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2. The internal client is provided to avoid
+// tailscale.com/client/tailscale/v2. The internal client is provided to avoid
 // having to import that whole package.
 package tailscale
 

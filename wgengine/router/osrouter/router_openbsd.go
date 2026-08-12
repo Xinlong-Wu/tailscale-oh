@@ -10,8 +10,6 @@ import (
 	"net/netip"
 	"os/exec"
 
-	"github.com/tailscale/wireguard-go/tun"
-	"go4.org/netipx"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
@@ -19,6 +17,8 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	"github.com/tailscale/wireguard-go/tun"
+	"go4.org/netipx"
 )
 
 func init() {

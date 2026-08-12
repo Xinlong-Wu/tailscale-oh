@@ -11,8 +11,8 @@ import (
 
 	_ "embed"
 
-	"golang.org/x/tools/go/analysis"
 	"github.com/Xinlong-Wu/tailscale-oh/util/set"
+	"golang.org/x/tools/go/analysis"
 )
 
 var jsontagsAllowlist map[ReportKind]set.Set[string]
@@ -23,8 +23,8 @@ var jsontagsAllowlist map[ReportKind]set.Set[string]
 //
 // For example:
 //
-//	OmitEmptyUnsupportedInV1	github.com/Xinlong-Wu/tailscale-oh/path/to/package.StructType.FieldName
-//	OmitEmptyUnsupportedInV1	github.com/Xinlong-Wu/tailscale-oh/path/to/package.*.FieldName
+//	OmitEmptyUnsupportedInV1	tailscale.com/path/to/package.StructType.FieldName
+//	OmitEmptyUnsupportedInV1	tailscale.com/path/to/package.*.FieldName
 //
 // The struct type name may be "*" for anonymous struct types such
 // as those declared within a function or as a type literal in a variable.
@@ -53,8 +53,8 @@ func ParseAllowlist(s string) map[ReportKind]set.Set[string] {
 //
 //	{
 //		"OmitEmptyUnsupportedInV1": set.Of(
-//			"github.com/Xinlong-Wu/tailscale-oh/path/to/package.StructType.FieldName",
-//			"github.com/Xinlong-Wu/tailscale-oh/path/to/package.*.FieldName",
+//			"tailscale.com/path/to/package.StructType.FieldName",
+//			"tailscale.com/path/to/package.*.FieldName",
 //		),
 //	}
 //
@@ -74,7 +74,7 @@ const (
 	OmitEmptyShouldBeOmitZero             ReportKind = "OmitEmptyShouldBeOmitZero"
 	OmitEmptyShouldBeOmitZeroButHasIsZero ReportKind = "OmitEmptyShouldBeOmitZeroButHasIsZero"
 	StringOnNonNumericKind                ReportKind = "StringOnNonNumericKind"
-	FormatMissingOnTimeDuration           ReportKind = "FormatMissingOnTimeDuration"
+	FormatUnsupported                     ReportKind = "FormatUnsupported"
 )
 
 func (k ReportKind) message() string {
@@ -89,8 +89,8 @@ func (k ReportKind) message() string {
 		return "should probably use `omitzero` instead of `omitempty`"
 	case StringOnNonNumericKind:
 		return "must not use `string` on non-numeric types"
-	case FormatMissingOnTimeDuration:
-		return "must use an explicit `format` tag (e.g., `format:nano`) on a time.Duration type; see https://go.dev/issue/71631"
+	case FormatUnsupported:
+		return "must not use the `format` tag option; Go 1.27's encoding/json rejects it at runtime (see tailscale/tailscale#20528)"
 	default:
 		return string(k)
 	}

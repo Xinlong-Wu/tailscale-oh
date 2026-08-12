@@ -28,7 +28,6 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/term"
 	"github.com/Xinlong-Wu/tailscale-oh/atomicfile"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/feature"
@@ -43,6 +42,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/net/netknob"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netutil"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tlsdial"
 	"github.com/Xinlong-Wu/tailscale-oh/paths"
@@ -53,12 +53,15 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 	"github.com/Xinlong-Wu/tailscale-oh/util/racebuild"
-	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
-	"github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
 	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
+	"golang.org/x/term"
 )
+
+// GetLogTarget is an optional hook to register a function
+// that returns the log target URL to be used by logpolicy.
+var GetLogTarget feature.Hook[func() string]
 
 var getLogTargetOnce struct {
 	sync.Once
@@ -67,8 +70,12 @@ var getLogTargetOnce struct {
 
 func getLogTarget() string {
 	getLogTargetOnce.Do(func() {
-		envTarget, _ := os.LookupEnv("TS_LOG_TARGET")
-		getLogTargetOnce.v, _ = policyclient.Get().GetString(pkey.LogTarget, envTarget)
+		if f, ok := GetLogTarget.GetOk(); ok {
+			getLogTargetOnce.v = f()
+		}
+		if getLogTargetOnce.v == "" {
+			getLogTargetOnce.v, _ = os.LookupEnv("TS_LOG_TARGET")
+		}
 	})
 
 	return getLogTargetOnce.v
@@ -539,7 +546,18 @@ func (opts Options) init(disableLogging bool) (*logtail.Config, *Policy) {
 		// anyway, no need to add one.
 		lflags = 0
 	}
-	console := log.New(stderrWriter{}, "", lflags)
+	var conWriter io.Writer = stderrWriter{}
+	if buildfeatures.HasSyslog {
+		if f, ok := feature.HookLogSink.GetOk(); ok {
+			if w := f(); w != nil {
+				// Logs are being redirected elsewhere (e.g. to syslog,
+				// which records its own timestamps).
+				conWriter = w
+				lflags = 0
+			}
+		}
+	}
+	console := log.New(conWriter, "", lflags)
 
 	var earlyErrBuf bytes.Buffer
 	earlyLogf := func(format string, a ...any) {
@@ -878,7 +896,7 @@ func (opts TransportOptions) New() http.RoundTripper {
 		opts.NetMon = netmon.NewStatic()
 	}
 	// Start with a copy of http.DefaultTransport and tweak it a bit.
-	tr := http.DefaultTransport.(*http.Transport).Clone()
+	tr := netutil.NewDefaultTransport()
 	if opts.TLSClientConfig != nil {
 		tr.TLSClientConfig = opts.TLSClientConfig.Clone()
 	}

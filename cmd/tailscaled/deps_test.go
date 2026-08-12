@@ -13,6 +13,18 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/deptest"
 )
 
+func TestOmitServiceClientPrefs(t *testing.T) {
+	const msg = "unexpected with ts_omit_serviceclientprefs"
+	deptest.DepChecker{
+		GOOS:   "linux",
+		GOARCH: "amd64",
+		Tags:   "ts_omit_serviceclientprefs,ts_include_cli",
+		BadDeps: map[string]string{
+			"github.com/Xinlong-Wu/tailscale-oh/feature/serviceclientprefs": msg,
+		},
+	}.Check(t)
+}
+
 func TestOmitSSH(t *testing.T) {
 	const msg = "unexpected with ts_omit_ssh"
 	deptest.DepChecker{
@@ -20,15 +32,30 @@ func TestOmitSSH(t *testing.T) {
 		GOARCH: "amd64",
 		Tags:   "ts_omit_ssh,ts_include_cli",
 		BadDeps: map[string]string{
-			"golang.org/x/crypto/ssh":              msg,
-			"github.com/Xinlong-Wu/tailscale-oh/ssh/tailssh":            msg,
-			"github.com/Xinlong-Wu/tailscale-oh/sessionrecording":       msg,
-			"github.com/anmitsu/go-shlex":          msg,
-			"github.com/creack/pty":                msg,
-			"github.com/kr/fs":                     msg,
-			"github.com/pkg/sftp":                  msg,
-			"github.com/u-root/u-root/pkg/termios": msg,
-			"tempfork/gliderlabs/ssh":              msg,
+			"golang.org/x/crypto/ssh":                             msg,
+			"github.com/Xinlong-Wu/tailscale-oh/ssh/tailssh":      msg,
+			"github.com/Xinlong-Wu/tailscale-oh/sessionrecording": msg,
+			"github.com/anmitsu/go-shlex":                         msg,
+			"github.com/creack/pty":                               msg,
+			"github.com/kr/fs":                                    msg,
+			"github.com/pkg/sftp":                                 msg,
+			"github.com/u-root/u-root/pkg/termios":                msg,
+			"tempfork/gliderlabs/ssh":                             msg,
+		},
+	}.Check(t)
+}
+
+func TestOmitSyslog(t *testing.T) {
+	const msg = "unexpected syslog usage with ts_omit_syslog"
+	deptest.DepChecker{
+		GOOS:   "linux",
+		GOARCH: "amd64",
+		// Tailscale SSH's incubator also uses log/syslog, so omit
+		// SSH too to lock down the standard library package.
+		Tags: "ts_omit_syslog,ts_omit_ssh,ts_include_cli",
+		BadDeps: map[string]string{
+			"log/syslog": msg,
+			"github.com/Xinlong-Wu/tailscale-oh/feature/syslog": msg,
 		},
 	}.Check(t)
 }
@@ -137,6 +164,20 @@ func TestOmitCaptivePortal(t *testing.T) {
 	}.Check(t)
 }
 
+func TestOmitBird(t *testing.T) {
+	deptest.DepChecker{
+		GOOS:   "linux",
+		GOARCH: "amd64",
+		Tags:   "ts_omit_bird,ts_include_cli",
+		OnDep: func(dep string) {
+			switch dep {
+			case "github.com/Xinlong-Wu/tailscale-oh/chirp", "github.com/Xinlong-Wu/tailscale-oh/feature/bird":
+				t.Errorf("unexpected dep with ts_omit_bird: %q", dep)
+			}
+		},
+	}.Check(t)
+}
+
 func TestOmitAuth(t *testing.T) {
 	deptest.DepChecker{
 		GOOS:   "linux",
@@ -196,6 +237,19 @@ func TestOmitPortlist(t *testing.T) {
 		Tags:   "ts_omit_portlist,ts_include_cli",
 		OnDep: func(dep string) {
 			if strings.Contains(dep, "portlist") {
+				t.Errorf("unexpected dep: %q", dep)
+			}
+		},
+	}.Check(t)
+}
+
+func TestOmitRouteCheck(t *testing.T) {
+	deptest.DepChecker{
+		GOOS:   "linux",
+		GOARCH: "amd64",
+		Tags:   "ts_omit_routecheck,ts_include_cli",
+		OnDep: func(dep string) {
+			if strings.Contains(dep, "routecheck") && !strings.HasSuffix(dep, "/peernode") {
 				t.Errorf("unexpected dep: %q", dep)
 			}
 		},
@@ -284,20 +338,20 @@ func TestMinTailscaledWithCLI(t *testing.T) {
 			}
 		},
 		BadDeps: map[string]string{
-			"golang.org/x/net/http2":                 "unexpected x/net/http2 dep; tailscale/tailscale#17305",
-			"expvar":                                 "unexpected expvar dep",
-			"runtime/pprof":                          "unexpected runtime/pprof dep",
-			"net/http/pprof":                         "unexpected net/http/pprof dep",
-			"github.com/mdlayher/genetlink":          "unexpected genetlink dep",
-			"github.com/Xinlong-Wu/tailscale-oh/clientupdate":             "unexpected clientupdate dep",
-			"filippo.io/edwards25519":                "unexpected edwards25519 dep",
-			"github.com/hdevalence/ed25519consensus": "unexpected ed25519consensus dep",
-			"github.com/Xinlong-Wu/tailscale-oh/clientupdate/distsign":    "unexpected distsign dep",
-			"archive/tar":                            "unexpected archive/tar dep",
-			"github.com/Xinlong-Wu/tailscale-oh/feature/conn25":           "unexpected conn25 dep",
-			"regexp":                                 "unexpected regexp dep; bloats binary",
-			"github.com/toqueteos/webbrowser":        "unexpected webbrowser dep with ts_omit_webbrowser",
-			"github.com/mattn/go-colorable":          "unexpected go-colorable dep with ts_omit_colorable",
+			"golang.org/x/net/http2":        "unexpected x/net/http2 dep; tailscale/tailscale#17305",
+			"expvar":                        "unexpected expvar dep",
+			"runtime/pprof":                 "unexpected runtime/pprof dep",
+			"net/http/pprof":                "unexpected net/http/pprof dep",
+			"github.com/mdlayher/genetlink": "unexpected genetlink dep",
+			"github.com/Xinlong-Wu/tailscale-oh/clientupdate":          "unexpected clientupdate dep",
+			"filippo.io/edwards25519":                                  "unexpected edwards25519 dep",
+			"github.com/hdevalence/ed25519consensus":                   "unexpected ed25519consensus dep",
+			"github.com/Xinlong-Wu/tailscale-oh/clientupdate/distsign": "unexpected distsign dep",
+			"archive/tar": "unexpected archive/tar dep",
+			"github.com/Xinlong-Wu/tailscale-oh/feature/conn25": "unexpected conn25 dep",
+			"regexp":                          "unexpected regexp dep; bloats binary",
+			"github.com/toqueteos/webbrowser": "unexpected webbrowser dep with ts_omit_webbrowser",
+			"github.com/mattn/go-colorable":   "unexpected go-colorable dep with ts_omit_colorable",
 		},
 	}.Check(t)
 }

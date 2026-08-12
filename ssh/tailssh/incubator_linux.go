@@ -13,8 +13,8 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/godbus/dbus/v5"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/godbus/dbus/v5"
 )
 
 func init() {

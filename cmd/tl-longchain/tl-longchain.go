@@ -12,7 +12,7 @@
 //
 // Note that the Tailscale client this command is executed on must have
 // ACL visibility to all other nodes to be able to see their signatures.
-// https://github.com/Xinlong-Wu/tailscale-oh/kb/1087/device-visibility
+// https://tailscale.com/kb/1087/device-visibility
 package main
 
 import (
@@ -45,7 +45,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	st, err := lc.NetworkLockStatus(ctx)
+	st, err := lc.TailnetLockStatus(ctx)
 	if err != nil {
 		log.Fatalf("could not get Tailnet Lock status: %v", err)
 	}

@@ -2,7 +2,7 @@
 # cmd/k8s-operator/deploy/crds.
 #
 # Generate for local usage with:
-# go run tailscale.com/cmd/k8s-operator/generate helmcrd
+# go run github.com/Xinlong-Wu/tailscale-oh/cmd/k8s-operator/generate helmcrd
 /connector.yaml
 /dnsconfig.yaml
 /proxyclass.yaml
@@ -10,3 +10,4 @@
 /recorder.yaml
 /tailnet.yaml 
 /proxygrouppolicy.yaml
+/peerrelay.yaml

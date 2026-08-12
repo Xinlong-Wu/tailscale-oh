@@ -20,15 +20,10 @@ import (
 	"net/netip"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
 
-	"github.com/gaissmai/bart"
-	"github.com/hashicorp/raft"
-	"github.com/inetaf/tcpproxy"
-	"github.com/peterbourgon/ff/v3"
-	"go4.org/netipx"
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/natc/ippool"
@@ -41,6 +36,12 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack"
+	"github.com/gaissmai/bart"
+	"github.com/hashicorp/raft"
+	"github.com/inetaf/tcpproxy"
+	"github.com/peterbourgon/ff/v3"
+	"go4.org/netipx"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 func main() {
@@ -537,12 +538,7 @@ func (c *connector) ignoreDestination(dstAddrs []netip.Addr) bool {
 	if c.ignoreDsts == nil {
 		return false
 	}
-	for _, a := range dstAddrs {
-		if c.ignoreDsts.Contains(a) {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(dstAddrs, c.ignoreDsts.Contains)
 }
 
 func proxyTCPConn(c net.Conn, dest string, ctor *connector) {

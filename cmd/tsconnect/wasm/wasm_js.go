@@ -24,7 +24,6 @@ import (
 	"syscall/js"
 	"time"
 
-	"golang.org/x/crypto/ssh"
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnauth"
@@ -42,6 +41,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack"
 	"github.com/Xinlong-Wu/tailscale-oh/words"
+	"golang.org/x/crypto/ssh"
 )
 
 // ControlURL defines the URL to be used for connection to Control.
@@ -131,10 +131,24 @@ func newIPN(jsConfig js.Value) map[string]any {
 		return true
 	}
 	dialer.NetstackDialTCP = func(ctx context.Context, dst netip.AddrPort) (net.Conn, error) {
-		return ns.DialContextTCP(ctx, dst)
+		// Note: don't just return ns.DialContextTCP or we'll return
+		// *gonet.TCPConn(nil) instead of a nil interface which trips up
+		// callers.
+		tcpConn, err := ns.DialContextTCP(ctx, dst)
+		if err != nil {
+			return nil, err
+		}
+		return tcpConn, nil
 	}
 	dialer.NetstackDialUDP = func(ctx context.Context, dst netip.AddrPort) (net.Conn, error) {
-		return ns.DialContextUDP(ctx, dst)
+		// Note: don't just return ns.DialContextUDP or we'll return
+		// *gonet.UDPConn(nil) instead of a nil interface which trips up
+		// callers.
+		udpConn, err := ns.DialContextUDP(ctx, dst)
+		if err != nil {
+			return nil, err
+		}
+		return udpConn, nil
 	}
 	sys.NetstackRouter.Set(true)
 	sys.Tun.Get().Start()

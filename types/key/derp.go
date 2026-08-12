@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"strings"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
+	"go4.org/mem"
 )
 
 var ErrInvalidMeshKey = errors.New("invalid mesh key")

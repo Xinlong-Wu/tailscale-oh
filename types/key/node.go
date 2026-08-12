@@ -11,11 +11,11 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
+	"github.com/Xinlong-Wu/tailscale-oh/util/bufiox"
 	"go4.org/mem"
 	"golang.org/x/crypto/curve25519"
 	"golang.org/x/crypto/nacl/box"
-	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
-	"github.com/Xinlong-Wu/tailscale-oh/util/bufiox"
 )
 
 const (

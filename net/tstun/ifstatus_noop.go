@@ -8,8 +8,8 @@ package tstun
 import (
 	"time"
 
-	"github.com/tailscale/wireguard-go/tun"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/tailscale/wireguard-go/tun"
 )
 
 // Dummy implementation that does nothing.

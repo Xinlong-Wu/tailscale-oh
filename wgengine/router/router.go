@@ -13,7 +13,6 @@ import (
 	"runtime"
 	"slices"
 
-	"github.com/tailscale/wireguard-go/tun"
 	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
@@ -21,6 +20,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/tailscale/wireguard-go/tun"
 )
 
 // Router is responsible for managing the system network stack.

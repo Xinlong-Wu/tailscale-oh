@@ -18,6 +18,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/kube/k8s-proxy/conf"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 	"github.com/fsnotify/fsnotify"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
@@ -25,9 +28,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/watch"
 	clientcorev1 "k8s.io/client-go/kubernetes/typed/core/v1"
-	"github.com/Xinlong-Wu/tailscale-oh/kube/k8s-proxy/conf"
-	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
-	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 type configLoader struct {

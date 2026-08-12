@@ -35,8 +35,6 @@ import (
 	"sync"
 	"time"
 
-	"gopkg.in/square/go-jose.v2"
-	"gopkg.in/square/go-jose.v2/jwt"
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
@@ -53,6 +51,8 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 	"github.com/Xinlong-Wu/tailscale-oh/util/rands"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"gopkg.in/square/go-jose.v2"
+	"gopkg.in/square/go-jose.v2/jwt"
 )
 
 // ctxConn is a key to look up a net.Conn stored in an HTTP request's context.
@@ -1403,7 +1403,7 @@ func readUint64(r io.Reader) (uint64, error) {
 	}
 }
 
-// rsaPrivateKeyJSONWrapper is the the JSON serialization
+// rsaPrivateKeyJSONWrapper is the JSON serialization
 // format used by RSAPrivateKey.
 type rsaPrivateKeyJSONWrapper struct {
 	Key string

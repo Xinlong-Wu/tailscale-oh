@@ -41,14 +41,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dsnet/try"
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
 	"github.com/Xinlong-Wu/tailscale-oh/types/bools"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logid"
 	"github.com/Xinlong-Wu/tailscale-oh/types/netlogtype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/dsnet/try"
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 var (
@@ -57,8 +58,8 @@ var (
 		"If network flow logs do not support embedded node information,\n"+
 		"then --api-key and --tailnet-name must also be provided.\n"+
 		"Valid values include \"nodeId\", \"name\", or \"user\".")
-	apiKey      = flag.String("api-key", "", "The API key to query the Tailscale API with.\nSee https://login.github.com/Xinlong-Wu/tailscale-oh/admin/settings/keys")
-	tailnetName = flag.String("tailnet-name", "", "The Tailnet name to lookup nodes within.\nSee https://login.github.com/Xinlong-Wu/tailscale-oh/admin/settings/general")
+	apiKey      = flag.String("api-key", "", "The API key to query the Tailscale API with.\nSee https://login.tailscale.com/admin/settings/keys")
+	tailnetName = flag.String("tailnet-name", "", "The Tailnet name to lookup nodes within.\nSee https://login.tailscale.com/admin/settings/general")
 )
 
 var (
@@ -294,7 +295,7 @@ func printMessage(msg message) {
 		fmt.Printf("NodeID: %s\n", msg.NodeID)
 	}
 	formatTime := func(t time.Time) string {
-		return t.In(time.Local).Format("2006-01-02 15:04:05.000")
+		return t.Local().Format(tstime.DateSpTimeMilliZ)
 	}
 	switch {
 	case !msg.Logged.IsZero():
@@ -352,7 +353,7 @@ func mustLoadTailnetNodes() {
 	}
 
 	// Query the Tailscale API for a list of devices in the tailnet.
-	const apiURL = "https://api.github.com/Xinlong-Wu/tailscale-oh/api/v2"
+	const apiURL = "https://api.tailscale.com/api/v2"
 	req := must.Get(http.NewRequest("GET", apiURL+"/tailnet/"+*tailnetName+"/devices", nil))
 	req.Header.Add("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte(*apiKey+":")))
 	resp := must.Get(http.DefaultClient.Do(req))

@@ -11,7 +11,7 @@ import (
 	"os"
 
 	"go.uber.org/zap"
-	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
+	"tailscale.com/client/tailscale/v2"
 
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 )

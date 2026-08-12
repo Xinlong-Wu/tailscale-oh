@@ -13,11 +13,11 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/google/nftables"
 	"github.com/google/nftables/expr"
 	"github.com/google/nftables/xt"
 	"golang.org/x/sys/unix"
-	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 // DebugNetfilter prints debug information about netfilter rules to the

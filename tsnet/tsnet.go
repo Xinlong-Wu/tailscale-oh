@@ -158,11 +158,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/tailscale/wireguard-go/tun"
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	_ "github.com/Xinlong-Wu/tailscale-oh/feature/c2n"
+	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/netlog"
 	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/oauthkey"
 	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/portmapper"
 	_ "github.com/Xinlong-Wu/tailscale-oh/feature/condregister/useproxy"
@@ -197,6 +197,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/netstack"
+	"github.com/tailscale/wireguard-go/tun"
 )
 
 // Server is an embedded Tailscale server.
@@ -240,7 +241,7 @@ type Server struct {
 	Logf logger.Logf
 
 	// Ephemeral, if true, specifies that the instance should register
-	// as an Ephemeral node (https://github.com/Xinlong-Wu/tailscale-oh/s/ephemeral-nodes).
+	// as an Ephemeral node (https://tailscale.com/s/ephemeral-nodes).
 	Ephemeral bool
 
 	// AuthKey, if non-empty, is the auth key to create the node
@@ -885,7 +886,8 @@ func (s *Server) start() (reterr error) {
 	ns.GetUDPHandlerForFlow = s.getUDPHandlerForFlow
 	s.netstack = ns
 	s.dialer.UseNetstackForIP = func(ip netip.Addr) bool {
-		_, ok := eng.PeerForIP(ip)
+		// s.lb is assigned below, before any dials can happen.
+		_, ok := s.lb.PeerForIP(ip)
 		return ok
 	}
 	s.dialer.NetstackDialTCP = func(ctx context.Context, dst netip.AddrPort) (net.Conn, error) {
@@ -1005,7 +1007,10 @@ func (s *Server) resolveAuthKey() (string, error) {
 		if authKey == "" {
 			clientSecret = s.getClientSecret()
 		}
-		authKey, err = resolveViaOAuth(s.shutdownCtx, clientSecret, s.AdvertiseTags)
+		authKey, err = resolveViaOAuth(s.shutdownCtx, tailscale.ResolveAuthKeyArgs{
+			AuthKey: clientSecret,
+			Tags:    s.AdvertiseTags,
+		})
 		if err != nil {
 			return "", err
 		}
@@ -1031,7 +1036,13 @@ func (s *Server) resolveAuthKey() (string, error) {
 				return "", fmt.Errorf("audience for workload identity federation found, but client ID is empty")
 			}
 		}
-		authKey, err = resolveViaWIF(s.shutdownCtx, s.getControlURL(), clientID, idToken, audience, s.AdvertiseTags)
+		authKey, err = resolveViaWIF(s.shutdownCtx, tailscale.ResolveAuthKeyWIFArgs{
+			BaseURL:  s.getControlURL(),
+			ClientID: clientID,
+			IDToken:  idToken,
+			Audience: audience,
+			Tags:     s.AdvertiseTags,
+		})
 		if err != nil {
 			return "", err
 		}
@@ -1264,6 +1275,33 @@ func (s *Server) Listen(network, addr string) (net.Listener, error) {
 	return s.listen(network, addr, listenOnTailnet)
 }
 
+// ListenSSH listens on the Tailscale network for SSH connections at the given
+// addr (e.g. ":2222"). The returned listener's Accept method yields net.Conn
+// values that are actually *tailssh.Session, providing access to the
+// connecting peer's Tailscale identity, PTY information, signals, and more.
+//
+// Basic applications can use the returned connections as plain net.Conn
+// (Read/Write/Close). Applications that need richer SSH semantics should
+// type-assert to *tailssh.Session.
+//
+// SSH support must be linked into the binary by importing
+// _ "github.com/Xinlong-Wu/tailscale-oh/feature/ssh". Without that import, ListenSSH returns an
+// error.
+//
+// If s has not been started yet, it will be started.
+func (s *Server) ListenSSH(addr string) (net.Listener, error) {
+	rawLn, err := s.Listen("tcp", addr)
+	if err != nil {
+		return nil, err
+	}
+	sshLn, err := s.lb.ListenSSH(rawLn, s.logf)
+	if err != nil {
+		rawLn.Close()
+		return nil, err
+	}
+	return sshLn, nil
+}
+
 // ListenPacket announces on the Tailscale network.
 //
 // The network must be "udp", "udp4" or "udp6". The addr must be of the form
@@ -1340,10 +1378,10 @@ func (s *Server) ListenTLS(network, addr string) (net.Listener, error) {
 		return nil, err
 	}
 	if !st.CurrentTailnet.MagicDNSEnabled {
-		return nil, errors.New("tsnet: you must enable MagicDNS in the DNS page of the admin panel to proceed. See https://github.com/Xinlong-Wu/tailscale-oh/s/https")
+		return nil, errors.New("tsnet: you must enable MagicDNS in the DNS page of the admin panel to proceed. See https://tailscale.com/s/https")
 	}
 	if len(st.CertDomains) == 0 {
-		return nil, errors.New("tsnet: you must enable HTTPS in the admin panel to proceed. See https://github.com/Xinlong-Wu/tailscale-oh/s/https")
+		return nil, errors.New("tsnet: you must enable HTTPS in the admin panel to proceed. See https://tailscale.com/s/https")
 	}
 
 	ln, err := s.listen(network, addr, listenOnTailnet)
@@ -1493,7 +1531,7 @@ func (s *Server) ListenFunnel(network, addr string, opts ...FunnelOption) (net.L
 		srvConfig = &ipn.ServeConfig{}
 	}
 	if len(st.CertDomains) == 0 {
-		return nil, errors.New("Funnel not available; HTTPS must be enabled. See https://github.com/Xinlong-Wu/tailscale-oh/s/https")
+		return nil, errors.New("Funnel not available; HTTPS must be enabled. See https://tailscale.com/s/https")
 	}
 	domain := st.CertDomains[0]
 	hp := ipn.HostPort(domain + ":" + portStr)

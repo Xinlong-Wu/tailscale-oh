@@ -22,6 +22,12 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/client/local"
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/k8s-proxy/internal/config"
+	"github.com/Xinlong-Wu/tailscale-oh/health"
+	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/store"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/sync/errgroup"
@@ -29,12 +35,6 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/utils/strings/slices"
-	"github.com/Xinlong-Wu/tailscale-oh/client/local"
-	"github.com/Xinlong-Wu/tailscale-oh/cmd/k8s-proxy/internal/config"
-	"github.com/Xinlong-Wu/tailscale-oh/health"
-	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
-	"github.com/Xinlong-Wu/tailscale-oh/ipn"
-	"github.com/Xinlong-Wu/tailscale-oh/ipn/store"
 
 	// we need to import this package so that the `kube:` ipn store gets registered
 	_ "github.com/Xinlong-Wu/tailscale-oh/ipn/store/kubestore"
@@ -301,8 +301,15 @@ func run(logger *zap.SugaredLogger) error {
 		}
 
 		if cfg.Parsed.HealthCheckEnabled.EqualBool(true) {
-			ipV4, _ := ts.TailscaleIPs()
-			hz := healthz.RegisterHealthHandlers(mux, ipV4.String(), logger.Infof)
+			ipV4, ipV6 := ts.TailscaleIPs()
+			var v4, v6 string
+			if ipV4.IsValid() {
+				v4 = ipV4.String()
+			}
+			if ipV6.IsValid() {
+				v6 = ipV6.String()
+			}
+			hz := healthz.RegisterHealthHandlers(mux, v4, v6, logger.Infof)
 			group.Go(func() error {
 				err := hz.MonitorHealth(ctx, lc)
 				if err == nil || errors.Is(err, context.Canceled) {

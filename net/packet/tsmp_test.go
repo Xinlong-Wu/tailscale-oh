@@ -10,8 +10,8 @@ import (
 	"slices"
 	"testing"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"go4.org/mem"
 )
 
 func TestTailscaleRejectedHeader(t *testing.T) {

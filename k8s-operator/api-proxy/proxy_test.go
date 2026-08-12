@@ -11,11 +11,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
-	"go.uber.org/zap"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/google/go-cmp/cmp"
+	"go.uber.org/zap"
 )
 
 func TestImpersonationHeaders(t *testing.T) {

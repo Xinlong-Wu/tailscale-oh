@@ -1,0 +1,6 @@
+{
+  "upstream_repository": "tailscale/tailscale",
+  "upstream_tag": "v1.102.2",
+  "upstream_commit": "eb67e5dcbe145d63e1128b9b4b630f8a82da101f",
+  "prerelease": false
+}

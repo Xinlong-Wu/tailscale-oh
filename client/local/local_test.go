@@ -117,9 +117,9 @@ func TestDeps(t *testing.T) {
 		BadDeps: map[string]string{
 			// Make sure we don't again accidentally bring in a dependency on
 			// drive or its transitive dependencies
-			"testing":                        "do not use testing package in production code",
-			"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl":  "https://github.com/tailscale/tailscale/pull/10631",
-			"github.com/studio-b12/gowebdav": "https://github.com/tailscale/tailscale/pull/10631",
+			"testing": "do not use testing package in production code",
+			"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl": "https://github.com/tailscale/tailscale/pull/10631",
+			"github.com/studio-b12/gowebdav":                     "https://github.com/tailscale/tailscale/pull/10631",
 		},
 	}.Check(t)
 }

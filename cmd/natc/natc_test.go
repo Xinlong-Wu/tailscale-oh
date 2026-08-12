@@ -13,12 +13,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gaissmai/bart"
-	"golang.org/x/net/dns/dnsmessage"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/natc/ippool"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/gaissmai/bart"
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 func prefixEqual(a, b netip.Prefix) bool {

@@ -19,9 +19,9 @@ import (
 	"testing"
 	"time"
 
-	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	jsonv2 "github.com/go-json-experiment/json"
 )
 
 func init() { alwaysStatForTests = true }

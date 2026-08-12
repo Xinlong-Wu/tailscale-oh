@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	tailscaleroot "tailscale.com"
+	tailscaleroot "github.com/Xinlong-Wu/tailscale-oh"
 	"github.com/Xinlong-Wu/tailscale-oh/types/lazy"
 )
 

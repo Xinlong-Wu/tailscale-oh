@@ -10,12 +10,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeapi"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeclient"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestResetState(t *testing.T) {

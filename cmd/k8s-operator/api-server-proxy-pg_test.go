@@ -16,7 +16,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
+	"tailscale.com/client/tailscale/v2"
 
 	tsoperator "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
 	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"

@@ -30,6 +30,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netns"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netutil"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tlsdial"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
@@ -133,7 +134,7 @@ func lookup(ctx context.Context, host string, logf logger.Logf, ht *health.Track
 // ht may be nil.
 func bootstrapDNSMap(ctx context.Context, serverName string, serverIP netip.Addr, queryName string, logf logger.Logf, ht *health.Tracker, netMon *netmon.Monitor) (dnsMap, error) {
 	dialer := netns.NewDialer(logf, netMon)
-	tr := http.DefaultTransport.(*http.Transport).Clone()
+	tr := netutil.NewDefaultTransport()
 	tr.DisableKeepAlives = true // This transport is meant to be used once.
 	tr.Proxy = feature.HookProxyFromEnvironment.GetOrNil()
 	tr.DialContext = func(ctx context.Context, netw, addr string) (net.Conn, error) {
@@ -161,7 +162,7 @@ func bootstrapDNSMap(ctx context.Context, serverName string, serverIP netip.Addr
 }
 
 // dnsMap is the JSON type returned by the DERP /bootstrap-dns handler:
-// https://derp10.github.com/Xinlong-Wu/tailscale-oh/bootstrap-dns
+// https://derp10.tailscale.com/bootstrap-dns
 type dnsMap map[string][]netip.Addr
 
 // GetDERPMap returns a fallback DERP map that is always available, useful for basic

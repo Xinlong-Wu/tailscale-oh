@@ -10,8 +10,8 @@ import (
 	"log"
 	"net"
 
-	"github.com/coder/websocket"
 	"github.com/Xinlong-Wu/tailscale-oh/net/wsconn"
+	"github.com/coder/websocket"
 )
 
 const canWebsockets = true

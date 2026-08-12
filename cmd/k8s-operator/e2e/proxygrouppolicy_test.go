@@ -43,8 +43,8 @@ func TestProxyGroupPolicy(t *testing.T) {
 			Name:      "egress-to-proxy-group",
 			Namespace: metav1.NamespaceDefault,
 			Annotations: map[string]string{
-				"github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn": "test.something.ts.net",
-				"github.com/Xinlong-Wu/tailscale-oh/proxy-group":  "test",
+				"tailscale.com/tailnet-fqdn": "test.something.ts.net",
+				"tailscale.com/proxy-group":  "test",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -76,7 +76,7 @@ func TestProxyGroupPolicy(t *testing.T) {
 			Name:      "ingress-to-proxy-group",
 			Namespace: metav1.NamespaceDefault,
 			Annotations: map[string]string{
-				"github.com/Xinlong-Wu/tailscale-oh/proxy-group": "test",
+				"tailscale.com/proxy-group": "test",
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -107,7 +107,7 @@ func TestProxyGroupPolicy(t *testing.T) {
 			Name:      "ingress-to-proxy-group",
 			Namespace: metav1.NamespaceDefault,
 			Annotations: map[string]string{
-				"github.com/Xinlong-Wu/tailscale-oh/proxy-group": "test",
+				"tailscale.com/proxy-group": "test",
 			},
 		},
 		Spec: networkingv1.IngressSpec{

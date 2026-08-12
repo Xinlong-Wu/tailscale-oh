@@ -35,13 +35,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/dblohm7/wingoes/com"
-	"github.com/tailscale/wireguard-go/tun"
-	"golang.org/x/sys/windows"
-	"golang.org/x/sys/windows/svc"
-	"golang.org/x/sys/windows/svc/eventlog"
-	"golang.zx2c4.com/wintun"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	_ "github.com/Xinlong-Wu/tailscale-oh/ipn/auditlog"
@@ -60,6 +53,13 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/gp"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
 	"github.com/Xinlong-Wu/tailscale-oh/wf"
+	"github.com/dblohm7/wingoes/com"
+	"github.com/tailscale/wireguard-go/tun"
+	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/svc"
+	"golang.org/x/sys/windows/svc/eventlog"
+	"golang.zx2c4.com/wintun"
+	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 )
 
 func init() {

@@ -1,0 +1,53 @@
+{
+    "Hostname": "tsapp",
+    "Update": {
+        "NoPassword": true
+    },
+    "SerialConsole": "ttyS0,115200",
+    "GokrazyPackages": [
+        "github.com/gokrazy/gokrazy/cmd/dhcp",
+        "github.com/gokrazy/gokrazy/cmd/randomd",
+        "github.com/gokrazy/gokrazy/cmd/ntp"
+    ],
+    "Packages": [
+        "github.com/gokrazy/serial-busybox",
+        "github.com/gokrazy/breakglass",
+        "github.com/bradfitz/qemu-guest-kragent",
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/fbstatus",
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale",
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled"
+    ],
+    "PackageConfig": {
+        "github.com/gokrazy/breakglass": {
+            "CommandLineFlags": [
+                "-authorized_keys=ec2"
+            ]
+        },
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale": {
+            "ExtraFilePaths": {
+                "/usr": "usr-dir"
+            },
+            "GoBuildTags": [
+                "ts_appliance"
+            ]
+        },
+        "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled": {
+            "CommandLineFlags": [
+                "-config=optional:vm:user-data"
+            ],
+            "GoBuildTags": [
+                "ts_appliance"
+            ]
+        }
+    },
+    "Environment": [
+        "GOOS=linux",
+        "GOARCH=arm64"
+    ],
+    "KernelPackage": "github.com/gokrazy/kernel.arm64",
+    "FirmwarePackage": "github.com/gokrazy/kernel.arm64",
+    "EEPROMPackage": "",
+    "InternalCompatibilityFlags": {
+        "InitImportPath": "github.com/tailscale/ts-gokrazy/gokrazyinit"
+    }
+}

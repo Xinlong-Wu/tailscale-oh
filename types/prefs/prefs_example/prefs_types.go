@@ -13,14 +13,14 @@ package prefs_example
 import (
 	"net/netip"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/Xinlong-Wu/tailscale-oh/drive"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
 	"github.com/Xinlong-Wu/tailscale-oh/types/prefs"
 	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 //go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/viewer --type=Prefs,AutoUpdatePrefs,AppConnectorPrefs
@@ -106,8 +106,7 @@ type Prefs struct {
 	// not be modified after the preference is set.
 	// Since the item type (*drive.Share) is mutable and implements [views.ViewCloner],
 	// we need to use [prefs.StructList] instead of [prefs.List].
-	DriveShares      prefs.StructList[*drive.Share]  `json:",omitzero"`
-	AllowSingleHosts prefs.Item[marshalAsTrueInJSON] `json:",omitzero"`
+	DriveShares prefs.StructList[*drive.Share] `json:",omitzero"`
 
 	// Persist is an internal state rather than a preference.
 	// It can be kept in the Prefs structure but should not be wrapped
@@ -162,10 +161,3 @@ func (p Prefs) MarshalJSON() ([]byte, error) {
 func (p *Prefs) UnmarshalJSON(b []byte) error {
 	return jsonv2.Unmarshal(b, p) // uses UnmarshalJSONFrom
 }
-
-type marshalAsTrueInJSON struct{}
-
-var trueJSON = []byte("true")
-
-func (marshalAsTrueInJSON) MarshalJSON() ([]byte, error) { return trueJSON, nil }
-func (*marshalAsTrueInJSON) UnmarshalJSON([]byte) error  { return nil }

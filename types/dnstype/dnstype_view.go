@@ -10,9 +10,9 @@ import (
 	"errors"
 	"net/netip"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
-	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 )
 
 //go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/cloner  -clonefunc=true -type=Resolver

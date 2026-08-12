@@ -1,5 +1,7 @@
-// Copyright (c) Tailscale Inc & AUTHORS
+// Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
+
+//go:build openharmony
 
 package netmon
 
@@ -10,15 +12,16 @@ import (
 	"os/exec"
 	"sync/atomic"
 
-	"go4.org/mem"
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 	"github.com/Xinlong-Wu/tailscale-oh/util/lineiter"
+	"go4.org/mem"
+	"golang.org/x/sys/unix"
 )
 
 var (
 	lastKnownDefaultRouteIfName syncs.AtomicValue[string]
+	lastKnownDefaultGateway     syncs.AtomicValue[string]
 )
 
 var procNetRoutePath = "/proc/net/route"
@@ -28,7 +31,7 @@ var procNetRoutePath = "/proc/net/route"
 const maxProcNetRouteRead = 1000
 
 func init() {
-	likelyHomeRouterIP = likelyHomeRouterIPAndroid
+	likelyHomeRouterIP = likelyHomeRouterIPOpenHarmony
 }
 
 var procNetRouteErr atomic.Bool
@@ -41,7 +44,12 @@ Iface   Destination     Gateway         Flags   RefCnt  Use     Metric  Mask    
 ens18   00000000        0100000A        0003    0       0       0       00000000        0       0       0
 ens18   0000000A        00000000        0001    0       0       0       0000FFFF        0       0       0
 */
-func likelyHomeRouterIPAndroid() (ret netip.Addr, myIP netip.Addr, ok bool) {
+func likelyHomeRouterIPOpenHarmony() (ret netip.Addr, myIP netip.Addr, ok bool) {
+	if gwStr := lastKnownDefaultGateway.Load(); gwStr != "" {
+		if ip, err := netip.ParseAddr(gwStr); err == nil {
+			return ip, netip.Addr{}, true
+		}
+	}
 	if procNetRouteErr.Load() {
 		// If we failed to read /proc/net/route previously, don't keep trying.
 		return likelyHomeRouterIPHelper()
@@ -153,7 +161,7 @@ func likelyHomeRouterIPHelper() (ret netip.Addr, _ netip.Addr, ok bool) {
 		ipb := line[:sp]
 		if ip, err := netip.ParseAddr(string(ipb)); err == nil && ip.Is4() {
 			ret = ip
-			log.Printf("interfaces: found Android default route %v", ip)
+			log.Printf("interfaces: found OpenHarmony default route %v", ip)
 		}
 	}
 	cmd.Process.Kill()
@@ -161,12 +169,20 @@ func likelyHomeRouterIPHelper() (ret netip.Addr, _ netip.Addr, ok bool) {
 	return ret, netip.Addr{}, ret.IsValid()
 }
 
-// UpdateLastKnownDefaultRouteInterface is called by libtailscale in the Android app when
+// UpdateLastKnownDefaultGateway updates the default gateway reported by the
+// OpenHarmony network layer.
+func UpdateLastKnownDefaultGateway(ipStr string) {
+	if old := lastKnownDefaultGateway.Swap(ipStr); old != ipStr {
+		log.Printf("defaultgateway: update from OpenHarmony, gateway = %s (was %s)", ipStr, old)
+	}
+}
+
+// UpdateLastKnownDefaultRouteInterface is called by the OpenHarmony app when
 // the connectivity manager detects a network path transition. If ifName is "", network has been lost.
-// After updating the interface, Android calls Monitor.InjectEvent(), triggering a link change.
+// After updating the interface, the app calls Monitor.InjectEvent(), triggering a link change.
 func UpdateLastKnownDefaultRouteInterface(ifName string) {
 	if old := lastKnownDefaultRouteIfName.Swap(ifName); old != ifName {
-		log.Printf("defaultroute: update from Android, ifName = %s (was %s)", ifName, old)
+		log.Printf("defaultroute: update from OpenHarmony, ifName = %s (was %s)", ifName, old)
 	}
 }
 

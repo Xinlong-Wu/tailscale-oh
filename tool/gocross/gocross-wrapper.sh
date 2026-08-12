@@ -75,7 +75,7 @@ case "$REV" in
             # Go uses the name "amd64".
             HOST_ARCH="amd64"
         fi
-        curl -f -L -o "$toolchain.tar.gz" "https://github.com/tailscale/go/releases/download/build-${REV}/${HOST_OS}-${HOST_ARCH}.tar.gz"
+        curl --retry 3 -f -L -o "$toolchain.tar.gz" "https://github.com/tailscale/go/releases/download/build-${REV}/${HOST_OS}-${HOST_ARCH}.tar.gz"
         mkdir -p "$toolchain"
         (cd "$toolchain" && tar --strip-components=1 -xf "$toolchain.tar.gz")
         echo "$REV" >"$toolchain.extracted"
@@ -139,7 +139,7 @@ if [[ "$gocross_ok" == "0" ]]; then
     unset GO111MODULE
     unset GOROOT
     export CGO_ENABLED=0
-    "$toolchain/bin/go" build -o "$gocross_path" -ldflags "-X tailscale.com/version.gitCommitStamp=$wantver" tailscale.com/tool/gocross
+    "$toolchain/bin/go" build -o "$gocross_path" -ldflags "-X github.com/Xinlong-Wu/tailscale-oh/version.gitCommitStamp=$wantver" github.com/Xinlong-Wu/tailscale-oh/tool/gocross
 fi
 ) # End of the subshell execution.
 

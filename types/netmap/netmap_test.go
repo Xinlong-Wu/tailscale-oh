@@ -9,11 +9,11 @@ import (
 	"reflect"
 	"testing"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/typewalk"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
+	"go4.org/mem"
 )
 
 func testNodeKey(b byte) (ret key.NodePublic) {

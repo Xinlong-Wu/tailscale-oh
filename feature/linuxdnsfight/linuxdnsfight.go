@@ -11,8 +11,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/illarion/gonotify/v3"
 	"github.com/Xinlong-Wu/tailscale-oh/net/dns"
+	"github.com/illarion/gonotify/v3"
 )
 
 func init() {

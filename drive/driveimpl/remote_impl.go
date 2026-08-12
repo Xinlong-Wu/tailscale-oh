@@ -22,13 +22,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/tailscale/xnet/webdav"
 	"github.com/Xinlong-Wu/tailscale-oh/drive"
 	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl/compositedav"
 	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl/dirfs"
 	"github.com/Xinlong-Wu/tailscale-oh/drive/driveimpl/shared"
 	"github.com/Xinlong-Wu/tailscale-oh/safesocket"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/tailscale/xnet/webdav"
 )
 
 func NewFileSystemForRemote(logf logger.Logf) *FileSystemForRemote {
@@ -315,9 +315,7 @@ func (s *userServer) runLoop() {
 			consecutiveFailures = 1
 		}
 		sleepTime := time.Duration(math.Pow(2, consecutiveFailures)) * time.Millisecond
-		if sleepTime > maxSleepTime {
-			sleepTime = maxSleepTime
-		}
+		sleepTime = min(sleepTime, maxSleepTime)
 		s.logf("user server % v stopped with error %v, will try again in %v", s.executable, err, sleepTime)
 		time.Sleep(sleepTime)
 	}

@@ -106,7 +106,7 @@
         src = ./.;
         vendorHash = flakeHashes.vendor.sri;
         nativeBuildInputs = [pkgs.makeWrapper pkgs.installShellFiles];
-        ldflags = ["-X tailscale.com/version.gitCommitStamp=${tailscaleRev}"];
+        ldflags = ["-X github.com/Xinlong-Wu/tailscale-oh/version.gitCommitStamp=${tailscaleRev}"];
         env.CGO_ENABLED = 0;
         subPackages = [
           "cmd/tailscale"
@@ -159,9 +159,18 @@
           # qemu and e2fsprogs are needed for natlab
           qemu
           e2fsprogs
+
+          # mtools (mcopy) and dtc are needed by the `tsapp-qemu-pi`
+          # Makefile target that boots the Tailscale appliance under qemu.
+          mtools
+          dtc
+
+          # awscli2 is used by gokrazy/build.go to import and register the
+          # Tailscale appliance AMI.
+          awscli2.out
         ];
       };
     });
   };
 }
-# nix-direnv cache busting line: sha256-Sd2iLJ7eDfDYdIRuW4xuiKgzhQWJWGAnz97FJWrVRlE=
+# nix-direnv cache busting line: sha256-DUNbQDGHKTNE7lKbjBZR6R42nAnIlsphajuoAy2wHaU=

@@ -12,12 +12,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gaissmai/bart"
-	"go4.org/netipx"
 	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/gaissmai/bart"
+	"go4.org/netipx"
 )
 
 var ErrNoIPsAvailable = errors.New("no IPs available")

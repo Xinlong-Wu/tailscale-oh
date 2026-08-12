@@ -8,6 +8,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net"
 	"slices"
 	"strings"
 	"sync"
@@ -32,7 +33,7 @@ import (
 )
 
 const (
-	tailscaleIngressControllerName = "github.com/Xinlong-Wu/tailscale-oh/ts-ingress"                    // ingressClass.spec.controllerName for tailscale IngressClass resource
+	tailscaleIngressControllerName = "tailscale.com/ts-ingress"                    // ingressClass.spec.controllerName for tailscale IngressClass resource
 	ingressClassDefaultAnnotation  = "ingressclass.kubernetes.io/is-default-class" // we do not support this https://kubernetes.io/docs/concepts/services-networking/ingress/#default-ingress-class
 	indexIngressProxyClass         = ".metadata.annotations.ingress-proxy-class"
 )
@@ -364,7 +365,7 @@ func handlersForIngress(ctx context.Context, ing *networkingv1.Ingress, cl clien
 			proto = "https+insecure://"
 		}
 		mak.Set(&handlers, path, &ipn.HTTPHandler{
-			Proxy: proto + svc.Spec.ClusterIP + ":" + fmt.Sprint(port) + path,
+			Proxy: proto + net.JoinHostPort(svc.Spec.ClusterIP, fmt.Sprint(port)) + path,
 		})
 	}
 	addIngressBackend(ing.Spec.DefaultBackend, "/")
@@ -392,7 +393,7 @@ func handlersForIngress(ctx context.Context, ing *networkingv1.Ingress, cl clien
 }
 
 // isHTTPRedirectEnabled returns true if HTTP redirect is enabled for the Ingress.
-// The annotation is github.com/Xinlong-Wu/tailscale-oh/http-redirect and it should be set to "true".
+// The annotation is tailscale.com/http-redirect and it should be set to "true".
 func isHTTPRedirectEnabled(ing *networkingv1.Ingress) bool {
 	return ing.Annotations != nil && opt.Bool(ing.Annotations[AnnotationHTTPRedirect]).EqualBool(true)
 }

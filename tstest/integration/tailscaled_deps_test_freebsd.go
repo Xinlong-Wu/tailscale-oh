@@ -10,7 +10,6 @@ import (
 	// Otherwise cmd/go never sees that we depend on these packages'
 	// transitive deps when we run "go install tailscaled" in a child
 	// process and can cache a prior success when a dependency changes.
-	_ "github.com/Xinlong-Wu/tailscale-oh/chirp"
 	_ "github.com/Xinlong-Wu/tailscale-oh/client/local"
 	_ "github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled/childproc"
 	_ "github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
@@ -52,6 +51,7 @@ import (
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/osshare"
+	_ "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/pkey"
 	_ "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy/policyclient"
 	_ "github.com/Xinlong-Wu/tailscale-oh/version"

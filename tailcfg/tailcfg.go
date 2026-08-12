@@ -185,7 +185,11 @@ type CapabilityVersion int
 //   - 136: 2026-04-09: Client understands [NodeAttrDisableLinuxCGNATDropRule]
 //   - 137: 2026-04-15: Client handles 429 responses to /machine/register.
 //   - 138: 2026-03-31: can handle C2N /debug/tka.
-const CurrentCapabilityVersion CapabilityVersion = 138
+//   - 139: 2026-05-22: Client understands [NodeAttrEmitRuntimeMetrics]
+//   - 140: 2026-05-27: Client understands [NodeAttrDisableUDPGRO], [NodeAttrDisableUDPGSO], [NodeAttrDisableTUNUDPGRO], [NodeAttrDisableTUNTCPGRO]
+//   - 141: 2026-05-28: Client understands [NodeAttrNeverGSOEqualTail]
+//   - 142: 2026-07-06: Client understands c2n /remoteapi/localapi/* proxy
+const CurrentCapabilityVersion CapabilityVersion = 142
 
 // ID is an integer ID for a user, node, or login allocated by the
 // control plane.
@@ -435,8 +439,8 @@ type Node struct {
 	// Capabilities are capabilities that the node has.
 	// They're free-form strings, but should be in the form of URLs/URIs
 	// such as:
-	//    "https://github.com/Xinlong-Wu/tailscale-oh/cap/is-admin"
-	//    "https://github.com/Xinlong-Wu/tailscale-oh/cap/file-sharing"
+	//    "https://tailscale.com/cap/is-admin"
+	//    "https://tailscale.com/cap/file-sharing"
 	//
 	// Deprecated: use CapMap instead. See https://github.com/tailscale/tailscale/issues/11508
 	Capabilities []NodeCapability `json:",omitempty"`
@@ -567,7 +571,7 @@ func (n *Node) DisplayName(forOwner bool) string {
 	return n.ComputedName
 }
 
-// DisplayName returns the decomposed user-facing name for a node.
+// DisplayNames returns the decomposed user-facing name for a node.
 //
 // Parameter forOwner specifies whether the name is requested by
 // the owner of the node. When forOwner is false, hostIfDifferent
@@ -590,6 +594,18 @@ func (n *Node) DisplayNames(forOwner bool) (name, hostIfDifferent string) {
 	return n.ComputedName, ""
 }
 
+// IsRouter reports whether n is a router: it routes addresses besides its own.
+// Examples: an exit node, a subnet router, an app connector, etc.
+func (n *Node) IsRouter() bool {
+	// TODO(sfllaw): Keep this aligned with dbx.Node.IsSubnetRouter.
+	for _, r := range n.AllowedIPs {
+		if !slices.Contains(n.Addresses, r) {
+			return true
+		}
+	}
+	return false
+}
+
 // IsTagged reports whether the node has any tags.
 func (n *Node) IsTagged() bool {
 	return len(n.Tags) > 0
@@ -599,6 +615,10 @@ func (n *Node) IsTagged() bool {
 func (n *Node) SharerOrUser() UserID {
 	return cmp.Or(n.Sharer, n.User)
 }
+
+// IsRouter reports whether n is a router: it routes addresses besides its own.
+// Examples: an exit node, a subnet router, an app connector, etc.
+func (n NodeView) IsRouter() bool { return n.ж.IsRouter() }
 
 // IsTagged reports whether the node has any tags.
 func (n NodeView) IsTagged() bool { return n.ж.IsTagged() }
@@ -877,6 +897,15 @@ type Hostinfo struct {
 	ShieldsUp       bool     `json:",omitzero"` // indicates whether the host is blocking incoming connections
 	ShareeNode      bool     `json:",omitzero"` // indicates this node exists in netmap because it's owned by a shared-to user
 	NoLogsNoSupport bool     `json:",omitzero"` // indicates that the user has opted out of sending logs and support
+
+	// RemoteConfig is whether the node has both linked
+	// feature/remoteconfig into its binary and enabled
+	// Prefs.RemoteConfig: it has delegated full remote management of
+	// its prefs and LocalAPI to the tailnet admin via the
+	// /remoteapi/localapi/* c2n endpoint. See feature/remoteconfig for
+	// the trust model.
+	RemoteConfig bool `json:",omitzero"`
+
 	// WireIngress indicates that the node would like to be wired up server-side
 	// (DNS, etc) to be able to use Tailscale Funnel, even if it's not currently
 	// enabled. For example, the user might only use it for intermittent
@@ -884,9 +913,15 @@ type Hostinfo struct {
 	// away, even if it's disabled most of the time. As an optimization, this is
 	// only sent if IngressEnabled is false, as IngressEnabled implies that this
 	// option is true.
-	WireIngress     bool           `json:",omitzero"`
-	IngressEnabled  bool           `json:",omitzero"`  // if the node has any funnel endpoint enabled
-	AllowsUpdate    bool           `json:",omitzero"`  // indicates that the node has opted-in to admin-console-drive remote updates
+	WireIngress    bool `json:",omitzero"`
+	IngressEnabled bool `json:",omitzero"` // if the node has any funnel endpoint enabled
+
+	// AllowsUpdate reports that the node has opted in to
+	// admin-console-driven remote updates and that the running binary
+	// includes client update support (the feature/clientupdate package,
+	// which tsnet apps don't include).
+	AllowsUpdate bool `json:",omitzero"`
+
 	Machine         string         `json:",omitzero"`  // the current host's machine type (uname -m)
 	GoArch          string         `json:",omitzero"`  // GOARCH value (of the built binary)
 	GoArchVar       string         `json:",omitzero"`  // GOARM, GOAMD64, etc (of the built binary)
@@ -1067,7 +1102,7 @@ type NetInfo struct {
 
 	// PreferredDERP is this node's preferred (home) DERP region ID.
 	// This is where the node expects to be contacted to begin a
-	// peer-to-peer connection. The node might be be temporarily
+	// peer-to-peer connection. The node might be temporarily
 	// connected to multiple DERP servers (to speak to other nodes
 	// that are located elsewhere) but PreferredDERP is the region ID
 	// that the node subscribes to traffic at.
@@ -1283,7 +1318,7 @@ type RegisterRequest struct {
 	Ephemeral bool `json:",omitempty"`
 
 	// NodeKeySignature is the node's own node-key signature, re-signed
-	// for its new node key using its network-lock key.
+	// for its new node key using its tailnet-lock key.
 	//
 	// This field is set when the client retries registration after learning
 	// its NodeKeySignature (which is in need of rotation).
@@ -1539,50 +1574,50 @@ type CapGrant struct {
 // the peer communicates with the node that has this rule. Its meaning is
 // application-defined.
 //
-// It must be a URL like "https://github.com/Xinlong-Wu/tailscale-oh/cap/file-send".
+// It must be a URL like "https://tailscale.com/cap/file-send".
 type PeerCapability string
 
 const (
 	// PeerCapabilityFileSharingTarget grants the current node the ability to send
 	// files to the peer which has this capability.
-	PeerCapabilityFileSharingTarget PeerCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/file-sharing-target"
+	PeerCapabilityFileSharingTarget PeerCapability = "https://tailscale.com/cap/file-sharing-target"
 	// PeerCapabilityFileSharingSend grants the ability to receive files from a
 	// node that's owned by a different user.
-	PeerCapabilityFileSharingSend PeerCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/file-send"
+	PeerCapabilityFileSharingSend PeerCapability = "https://tailscale.com/cap/file-send"
 	// PeerCapabilityDebugPeer grants the ability for a peer to read this node's
 	// goroutines, metrics, magicsock internal state, etc.
-	PeerCapabilityDebugPeer PeerCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/debug-peer"
+	PeerCapabilityDebugPeer PeerCapability = "https://tailscale.com/cap/debug-peer"
 	// PeerCapabilityWakeOnLAN grants the ability to send a Wake-On-LAN packet.
-	PeerCapabilityWakeOnLAN PeerCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/wake-on-lan"
+	PeerCapabilityWakeOnLAN PeerCapability = "https://tailscale.com/cap/wake-on-lan"
 	// PeerCapabilityIngress grants the ability for a peer to send ingress traffic.
-	PeerCapabilityIngress PeerCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/ingress"
+	PeerCapabilityIngress PeerCapability = "https://tailscale.com/cap/ingress"
 	// PeerCapabilityWebUI grants the ability for a peer to edit features from the
 	// device Web UI.
-	PeerCapabilityWebUI PeerCapability = "github.com/Xinlong-Wu/tailscale-oh/cap/webui"
+	PeerCapabilityWebUI PeerCapability = "tailscale.com/cap/webui"
 	// PeerCapabilityTaildrive grants the ability for a peer to access Taildrive
 	// shares.
-	PeerCapabilityTaildrive PeerCapability = "github.com/Xinlong-Wu/tailscale-oh/cap/drive"
+	PeerCapabilityTaildrive PeerCapability = "tailscale.com/cap/drive"
 	// PeerCapabilityTaildriveSharer indicates that a peer has the ability to
 	// share folders with us.
-	PeerCapabilityTaildriveSharer PeerCapability = "github.com/Xinlong-Wu/tailscale-oh/cap/drive-sharer"
+	PeerCapabilityTaildriveSharer PeerCapability = "tailscale.com/cap/drive-sharer"
 
 	// PeerCapabilityKubernetes grants a peer Kubernetes-specific
 	// capabilities, such as the ability to impersonate specific Tailscale
 	// user groups as Kubernetes user groups. This capability is read by
 	// peers that are Tailscale Kubernetes operator instances.
-	PeerCapabilityKubernetes PeerCapability = "github.com/Xinlong-Wu/tailscale-oh/cap/kubernetes"
+	PeerCapabilityKubernetes PeerCapability = "tailscale.com/cap/kubernetes"
 
 	// PeerCapabilityRelay grants the ability for a peer to allocate relay
 	// endpoints.
-	PeerCapabilityRelay PeerCapability = "github.com/Xinlong-Wu/tailscale-oh/cap/relay"
+	PeerCapabilityRelay PeerCapability = "tailscale.com/cap/relay"
 	// PeerCapabilityRelayTarget grants the current node the ability to allocate
 	// relay endpoints to the peer which has this capability.
-	PeerCapabilityRelayTarget PeerCapability = "github.com/Xinlong-Wu/tailscale-oh/cap/relay-target"
+	PeerCapabilityRelayTarget PeerCapability = "tailscale.com/cap/relay-target"
 
 	// PeerCapabilityTsIDP grants a peer tsidp-specific
 	// capabilities, such as the ability to add user groups to the OIDC
 	// claim
-	PeerCapabilityTsIDP PeerCapability = "github.com/Xinlong-Wu/tailscale-oh/cap/tsidp"
+	PeerCapabilityTsIDP PeerCapability = "tailscale.com/cap/tsidp"
 )
 
 // NodeCapMap is a map of capabilities to their optional values. It is valid for
@@ -2098,7 +2133,7 @@ type MapResponse struct {
 	PacketFilters map[string][]FilterRule `json:",omitempty"`
 
 	// UserProfiles are the user profiles of nodes in the network.
-	// As as of 1.1.541 (mapver 5), this contains new or updated
+	// As of 1.1.541 (mapver 5), this contains new or updated
 	// user profiles only.
 	UserProfiles []UserProfile `json:",omitempty"`
 
@@ -2434,13 +2469,13 @@ type Oauth2Token struct {
 	// If zero, TokenSource implementations will reuse the same
 	// token forever and RefreshToken or equivalent
 	// mechanisms for that TokenSource will not be used.
-	Expiry time.Time `json:"expiry,omitempty"`
+	Expiry time.Time `json:"expiry,omitzero"`
 }
 
 // NodeCapability represents a capability granted to the self node as listed in
 // MapResponse.Node.Capabilities.
 //
-// It must be a URL like "https://github.com/Xinlong-Wu/tailscale-oh/cap/file-sharing", or a
+// It must be a URL like "https://tailscale.com/cap/file-sharing", or a
 // well-known capability name like "funnel". The latter is only allowed for
 // Tailscale-defined capabilities.
 //
@@ -2463,17 +2498,17 @@ func (p NodeCapabilityPrefix) ToAttribute(value string) NodeCapability {
 }
 
 const (
-	CapabilityFileSharing        NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/file-sharing"
-	CapabilityAdmin              NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/is-admin"
-	CapabilityOwner              NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/is-owner"
-	CapabilitySSH                NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/ssh"                   // feature enabled/available
-	CapabilitySSHRuleIn          NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/ssh-rule-in"           // some SSH rule reach this node
-	CapabilityDataPlaneAuditLogs NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/data-plane-audit-logs" // feature enabled
-	CapabilityDebug              NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/debug"                 // exposes debug endpoints over the PeerAPI
+	CapabilityFileSharing        NodeCapability = "https://tailscale.com/cap/file-sharing"
+	CapabilityAdmin              NodeCapability = "https://tailscale.com/cap/is-admin"
+	CapabilityOwner              NodeCapability = "https://tailscale.com/cap/is-owner"
+	CapabilitySSH                NodeCapability = "https://tailscale.com/cap/ssh"                   // feature enabled/available
+	CapabilitySSHRuleIn          NodeCapability = "https://tailscale.com/cap/ssh-rule-in"           // some SSH rule reach this node
+	CapabilityDataPlaneAuditLogs NodeCapability = "https://tailscale.com/cap/data-plane-audit-logs" // feature enabled
+	CapabilityDebug              NodeCapability = "https://tailscale.com/cap/debug"                 // exposes debug endpoints over the PeerAPI
 	CapabilityHTTPS              NodeCapability = "https"
 
 	// CapabilityMacUIV2 makes the macOS GUI enable its v2 mode.
-	CapabilityMacUIV2 NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/mac-ui-v2"
+	CapabilityMacUIV2 NodeCapability = "https://tailscale.com/cap/mac-ui-v2"
 
 	// CapabilityServicesInDesktopClients enables services list/menu/section in desktop clients.
 	// If this capability is not present, desktop clients should not show services.
@@ -2482,7 +2517,7 @@ const (
 	// CapabilityBindToInterfaceByRoute changes how Darwin nodes create
 	// sockets (in the net/netns package). See that package for more
 	// details on the behaviour of this capability.
-	CapabilityBindToInterfaceByRoute NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/bind-to-interface-by-route"
+	CapabilityBindToInterfaceByRoute NodeCapability = "https://tailscale.com/cap/bind-to-interface-by-route"
 
 	// NodeAttrDisableAndroidBindToActiveNetwork disables binding sockets to the
 	// currently active network on Android, which is enabled by default.
@@ -2495,41 +2530,41 @@ const (
 	// macOS and iOS clients) to override the default interface, this capability
 	// disables that and uses the default behavior (of parsing the routing
 	// table).
-	CapabilityDebugDisableAlternateDefaultRouteInterface NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/debug-disable-alternate-default-route-interface"
+	CapabilityDebugDisableAlternateDefaultRouteInterface NodeCapability = "https://tailscale.com/cap/debug-disable-alternate-default-route-interface"
 
 	// CapabilityDebugDisableBindConnToInterface disables the automatic binding
 	// of connections to the default network interface on Darwin nodes.
-	CapabilityDebugDisableBindConnToInterface NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/debug-disable-bind-conn-to-interface"
+	CapabilityDebugDisableBindConnToInterface NodeCapability = "https://tailscale.com/cap/debug-disable-bind-conn-to-interface"
 
 	// CapabilityDebugDisableBindConnToInterface disables the automatic binding
 	// of connections to the default network interface on Darwin nodes using network extensions
-	CapabilityDebugDisableBindConnToInterfaceAppleExt NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/debug-disable-bind-conn-to-interface-apple-ext"
+	CapabilityDebugDisableBindConnToInterfaceAppleExt NodeCapability = "https://tailscale.com/cap/debug-disable-bind-conn-to-interface-apple-ext"
 
 	// CapabilityTailnetLock indicates the node may initialize tailnet lock.
-	CapabilityTailnetLock NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/tailnet-lock"
+	CapabilityTailnetLock NodeCapability = "https://tailscale.com/cap/tailnet-lock"
 
 	// Funnel warning capabilities used for reporting errors to the user.
 
 	// CapabilityWarnFunnelNoInvite indicates whether Funnel is enabled for the tailnet.
 	// This cap is no longer used 2023-08-09 onwards.
-	CapabilityWarnFunnelNoInvite NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/warn-funnel-no-invite"
+	CapabilityWarnFunnelNoInvite NodeCapability = "https://tailscale.com/cap/warn-funnel-no-invite"
 
 	// CapabilityWarnFunnelNoHTTPS indicates HTTPS has not been enabled for the tailnet.
 	// This cap is no longer used 2023-08-09 onwards.
-	CapabilityWarnFunnelNoHTTPS NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/warn-funnel-no-https"
+	CapabilityWarnFunnelNoHTTPS NodeCapability = "https://tailscale.com/cap/warn-funnel-no-https"
 
 	// Debug logging capabilities
 
 	// CapabilityDebugTSDNSResolution enables verbose debug logging for DNS
 	// resolution for Tailscale-controlled domains (the control server, log
 	// server, DERP servers, etc.)
-	CapabilityDebugTSDNSResolution NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/debug-ts-dns-resolution"
+	CapabilityDebugTSDNSResolution NodeCapability = "https://tailscale.com/cap/debug-ts-dns-resolution"
 
 	// CapabilityFunnelPorts specifies the ports that the Funnel is available on.
 	// The ports are specified as a comma-separated list of port numbers or port
 	// ranges (e.g. "80,443,8080-8090") in the ports query parameter.
-	// e.g. https://github.com/Xinlong-Wu/tailscale-oh/cap/funnel-ports?ports=80,443,8080-8090
-	CapabilityFunnelPorts NodeCapability = "https://github.com/Xinlong-Wu/tailscale-oh/cap/funnel-ports"
+	// e.g. https://tailscale.com/cap/funnel-ports?ports=80,443,8080-8090
+	CapabilityFunnelPorts NodeCapability = "https://tailscale.com/cap/funnel-ports"
 
 	// NodeAttrOnlyTCP443 specifies that the client should not attempt to generate
 	// any outbound traffic that isn't TCP on port 443 (HTTPS). This is used for
@@ -2753,7 +2788,17 @@ const (
 	// reachability itself when choosing connectors. When absent, the
 	// default behavior is to trust the control plane when it claims that a
 	// node is no longer online, but that is not a reliable signal.
-	NodeAttrClientSideReachability = "client-side-reachability"
+	//
+	// It is temporary and will be ignored once its behaviour becomes the default.
+	NodeAttrClientSideReachability NodeCapability = "client-side-reachability"
+
+	// NodeAttrClientSideReachabilityRouteCheck configures the node to use
+	// the routecheck subsystem to determine reachability when choosing
+	// connectors. This relies on [NodeAttrClientSideReachability] being set.
+	// See tailscale/tailscale#17367.
+	//
+	// It is temporary and will be ignored once its behaviour becomes the default.
+	NodeAttrClientSideReachabilityRouteCheck NodeCapability = "client-side-reachability-routecheck"
 
 	// NodeAttrDefaultAutoUpdate advertises the default node auto-update setting
 	// for this tailnet. The node is free to opt-in or out locally regardless of
@@ -2783,11 +2828,66 @@ const (
 	// discard existing cached maps, and will not store any.
 	NodeAttrCacheNetworkMaps NodeCapability = "cache-network-maps"
 
+	// NodeAttrDisableCacheNetworkMaps indicates that the node should not cache
+	// network maps (as per [NodeAttrCacheNetworkMaps]) when it normally would.
+	// This attribute exists to allow the policy document to override the default.
+	// When set, it takes precedence over [NodeAttrCacheNetworkMaps].
+	NodeAttrDisableCacheNetworkMaps NodeCapability = "disable-cache-network-maps"
+
 	// NodeAttrDisableLinuxCGNATDropRule tells Linux clients to not insert a
 	// blanket firewall DROP rule for inbound traffic from the CGNAT IP range
 	// that does not originate from the Tailscale network interface.
 	// This enables access to off-tailnet endpoints within that IP range.
 	NodeAttrDisableLinuxCGNATDropRule NodeCapability = "disable-linux-cgnat-drop-rule"
+
+	// NodeAttrEmitRuntimeMetrics enables emission of [runtime/metrics] as
+	// [github.com/Xinlong-Wu/tailscale-oh/util/clientmetric]'s.
+	NodeAttrEmitRuntimeMetrics NodeCapability = "emit-runtime-metrics"
+
+	// NodeAttrDisableUDPGRO disables UDP GRO (UDP_GRO socket option on Linux)
+	// on the magicsock UDP socket. It exists so control can mitigate kernel
+	// regressions that cause throughput or correctness issues with UDP GRO on
+	// specific OS/kernel versions, without requiring a client release. See
+	// https://github.com/tailscale/tailscale/issues/19777 for example.
+	// Currently only consulted on Linux; may apply to other platforms as they
+	// gain UDP GRO support.
+	NodeAttrDisableUDPGRO NodeCapability = "disable-udp-gro"
+
+	// NodeAttrDisableUDPGSO disables UDP GSO (UDP_SEGMENT socket option on
+	// Linux) on the magicsock UDP socket. It exists so control can mitigate
+	// kernel regressions that cause throughput or correctness issues with UDP
+	// GSO on specific OS/kernel versions, without requiring a client release.
+	// See https://github.com/tailscale/tailscale/issues/19777 for example.
+	// Currently only consulted on Linux; may apply to other platforms as they
+	// gain UDP GSO support.
+	NodeAttrDisableUDPGSO NodeCapability = "disable-udp-gso"
+
+	// NodeAttrDisableTUNUDPGRO disables UDP GRO on the Tailscale TUN device.
+	// It exists so control can mitigate kernel regressions that cause
+	// throughput or correctness issues with TUN UDP GRO on specific OS/kernel
+	// versions, without requiring a client release. See
+	// https://github.com/tailscale/tailscale/issues/13041 for example.
+	// Currently only consulted on Linux; may apply to other platforms as they
+	// gain TUN UDP GRO support.
+	NodeAttrDisableTUNUDPGRO NodeCapability = "disable-tun-udp-gro"
+
+	// NodeAttrDisableTUNTCPGRO disables TCP GRO on the Tailscale TUN device.
+	// It exists so control can mitigate kernel regressions that cause
+	// throughput or correctness issues with TUN TCP GRO on specific OS/kernel
+	// versions, without requiring a client release. See
+	// https://github.com/tailscale/tailscale/issues/13041 for example.
+	// Currently only consulted on Linux; may apply to other platforms as they
+	// gain TUN TCP GRO support.
+	NodeAttrDisableTUNTCPGRO NodeCapability = "disable-tun-tcp-gro"
+
+	// NodeAttrNeverGSOEqualTail enables a sentinel-tail workaround in the
+	// underlay UDP packet TX path on Linux. Applies to magicsock and peer relay
+	// UDP sockets. The workaround avoids emitting UDP GSO batches whose
+	// fragments are all equal in length, at a small payload and packet overhead
+	// cost. It exists so control can mitigate kernel regressions that mangle
+	// UDP headers or checksums for equal-length GSO batches, without requiring
+	// a client release. See https://github.com/tailscale/tailscale/issues/19777.
+	NodeAttrNeverGSOEqualTail NodeCapability = "never-gso-equal-tail"
 )
 
 const (
@@ -2879,7 +2979,7 @@ type SetDeviceAttributesRequest struct {
 // Attributes not in the map are left unchanged.
 // The value can be a string, float64, bool, or nil to delete.
 //
-// See https://github.com/Xinlong-Wu/tailscale-oh/s/api-device-posture-attrs.
+// See https://tailscale.com/s/api-device-posture-attrs.
 //
 // TODO(bradfitz): add struct type for specifying optional associated data
 // for each attribute value, like an expiry time?
@@ -2988,7 +3088,12 @@ type SSHAction struct {
 
 	// SessionDuration, if non-zero, is how long the session can stay open
 	// before being forcefully terminated.
-	SessionDuration time.Duration `json:"sessionDuration,omitempty,format:nano"`
+	// It is encoded as an int64 of nanoseconds (Go's time.Duration
+	// wire format for encoding/json v1). It must not use a jsonv2
+	// format tag; the mere presence of one makes Go 1.27's
+	// encoding/json fail to decode the struct. See
+	// https://github.com/tailscale/tailscale/issues/20528.
+	SessionDuration time.Duration `json:"sessionDuration,omitempty"`
 
 	// AllowAgentForwarding, if true, allows accepted connections to forward
 	// the ssh agent if requested.
@@ -3338,12 +3443,157 @@ const LBHeader = "Ts-Lb"
 // this client is hosting can be ignored.
 type ServiceIPMappings map[ServiceName][]netip.Addr
 
+// ServiceActionType represents the type of a [ServiceAction]. Clients use
+// this value to determine which protocol or application to use when
+// handling the action.
+//
+// Well-known Tailscale types are defined as constants in this package.
+// They are plain slugs (e.g. "ssh", "http") with no URL prefix.
+//
+// When a type corresponds to an application layer protocol with a
+// well-known port, the slug generally follows the IANA Service Name and
+// Transport Protocol Port Number Registry:
+// https://www.iana.org/assignments/service-names-port-numbers.
+//
+// In cases where the IANA service name differs from the commonly used
+// protocol name, the protocol name is preferred for readability and
+// interoperability (e.g. RDP is registered as "ms-wbt-server").
+//
+// If third-party types are introduced in the future, they must use URL
+// form (e.g. "example.com/my-custom-type") to avoid collisions with
+// first-party types.
+type ServiceActionType string
+
+const (
+	// ServiceActionTypeAWSS3 indicates that a port corresponds to an
+	// AWS S3 compatible endpoint and the AWS configuration may be modified
+	// to point to this endpoint and S3 clients may be used.
+	ServiceActionTypeAWSS3 ServiceActionType = "aws-s3"
+
+	// ServiceActionTypeCockroachDB indicates that a port corresponds to a
+	// CockroachDB server and CockroachDB clients may be used.
+	ServiceActionTypeCockroachDB ServiceActionType = "cockroach"
+
+	// ServiceActionTypeElasticSearch indicates that a port corresponds to
+	// an Elasticsearch server and Elasticsearch clients may be used.
+	ServiceActionTypeElasticSearch ServiceActionType = "elasticsearch"
+
+	// ServiceActionTypeHTTP indicates that a port corresponds to an HTTP
+	// server and HTTP clients may be used.
+	ServiceActionTypeHTTP ServiceActionType = "http"
+
+	// ServiceActionTypeKubernetes indicates that a port corresponds to a
+	// Kubernetes API server and the Kubernetes context may be configured to
+	// point to the service and Kubernetes clients may be used.
+	ServiceActionTypeKubernetes ServiceActionType = "kubernetes"
+
+	// ServiceActionTypeMongoDB indicates that a port corresponds to a MongoDB
+	// server and MongoDB clients may be used.
+	ServiceActionTypeMongoDB ServiceActionType = "mongodb"
+
+	// ServiceActionTypeMSSQL indicates that a port corresponds to a Microsoft
+	// SQL Server and MSSQL clients may be used. The IANA registry uses
+	// "ms-sql-s" but "mssql" is the widely recognized name.
+	ServiceActionTypeMSSQL ServiceActionType = "mssql"
+
+	// ServiceActionTypeMySQL indicates that a port corresponds to a MySQL
+	// server and MySQL clients may be used.
+	ServiceActionTypeMySQL ServiceActionType = "mysql"
+
+	// ServiceActionTypePostgreSQL indicates that a port corresponds to a
+	// PostgreSQL server and PostgreSQL clients may be used.
+	ServiceActionTypePostgreSQL ServiceActionType = "postgresql"
+
+	// ServiceActionTypeRDP indicates that a port corresponds to an RDP
+	// server and RDP clients may be used. The IANA registry uses
+	// "ms-wbt-server" but "rdp" is the widely recognized name.
+	ServiceActionTypeRDP ServiceActionType = "rdp"
+
+	// ServiceActionTypeVNC indicates that a port corresponds to a VNC
+	// server and VNC clients may be used. The IANA registry uses "rfb"
+	// (Remote Framebuffer) but "vnc" is the widely recognized name.
+	ServiceActionTypeVNC ServiceActionType = "vnc"
+
+	// ServiceActionTypeSSH indicates that a port corresponds to an SSH
+	// server and SSH clients may be used.
+	ServiceActionTypeSSH ServiceActionType = "ssh"
+
+	// ServiceActionTypeTCP indicates that a port corresponds to a generic
+	// TCP server and TCP clients may be used.
+	ServiceActionTypeTCP ServiceActionType = "tcp"
+)
+
+// Valid reports whether t is a recognized ServiceActionType.
+func (t ServiceActionType) Valid() bool {
+	switch t {
+	case ServiceActionTypeAWSS3,
+		ServiceActionTypeCockroachDB,
+		ServiceActionTypeElasticSearch,
+		ServiceActionTypeHTTP,
+		ServiceActionTypeKubernetes,
+		ServiceActionTypeMongoDB,
+		ServiceActionTypeMSSQL,
+		ServiceActionTypeMySQL,
+		ServiceActionTypePostgreSQL,
+		ServiceActionTypeRDP,
+		ServiceActionTypeVNC,
+		ServiceActionTypeSSH,
+		ServiceActionTypeTCP:
+		return true
+	}
+	return false
+}
+
+// ServiceActionAttribute represents an attribute key for a [ServiceAction].
+// A given attribute's applicability depends on the [ServiceAction.Type].
+//
+// Well-known Tailscale attributes are defined as constants in this package.
+// Values are [RawMessage] (raw JSON) whose schema depends on the attribute.
+//
+// Clients should ignore attributes they do not recognize.
+type ServiceActionAttribute string
+
+const (
+	// ServiceActionAttributeWebClientURL is a [ServiceActionAttribute]
+	// that indicates to clients that a browser based client for the
+	// action is available at the URL in the value.
+	//
+	// The value is a JSON string containing a URL with an http(s) scheme.
+	ServiceActionAttributeWebClientURL ServiceActionAttribute = "tailscale.com/cap/web-client-url"
+
+	// ServiceActionAttributeResourceName is a [ServiceActionAttribute]
+	// that indicates to clients that the resource specified by the value
+	// should be selected when opening the application corresponding to
+	// the [ServiceAction.Type].
+	//
+	// This is particularly relevant for PostgreSQL services, where a
+	// database must be specified while opening a connection.
+	//
+	// The value is a JSON string containing the resource name
+	// (e.g. a database name).
+	ServiceActionAttributeResourceName ServiceActionAttribute = "tailscale.com/cap/resource-name"
+
+	// ServiceActionAttributeSkipUsername is a [ServiceActionAttribute]
+	// that indicates to clients that a username is not required.
+	//
+	// This attribute is typically used for services that are backed by
+	// an application-layer proxy. The proxy injects the appropriate
+	// credentials on behalf of the user, and any username provided by
+	// the user is ignored. This attribute informs clients that the
+	// username is irrelevant, and any username prompt should be skipped.
+	//
+	// The value is a JSON boolean.
+	ServiceActionAttributeSkipUsername ServiceActionAttribute = "tailscale.com/cap/skip-username"
+)
+
 // ServiceAction describes an action that a Tailscale
 // client can invoke for a [ServiceDetails].
+//
+// Clients should ignore actions with types they do not recognize.
 type ServiceAction struct {
 	// Type is the action's identifier i.e. a unique slug corresponding to a well
 	// known action. It drives icon selection and client application matching.
-	Type string
+	Type ServiceActionType
 
 	// Port is the target TCP port for this action. It must match one of
 	// the specific (non-range) TCP ports listed in the enclosing
@@ -3354,6 +3604,10 @@ type ServiceAction struct {
 	// in client menus when there are multiple actions to select from.
 	// If empty, a display name may be inferred from the Type field.
 	DisplayName string `json:",omitzero"`
+
+	// Attributes is an optional key-value map carrying additional metadata
+	// to help clients drive UI or behavior related to this action.
+	Attributes map[ServiceActionAttribute]RawMessage `json:",omitzero"`
 }
 
 // ServiceDetails describes a Service visible to this node.

@@ -23,13 +23,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
-	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 type vmInstance struct {

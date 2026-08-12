@@ -13,11 +13,11 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
 	qt "github.com/frankban/quicktest"
 	jsonv2 "github.com/go-json-experiment/json"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/Xinlong-Wu/tailscale-oh/types/structs"
 )
 
 // Statically verify that each type implements the following interfaces.

@@ -15,9 +15,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Xinlong-Wu/tailscale-oh/release/dist"
 	"github.com/goreleaser/nfpm/v2"
 	"github.com/goreleaser/nfpm/v2/files"
-	"github.com/Xinlong-Wu/tailscale-oh/release/dist"
 )
 
 type tgzTarget struct {
@@ -207,7 +207,7 @@ func (t *debTarget) Build(b *dist.Build) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	repoDir, err := b.GoPkg("tailscale.com")
+	repoDir, err := b.GoPkg("github.com/Xinlong-Wu/tailscale-oh")
 	if err != nil {
 		return nil, err
 	}
@@ -354,7 +354,7 @@ func (t *rpmTarget) Build(b *dist.Build) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	repoDir, err := b.GoPkg("tailscale.com")
+	repoDir, err := b.GoPkg("github.com/Xinlong-Wu/tailscale-oh")
 	if err != nil {
 		return nil, err
 	}

@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/google/go-cmp/cmp"
 )
 
 var golden = `{

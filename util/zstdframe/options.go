@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/klauspost/compress/zstd"
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
+	"github.com/klauspost/compress/zstd"
 )
 
 // Option is an option that can be passed to [AppendEncode] or [AppendDecode].

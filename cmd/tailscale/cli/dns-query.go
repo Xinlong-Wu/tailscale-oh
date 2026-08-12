@@ -13,9 +13,9 @@ import (
 	"strings"
 	"text/tabwriter"
 
+	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/jsonoutput"
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"golang.org/x/net/dns/dnsmessage"
-	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/jsonoutput"
 )
 
 var dnsQueryArgs struct {

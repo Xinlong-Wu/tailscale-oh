@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 var logoutArgs struct {

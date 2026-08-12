@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubeapi"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/google/go-cmp/cmp"
 )
 
 func Test_client_Event(t *testing.T) {

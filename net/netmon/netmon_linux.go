@@ -10,13 +10,13 @@ import (
 	"net/netip"
 	"time"
 
-	"github.com/jsimonetti/rtnetlink"
-	"github.com/mdlayher/netlink"
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
+	"github.com/jsimonetti/rtnetlink"
+	"github.com/mdlayher/netlink"
+	"golang.org/x/sys/unix"
 )
 
 var debugNetlinkMessages = envknob.RegisterBool("TS_DEBUG_NETLINK")

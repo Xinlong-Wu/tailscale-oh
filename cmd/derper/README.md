@@ -28,7 +28,7 @@ If you've decided or been advised to run your own `derper`, then read on.
 ## Guide to running `cmd/derper`
 
 * You must build and update the `cmd/derper` binary yourself. There are no
-  packages. Use `go install tailscale.com/cmd/derper@latest` with the latest
+  packages. Use `go install github.com/Xinlong-Wu/tailscale-oh/cmd/derper@latest` with the latest
   version of Go. You should update this binary approximately as regularly as
   you update Tailscale nodes. If using `--verify-clients`, the `derper` binary
   and `tailscaled` binary on the machine must be built from the same git revision.

@@ -10,10 +10,10 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/net/route"
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"golang.org/x/net/route"
+	"golang.org/x/sys/unix"
 )
 
 // fetchRoutingTable calls route.FetchRIB, fetching NET_RT_DUMP2.

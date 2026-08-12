@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
 	"github.com/Xinlong-Wu/tailscale-oh/sessionrecording"
 	"github.com/Xinlong-Wu/tailscale-oh/tstime"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 func New(conn io.WriteCloser, clock tstime.Clock, start time.Time, failOpen bool, logger *zap.SugaredLogger) *Client {

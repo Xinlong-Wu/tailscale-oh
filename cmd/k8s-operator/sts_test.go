@@ -14,6 +14,8 @@ import (
 	"strings"
 	"testing"
 
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"github.com/google/go-cmp/cmp"
 	"go.uber.org/zap"
 	appsv1 "k8s.io/api/apps/v1"
@@ -21,8 +23,6 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/yaml"
-	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
-	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 )
 
 // Test_statefulSetNameBase tests that parent name portion in a StatefulSet name
@@ -41,10 +41,7 @@ func Test_statefulSetNameBase(t *testing.T) {
 		if _, err := b.WriteString("a"); err != nil {
 			t.Fatalf("error writing to string builder: %v", err)
 		}
-		baseLength := b.Len()
-		if baseLength > 43 {
-			baseLength = 43 // currently 43 is the max base length
-		}
+		baseLength := min(b.Len(), 43)                                              // currently 43 is the max base length
 		wantsNameR := regexp.MustCompile(`^ts-a{` + fmt.Sprint(baseLength) + `}-$`) // to match a string like ts-aaaa-
 		gotName := statefulSetNameBase(b.String())
 		if !wantsNameR.MatchString(gotName) {

@@ -32,8 +32,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"golang.org/x/sync/errgroup"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/nardump/nardump"
+	"golang.org/x/sync/errgroup"
 )
 
 const (

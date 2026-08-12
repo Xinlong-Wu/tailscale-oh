@@ -11,18 +11,17 @@ import (
 	"log"
 	"net/netip"
 	"os"
-	"os/user"
 	"path/filepath"
 	"runtime"
 	"slices"
 	"strings"
 
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/paths"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 var sshCmd = &ffcli.Command{
@@ -59,11 +58,7 @@ func runSSH(ctx context.Context, args []string) error {
 	username, host, ok := strings.Cut(arg, "@")
 	if !ok {
 		host = arg
-		lu, err := user.Current()
-		if err != nil {
-			return nil
-		}
-		username = lu.Username
+		username = ""
 	}
 
 	st, err := localClient.Status(ctx)
@@ -146,7 +141,11 @@ func runSSH(ctx context.Context, args []string) error {
 	// to use a different one, we'll later be making stock ssh
 	// work well by default too. (doing things like automatically
 	// setting known_hosts, etc)
-	argv = append(argv, username+"@"+hostForSSH)
+	if username == "" {
+		argv = append(argv, hostForSSH)
+	} else {
+		argv = append(argv, username+"@"+hostForSSH)
+	}
 
 	argv = append(argv, argRest...)
 

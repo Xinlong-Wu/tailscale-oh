@@ -21,7 +21,7 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/v2"
+	"tailscale.com/client/tailscale/v2"
 
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
@@ -94,7 +94,7 @@ func TestTailscaleIngress(t *testing.T) {
 
 	// Get the ingress and update it with expected changes
 	ing := ingress()
-	ing.Finalizers = append(ing.Finalizers, "github.com/Xinlong-Wu/tailscale-oh/finalizer")
+	ing.Finalizers = append(ing.Finalizers, "tailscale.com/finalizer")
 	ing.Status.LoadBalancer = networkingv1.IngressLoadBalancerStatus{
 		Ingress: []networkingv1.IngressLoadBalancerIngress{
 			{Hostname: "foo.tailnetxyz.ts.net", Ports: []networkingv1.IngressPortStatus{{Port: 443, Protocol: "TCP"}}},
@@ -190,7 +190,7 @@ func TestTailscaleIngressHostname(t *testing.T) {
 
 	// Get the ingress and update it with expected changes
 	ing := ingress()
-	ing.Finalizers = append(ing.Finalizers, "github.com/Xinlong-Wu/tailscale-oh/finalizer")
+	ing.Finalizers = append(ing.Finalizers, "tailscale.com/finalizer")
 	expectEqual(t, fc, ing)
 
 	// 3. Ingress proxy with capability version >= 110 advertises HTTPS endpoint
@@ -336,7 +336,7 @@ func TestTailscaleIngressWithProxyClass(t *testing.T) {
 	opts.proxyClass = pc.Name
 	expectEqual(t, fc, expectedSTSUserspace(t, fc, opts))
 
-	// 4. github.com/Xinlong-Wu/tailscale-oh/proxy-class label is removed from the Ingress, the
+	// 4. tailscale.com/proxy-class label is removed from the Ingress, the
 	// Ingress gets reconciled and the custom ProxyClass configuration is
 	// removed from the proxy resources.
 	mustUpdate(t, fc, "default", "test", func(ing *networkingv1.Ingress) {
@@ -767,7 +767,7 @@ func TestEmptyPath(t *testing.T) {
 func ingressClass() *networkingv1.IngressClass {
 	return &networkingv1.IngressClass{
 		ObjectMeta: metav1.ObjectMeta{Name: "tailscale"},
-		Spec:       networkingv1.IngressClassSpec{Controller: "github.com/Xinlong-Wu/tailscale-oh/ts-ingress"},
+		Spec:       networkingv1.IngressClassSpec{Controller: "tailscale.com/ts-ingress"},
 	}
 }
 
@@ -941,4 +941,92 @@ func TestTailscaleIngressWithHTTPRedirect(t *testing.T) {
 	if !reflect.DeepEqual(ing.Status.LoadBalancer.Ingress[0].Ports, wantPorts) {
 		t.Errorf("incorrect status ports after removing redirect: got %v, want %v", ing.Status.LoadBalancer.Ingress[0].Ports, wantPorts)
 	}
+}
+
+func TestTailscaleIngressIPv6(t *testing.T) {
+	fc := fake.NewFakeClient(ingressClass())
+	zl, err := zap.NewDevelopment()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Create a Service with an IPv6 ClusterIP
+	ipv6Svc := &corev1.Service{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test-ipv6",
+			Namespace: "default",
+		},
+		Spec: corev1.ServiceSpec{
+			ClusterIP: "fda9:e575:6e22:2::25",
+			Ports: []corev1.ServicePort{
+				{
+					Port: 2283,
+					Name: "http",
+				},
+			},
+		},
+	}
+	mustCreate(t, fc, ipv6Svc)
+
+	// Create an Ingress that routes to the IPv6 service
+	ing := &networkingv1.Ingress{
+		TypeMeta: metav1.TypeMeta{Kind: "Ingress", APIVersion: "networking.k8s.io/v1"},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test-ipv6",
+			Namespace: "default",
+			UID:       "1234-UID-IPV6",
+		},
+		Spec: networkingv1.IngressSpec{
+			IngressClassName: new("tailscale"),
+			DefaultBackend: &networkingv1.IngressBackend{
+				Service: &networkingv1.IngressServiceBackend{
+					Name: "test-ipv6",
+					Port: networkingv1.ServiceBackendPort{
+						Number: 2283,
+					},
+				},
+			},
+		},
+	}
+	mustCreate(t, fc, ing)
+
+	ingR := &IngressReconciler{
+		Client:           fc,
+		ingressClassName: "tailscale",
+		ssr: &tailscaleSTSReconciler{
+			Client:            fc,
+			clients:           tsclient.NewProvider(&fakeTSClient{}),
+			tsnetServer:       &fakeTSNetServer{certDomains: []string{"test-host"}},
+			defaultTags:       []string{"tag:test"},
+			operatorNamespace: "operator-ns",
+			proxyImage:        "tailscale/tailscale",
+		},
+		logger: zl.Sugar(),
+	}
+
+	expectReconciled(t, ingR, "default", "test-ipv6")
+
+	// Verify the generated serveConfig has properly bracketed IPv6 address
+	fullName, _ := findGenName(t, fc, "default", "test-ipv6", "ingress")
+	opts := configOpts{
+		replicas:   new(int32(1)),
+		stsName:    "tailscale-ipv6-ingress-test-ipv6",
+		secretName: fullName,
+		namespace:  "default",
+		parentType: "ingress",
+		hostname:   "default-test-ipv6-ingress",
+		app:        kubetypes.AppIngressResource,
+		serveConfig: &ipn.ServeConfig{
+			TCP: map[uint16]*ipn.TCPPortHandler{443: {HTTPS: true}},
+			Web: map[ipn.HostPort]*ipn.WebServerConfig{
+				"${TS_CERT_DOMAIN}:443": {Handlers: map[string]*ipn.HTTPHandler{
+					"/": {Proxy: "http://[fda9:e575:6e22:2::25]:2283/"},
+				}},
+			},
+		},
+	}
+	// expectedSecret hardcodes the parent-resource label to "test", so fix it for our IPv6 test
+	secret := expectedSecret(t, fc, opts)
+	secret.Labels[LabelParentName] = "test-ipv6"
+	expectEqual(t, fc, secret)
 }

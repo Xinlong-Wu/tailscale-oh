@@ -30,7 +30,7 @@
 //				"src": ["group:eng"],
 //				"dst": ["tag:grafana"],
 //				"app": {
-//					"github.com/Xinlong-Wu/tailscale-oh/cap/proxy-to-grafana": [{
+//					"tailscale.com/cap/proxy-to-grafana": [{
 //						"role": "editor",
 //					}],
 //				},
@@ -67,7 +67,7 @@ var (
 )
 
 // aclCap is the Tailscale ACL capability used to configure proxy-to-grafana.
-const aclCap tailcfg.PeerCapability = "github.com/Xinlong-Wu/tailscale-oh/cap/proxy-to-grafana"
+const aclCap tailcfg.PeerCapability = "tailscale.com/cap/proxy-to-grafana"
 
 // aclGrant is an access control rule that assigns Grafana permissions
 // while provisioning a user.

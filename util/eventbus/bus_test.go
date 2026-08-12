@@ -14,9 +14,9 @@ import (
 	"testing/synctest"
 	"time"
 
+	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 	"github.com/creachadair/taskgroup"
 	"github.com/google/go-cmp/cmp"
-	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 )
 
 type EventA struct {

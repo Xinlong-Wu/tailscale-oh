@@ -21,7 +21,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/peterbourgon/ff/v3"
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/hostinfo"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
@@ -32,9 +31,10 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
 	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	"github.com/peterbourgon/ff/v3"
 )
 
-const configCapKey = "github.com/Xinlong-Wu/tailscale-oh/sniproxy"
+const configCapKey = "tailscale.com/sniproxy"
 
 // portForward is the state for a single port forwarding entry, as passed to the --forward flag.
 type portForward struct {

@@ -19,6 +19,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"sigs.k8s.io/yaml"
+
 	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/egressservices"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/ingressservices"
@@ -74,10 +75,10 @@ func pgStatefulSet(pg *tsapi.ProxyGroup, namespace, image, tsFirewallMode string
 	}
 	// Validate some base assumptions.
 	if len(ss.Spec.Template.Spec.InitContainers) != 1 {
-		return nil, fmt.Errorf("[unexpected] base proxy config had %d init containers instead of 1", len(ss.Spec.Template.Spec.InitContainers))
+		return nil, fmt.Errorf("base proxy config had %d init containers instead of 1", len(ss.Spec.Template.Spec.InitContainers))
 	}
 	if len(ss.Spec.Template.Spec.Containers) != 1 {
-		return nil, fmt.Errorf("[unexpected] base proxy config had %d containers instead of 1", len(ss.Spec.Template.Spec.Containers))
+		return nil, fmt.Errorf("base proxy config had %d containers instead of 1", len(ss.Spec.Template.Spec.Containers))
 	}
 
 	// StatefulSet config.

@@ -10,14 +10,14 @@ import (
 	"errors"
 	"net/netip"
 
-	jsonv2 "github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"github.com/Xinlong-Wu/tailscale-oh/drive"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
 	"github.com/Xinlong-Wu/tailscale-oh/types/prefs"
 	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
+	jsonv2 "github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 )
 
 //go:generate go run github.com/Xinlong-Wu/tailscale-oh/cmd/cloner  -clonefunc=false -type=Prefs,AutoUpdatePrefs,AppConnectorPrefs
@@ -145,7 +145,6 @@ func (v PrefsView) NetfilterKind() prefs.Item[string] { return v.ж.NetfilterKin
 func (v PrefsView) DriveShares() prefs.StructListView[*drive.Share, drive.ShareView] {
 	return prefs.StructListViewOf(&v.ж.DriveShares)
 }
-func (v PrefsView) AllowSingleHosts() prefs.Item[marshalAsTrueInJSON] { return v.ж.AllowSingleHosts }
 
 // Persist is an internal state rather than a preference.
 // It can be kept in the Prefs structure but should not be wrapped
@@ -182,7 +181,6 @@ var _PrefsViewNeedsRegeneration = Prefs(struct {
 	PostureChecking        prefs.Item[bool]
 	NetfilterKind          prefs.Item[string]
 	DriveShares            prefs.StructList[*drive.Share]
-	AllowSingleHosts       prefs.Item[marshalAsTrueInJSON]
 	Persist                *persist.Persist
 }{})
 

@@ -8,9 +8,9 @@ package gro
 import (
 	"sync"
 
+	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 	"gvisor.dev/gvisor/pkg/tcpip/stack"
 	nsgro "gvisor.dev/gvisor/pkg/tcpip/stack/gro"
-	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 )
 
 var (

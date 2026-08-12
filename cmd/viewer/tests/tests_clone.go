@@ -9,8 +9,8 @@ import (
 	"maps"
 	"net/netip"
 
-	"golang.org/x/exp/constraints"
 	"github.com/Xinlong-Wu/tailscale-oh/types/views"
+	"golang.org/x/exp/constraints"
 )
 
 // Clone makes a deep copy of StructWithPtrs.

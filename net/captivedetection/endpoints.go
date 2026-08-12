@@ -11,10 +11,10 @@ import (
 	"net/url"
 	"slices"
 
-	"go4.org/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/net/dnsfallback"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"go4.org/mem"
 )
 
 // EndpointProvider is an enum that represents the source of an Endpoint.
@@ -121,8 +121,8 @@ func availableEndpoints(derpMap *tailcfg.DERPMap, preferredDERPRegionID int, log
 		}
 		endpoints = append(endpoints, Endpoint{u, http.StatusNoContent, "", false, Tailscale})
 	}
-	appendTailscaleEndpoint("http://controlplane.github.com/Xinlong-Wu/tailscale-oh/generate_204")
-	appendTailscaleEndpoint("http://login.github.com/Xinlong-Wu/tailscale-oh/generate_204")
+	appendTailscaleEndpoint("http://controlplane.tailscale.com/generate_204")
+	appendTailscaleEndpoint("http://login.tailscale.com/generate_204")
 
 	// Sort the endpoints by provider so that we can prioritize DERP nodes in the preferred region, followed by
 	// any other DERP server elsewhere, then followed by Tailscale endpoints.

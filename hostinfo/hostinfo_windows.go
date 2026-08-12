@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"golang.org/x/sys/windows"
-	"golang.org/x/sys/windows/registry"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/winenv"
+	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/registry"
 )
 
 func init() {

@@ -28,6 +28,11 @@ concurrency:
 
 jobs:
   analyze:
+    # GitHub's PR changed-file view is capped at 300 files, which can classify
+    # pre-existing alerts as new on large sync PRs. Keep push/scheduled scans,
+    # upstream PR scans, and normal fork PR scans enabled while skipping only
+    # fork sync/upstream-* PRs.
+    if: github.event_name != 'pull_request' || github.repository == 'tailscale/tailscale' || !startsWith(github.head_ref, 'sync/upstream-')
     name: Analyze
     runs-on: ubuntu-latest
     permissions:
@@ -49,7 +54,7 @@ jobs:
 
     # Install a more recent Go that understands modern go.mod content.
     - name: Install Go
-      uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+      uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # zizmor: ignore[cache-poisoning] v6.3.0
       with:
         go-version-file: go.mod
 

@@ -13,10 +13,10 @@ import (
 	"fmt"
 	"net/netip"
 
-	"github.com/tailscale/hujson"
 	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
+	"github.com/tailscale/hujson"
 )
 
 const v1Alpha1 = "v1alpha1"

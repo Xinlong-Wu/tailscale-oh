@@ -8,9 +8,14 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"testing"
 
+	operatorutils "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
+	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
+	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
+	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/google/go-cmp/cmp"
 	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
@@ -21,10 +26,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	operatorutils "github.com/Xinlong-Wu/tailscale-oh/k8s-operator"
-	tsapi "github.com/Xinlong-Wu/tailscale-oh/k8s-operator/apis/v1alpha1"
-	"github.com/Xinlong-Wu/tailscale-oh/kube/kubetypes"
-	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"sigs.k8s.io/controller-runtime/pkg/client/interceptor"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 func TestDNSRecordsReconciler(t *testing.T) {
@@ -76,12 +79,12 @@ func TestDNSRecordsReconciler(t *testing.T) {
 	}
 
 	// 1. DNS record is created for an egress proxy configured via
-	// github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn annotation
+	// tailscale.com/tailnet-fqdn annotation
 	egressSvcFQDN := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:        "egress-fqdn",
 			Namespace:   "test",
-			Annotations: map[string]string{"github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn": "foo.bar.ts.net"},
+			Annotations: map[string]string{"tailscale.com/tailnet-fqdn": "foo.bar.ts.net"},
 		},
 		Spec: corev1.ServiceSpec{
 			ExternalName: "unused",
@@ -102,10 +105,10 @@ func TestDNSRecordsReconciler(t *testing.T) {
 	wantHostsIPv6 := map[string][]string{"foo.bar.ts.net": {"2600:1900:4011:161:0:d:0:d"}}
 	expectHostsRecordsWithIPv6(t, fc, wantHosts, wantHostsIPv6)
 
-	// 2. DNS record is updated if github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn annotation's
+	// 2. DNS record is updated if tailscale.com/tailnet-fqdn annotation's
 	// value changes
 	mustUpdate(t, fc, "test", "egress-fqdn", func(svc *corev1.Service) {
-		svc.Annotations["github.com/Xinlong-Wu/tailscale-oh/tailnet-fqdn"] = "baz.bar.ts.net"
+		svc.Annotations["tailscale.com/tailnet-fqdn"] = "baz.bar.ts.net"
 	})
 	expectReconciled(t, dnsRR, "tailscale", "egress-fqdn") // dns-records-reconciler reconcile the headless Service
 	wantHosts = map[string][]string{"baz.bar.ts.net": {"10.9.8.7"}}
@@ -287,6 +290,88 @@ func TestDNSRecordsReconcilerErrorCases(t *testing.T) {
 	}
 	if len(ip6s) != 0 {
 		t.Errorf("expected no IPv6 addresses, got %v", ip6s)
+	}
+}
+
+func TestDNSRecordsReconcilerOptimisticLockError(t *testing.T) {
+	zl, err := zap.NewDevelopment()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	funcs := interceptor.Funcs{
+		Update: func(ctx context.Context, client client.WithWatch, obj client.Object, opts ...client.UpdateOption) error {
+			return errors.New(optimisticLockErrorMsg)
+		},
+	}
+
+	dnsCfg := &tsapi.DNSConfig{
+		ObjectMeta: metav1.ObjectMeta{Name: "test"},
+		TypeMeta:   metav1.TypeMeta{Kind: "DNSConfig"},
+		Spec:       tsapi.DNSConfigSpec{Nameserver: &tsapi.Nameserver{}},
+	}
+	dnsCfg.Status.Conditions = append(dnsCfg.Status.Conditions, metav1.Condition{
+		Type:   string(tsapi.NameserverReady),
+		Status: metav1.ConditionTrue,
+	})
+
+	egressSvc := &corev1.Service{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "lock-service",
+			Namespace: "default",
+			Annotations: map[string]string{
+				AnnotationTailnetTargetFQDN: "lock-service.example.ts.net",
+			},
+		},
+		Spec: corev1.ServiceSpec{
+			Type:         corev1.ServiceTypeExternalName,
+			ExternalName: "unused",
+		},
+	}
+
+	proxyGroupEgressSvc := &corev1.Service{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "ts-proxygroup-egress-abcd1",
+			Namespace: "tailscale",
+			Labels: map[string]string{
+				kubetypes.LabelManaged: "true",
+				LabelParentName:        "lock-service",
+				LabelParentNamespace:   "default",
+				LabelParentType:        "svc",
+				labelProxyGroup:        "test-proxy-group",
+				labelSvcType:           typeEgress,
+			},
+		},
+	}
+
+	f := fake.NewClientBuilder().
+		WithInterceptorFuncs(funcs).
+		WithScheme(tsapi.GlobalScheme).
+		WithObjects(dnsCfg, proxyGroupEgressSvc, egressSvc).
+		WithStatusSubresource(dnsCfg).
+		Build()
+
+	dnsRR := &dnsRecordsReconciler{
+		Client:      f,
+		tsNamespace: "tailscale",
+		logger:      zl.Sugar(),
+	}
+
+	namespacedName := types.NamespacedName{
+		Namespace: proxyGroupEgressSvc.GetNamespace(),
+		Name:      proxyGroupEgressSvc.GetName(),
+	}
+
+	res, err := dnsRR.Reconcile(t.Context(), reconcile.Request{
+		NamespacedName: namespacedName,
+	})
+
+	if err != nil {
+		t.Errorf("expected requeueAfter in result, got error: %s", err)
+	}
+
+	if res.RequeueAfter == 0 {
+		t.Errorf("exptected requeueAfter in result to be > 0, got %d", res.RequeueAfter)
 	}
 }
 

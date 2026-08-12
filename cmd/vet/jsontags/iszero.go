@@ -23,7 +23,7 @@ func hasPureIsZeroMethod(t types.Type) bool {
 }
 
 // PureIsZeroMethodsInTailscaleModule is a list of known IsZero methods
-// in the "tailscale.com" module that are pure.
+// in the "github.com/Xinlong-Wu/tailscale-oh" module that are pure.
 var PureIsZeroMethodsInTailscaleModule = map[string]set.Set[string]{
 	"github.com/Xinlong-Wu/tailscale-oh/net/packet": set.Of(
 		"TailscaleRejectReason",

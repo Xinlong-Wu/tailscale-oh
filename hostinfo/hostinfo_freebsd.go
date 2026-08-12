@@ -10,8 +10,8 @@ import (
 	"os"
 	"os/exec"
 
-	"golang.org/x/sys/unix"
 	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
+	"golang.org/x/sys/unix"
 )
 
 func init() {

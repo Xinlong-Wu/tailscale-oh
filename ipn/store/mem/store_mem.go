@@ -9,10 +9,10 @@ import (
 	"encoding/json"
 	"sync"
 
-	xmaps "golang.org/x/exp/maps"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
+	xmaps "golang.org/x/exp/maps"
 )
 
 // New returns a new Store.
@@ -49,7 +49,11 @@ func (s *Store) WriteState(id ipn.StateKey, bs []byte) error {
 	if s.cache == nil {
 		s.cache = map[ipn.StateKey][]byte{}
 	}
-	s.cache[id] = bytes.Clone(bs)
+	if bs == nil {
+		delete(s.cache, id)
+	} else {
+		s.cache[id] = bytes.Clone(bs)
+	}
 	return nil
 }
 

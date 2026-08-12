@@ -18,9 +18,6 @@ import (
 	"strings"
 	"testing"
 
-	qt "github.com/frankban/quicktest"
-	"github.com/google/go-cmp/cmp"
-	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/health/healthmsg"
 	"github.com/Xinlong-Wu/tailscale-oh/internal/client/tailscale"
@@ -30,12 +27,16 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/tka"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/deptest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
 	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/set"
 	"github.com/Xinlong-Wu/tailscale-oh/version/distro"
+	qt "github.com/frankban/quicktest"
+	"github.com/google/go-cmp/cmp"
+	"github.com/peterbourgon/ff/v3/ffcli"
 )
 
 func TestPanicIfAnyEnvCheckedInInit(t *testing.T) {
@@ -769,7 +770,22 @@ func TestPrefsFromUpArgs(t *testing.T) {
 			args: upArgsT{
 				exitNodeIP: "foo",
 			},
-			wantErr: `invalid value "foo" for --exit-node; must be IP or hostname`,
+			st: &ipnstate.Status{
+				Peer: map[key.NodePublic]*ipnstate.PeerStatus{
+					key.NewNode().Public(): {
+						DNSName:      "example.com.",
+						TailscaleIPs: []netip.Addr{netip.MustParseAddr("1.0.0.2")},
+					},
+				},
+			},
+			wantErr: `invalid value "foo" for --exit-node; must be IP or peer hostname`,
+		},
+		{
+			name: "error_exit_node_not_started",
+			args: upArgsT{
+				exitNodeIP: "foo",
+			},
+			wantErr: `cannot resolve exit node by hostname while Tailscale is starting up; please use its Tailscale IP address instead`,
 		},
 		{
 			name: "error_exit_node_allow_lan_without_exit_node",
@@ -1000,9 +1016,6 @@ func TestPrefFlagMapping(t *testing.T) {
 			continue
 		}
 		switch prefName {
-		case "AllowSingleHosts":
-			// Fake pref for downgrade compat. See #12058.
-			continue
 		case "WantRunning", "Persist", "LoggedOut":
 			// All explicitly handled (ignored) by checkForAccidentalSettingReverts.
 			continue
@@ -1598,7 +1611,7 @@ func TestParseNLArgs(t *testing.T) {
 
 	for _, tc := range tcs {
 		t.Run(tc.name, func(t *testing.T) {
-			keys, disablements, err := parseNLArgs(tc.input, tc.parseKeys, tc.parseDisablements)
+			keys, disablements, err := parseTLArgs(tc.input, tc.parseKeys, tc.parseDisablements)
 			if (tc.wantErr == nil && err != nil) ||
 				(tc.wantErr != nil && err == nil) ||
 				(tc.wantErr != nil && err != nil && tc.wantErr.Error() != err.Error()) {

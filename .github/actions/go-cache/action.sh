@@ -41,8 +41,8 @@ if [ -z "${BIN_PATH}" ]; then
     echo "cmd/cigocacher found locally, building from local source"
     "${GOPATH}" build -o "${BIN_PATH}" ./cmd/cigocacher
   else
-    echo "cmd/cigocacher not found locally, fetching from tailscale.com/cmd/cigocacher"
-    "${GOPATH}" build -o "${BIN_PATH}" tailscale.com/cmd/cigocacher
+    echo "cmd/cigocacher not found locally, fetching from github.com/Xinlong-Wu/tailscale-oh/cmd/cigocacher"
+    "${GOPATH}" build -o "${BIN_PATH}" github.com/Xinlong-Wu/tailscale-oh/cmd/cigocacher
   fi
 fi
 

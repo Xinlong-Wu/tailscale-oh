@@ -19,14 +19,14 @@ import (
 	"testing/quick"
 	"time"
 
-	qt "github.com/frankban/quicktest"
-	"go4.org/mem"
-	"go4.org/netipx"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/util/deephash/testtype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/hashx"
 	"github.com/Xinlong-Wu/tailscale-oh/version"
+	qt "github.com/frankban/quicktest"
+	"go4.org/mem"
+	"go4.org/netipx"
 )
 
 type appendBytes []byte

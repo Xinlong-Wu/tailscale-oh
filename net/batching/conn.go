@@ -7,10 +7,10 @@ package batching
 import (
 	"net/netip"
 
-	"golang.org/x/net/ipv4"
-	"golang.org/x/net/ipv6"
 	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
 	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
+	"golang.org/x/net/ipv4"
+	"golang.org/x/net/ipv6"
 )
 
 var (

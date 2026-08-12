@@ -19,9 +19,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/tailscale/wireguard-go/tun"
-	"golang.org/x/sys/windows"
-	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/net/dns"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
@@ -29,6 +26,9 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/router"
+	"github.com/tailscale/wireguard-go/tun"
+	"golang.org/x/sys/windows"
+	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 )
 
 func init() {

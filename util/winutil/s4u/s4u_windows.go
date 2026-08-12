@@ -21,11 +21,11 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled/childproc"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil"
 	"github.com/Xinlong-Wu/tailscale-oh/util/winutil/conpty"
+	"golang.org/x/sys/windows"
 )
 
 func init() {

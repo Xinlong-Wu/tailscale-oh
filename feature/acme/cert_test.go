@@ -26,7 +26,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
@@ -743,12 +742,10 @@ func TestGetCertPEMWithValidity(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
-			tstest.AssertNotParallel(t)
 			if tt.readOnlyMode {
-				envknob.Setenv("TS_CERT_SHARE_MODE", "ro")
+				t.Setenv("TS_CERT_SHARE_MODE", "ro")
 			} else {
-				envknob.Setenv("TS_CERT_SHARE_MODE", "")
+				t.Setenv("TS_CERT_SHARE_MODE", "")
 			}
 
 			os.RemoveAll(certDirPath)

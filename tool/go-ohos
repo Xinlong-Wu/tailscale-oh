@@ -1,0 +1,326 @@
+#!/usr/bin/env bash
+# Copyright (c) Tailscale Inc & contributors
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# A small, deliberately pinned Go entry point for OpenHarmony builds.
+#
+# Unlike ./tool/go, this wrapper never downloads Tailscale's custom Go release
+# and never allows the Go command to select a newer toolchain automatically. It
+# uses the reviewed binary distribution from Xinlong-Wu/go-ohos and fails when
+# the repository's Go requirements move beyond the reviewed values.
+
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+repo_root="$(cd -- "$script_dir/.." && pwd -P)"
+config_file="$script_dir/openharmony/toolchain.env"
+
+if [[ ! -r "$config_file" ]]; then
+  echo "go-ohos: missing toolchain configuration: $config_file" >&2
+  exit 2
+fi
+# shellcheck disable=SC1090 # The path is fixed relative to this script.
+source "$config_file"
+
+die() {
+  echo "go-ohos: $*" >&2
+  exit 1
+}
+
+require_config() {
+  local name
+  for name in "$@"; do
+    if [[ -z "${!name:-}" ]]; then
+      die "configuration variable $name is empty"
+    fi
+  done
+}
+
+require_config \
+  GO_OHOS_REPOSITORY \
+  GO_OHOS_RELEASE \
+  GO_OHOS_GO_VERSION \
+  GO_OHOS_REVIEWED_GO_MOD_VERSION \
+  GO_OHOS_REVIEWED_TOOLCHAIN_REV \
+  GO_OHOS_SHA256_AMD64 \
+  GO_OHOS_SHA256_ARM64
+
+# Compare dotted numeric Go versions without relying on sort -V, which is not
+# available on every supported host. Pre-release suffixes are intentionally
+# rejected: this lane is pinned to a stable go-ohos release.
+version_at_least() {
+  local have="${1#go}" want="${2#go}" h w i
+  have="${have%%[-+]*}"
+  want="${want%%[-+]*}"
+  local -a have_parts want_parts
+  IFS=. read -r -a have_parts <<<"$have"
+  IFS=. read -r -a want_parts <<<"$want"
+  for i in 0 1 2; do
+    h="${have_parts[$i]:-0}"
+    w="${want_parts[$i]:-0}"
+    [[ "$h" =~ ^[0-9]+$ && "$w" =~ ^[0-9]+$ ]] || return 1
+    if (( h > w )); then
+      return 0
+    elif (( h < w )); then
+      return 1
+    fi
+  done
+  return 0
+}
+
+required_go_version="$(awk '$1 == "go" {print $2; exit}' "$repo_root/go.mod")"
+[[ -n "$required_go_version" ]] || die "could not read the go directive from $repo_root/go.mod"
+
+if [[ "$required_go_version" != "$GO_OHOS_REVIEWED_GO_MOD_VERSION" ]]; then
+  die "unreviewed Go requirement: go.mod requires $required_go_version, but the reviewed value is $GO_OHOS_REVIEWED_GO_MOD_VERSION; stop and review the Xinlong-Wu/go-ohos toolchain before continuing"
+fi
+
+toolchain_rev_file="$repo_root/go.toolchain.rev"
+[[ -r "$toolchain_rev_file" ]] || die "missing $toolchain_rev_file"
+actual_toolchain_rev="$(tr -d '[:space:]' < "$toolchain_rev_file")"
+if [[ "$actual_toolchain_rev" != "$GO_OHOS_REVIEWED_TOOLCHAIN_REV" ]]; then
+  die "unreviewed Tailscale Go toolchain revision: go.toolchain.rev is $actual_toolchain_rev, but the reviewed value is $GO_OHOS_REVIEWED_TOOLCHAIN_REV; stop and review the OpenHarmony toolchain before continuing"
+fi
+
+if ! version_at_least "$GO_OHOS_GO_VERSION" "$required_go_version"; then
+  die "the pinned $GO_OHOS_RELEASE toolchain provides Go $GO_OHOS_GO_VERSION, but go.mod requires Go $required_go_version; stop and wait for a reviewed Xinlong-Wu/go-ohos release instead of downloading the upstream Go toolchain"
+fi
+
+host_os="$(uname -s)"
+[[ "$host_os" == "Linux" ]] || die "the go-ohos binary releases provide Linux host tools; run this command on Linux (or in a Linux VM/container), never substitute the upstream Go toolchain"
+
+host_arch="$(uname -m)"
+case "$host_arch" in
+  x86_64|amd64) host_arch=amd64 ;;
+  aarch64|arm64) host_arch=arm64 ;;
+  *) die "unsupported host architecture: $(uname -m) (expected amd64 or arm64)" ;;
+esac
+
+# GO_OHOS_HOST_ARCH is useful when validating an ARM64 toolchain on an x86-64
+# host with QEMU. In normal use it follows the host architecture and downloads
+# the matching go-ohos release asset.
+toolchain_arch="${GO_OHOS_HOST_ARCH:-$host_arch}"
+case "$toolchain_arch" in
+  amd64|arm64) ;;
+  *) die "GO_OHOS_HOST_ARCH must be amd64 or arm64 (got $toolchain_arch)" ;;
+esac
+
+cache_dir="${GO_OHOS_CACHE_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/go-ohos}"
+mkdir -p "$cache_dir"
+
+sha256_file() {
+  local file="$1"
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$file" | awk '{print $1}'
+  elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$file" | awk '{print $1}'
+  else
+    die "sha256sum or shasum is required to verify the go-ohos archive"
+  fi
+}
+
+sha256_variable="GO_OHOS_SHA256_${toolchain_arch^^}"
+expected_sha256="${!sha256_variable}"
+asset_name="${GO_OHOS_RELEASE}-${toolchain_arch}.tar.gz"
+toolchain_root="${GO_OHOS_ROOT:-}"
+
+if [[ -n "$toolchain_root" ]]; then
+  # Accept either the exact GOROOT or its architecture directory for local
+  # installations such as /root/go_ohos/arm64.
+  if [[ ! -x "$toolchain_root/bin/go" && -x "$toolchain_root/$GO_OHOS_RELEASE/bin/go" ]]; then
+    toolchain_root="$toolchain_root/$GO_OHOS_RELEASE"
+  fi
+else
+  for candidate in \
+    "$cache_dir/$toolchain_arch/$GO_OHOS_RELEASE" \
+    "$HOME/go_ohos/$toolchain_arch/$GO_OHOS_RELEASE"; do
+    if [[ -x "$candidate/bin/go" ]]; then
+      toolchain_root="$candidate"
+      break
+    fi
+  done
+fi
+
+if [[ -z "$toolchain_root" ]]; then
+  toolchain_root="$cache_dir/$toolchain_arch/$GO_OHOS_RELEASE"
+  archive_dir="$cache_dir/$toolchain_arch"
+  mkdir -p "$archive_dir"
+  download_dir="$(mktemp -d "$archive_dir/.download.XXXXXX")"
+  cleanup_download() {
+    rm -rf -- "$download_dir"
+  }
+  trap cleanup_download EXIT
+  download_archive="$download_dir/$asset_name"
+  download_url="https://github.com/${GO_OHOS_REPOSITORY}/releases/download/${GO_OHOS_RELEASE}/${asset_name}"
+  echo "go-ohos: downloading $download_url" >&2
+  curl --fail --location --retry 3 --retry-all-errors --silent --show-error \
+    --proto '=https' --tlsv1.2 -o "$download_archive" "$download_url"
+  actual_sha256="$(sha256_file "$download_archive")"
+  [[ "$actual_sha256" == "$expected_sha256" ]] || die "SHA-256 mismatch for $asset_name: got $actual_sha256, expected $expected_sha256"
+
+  extracted_root="$download_dir/root"
+  mkdir -p "$extracted_root"
+  tar --extract --file "$download_archive" --strip-components=1 --directory "$extracted_root"
+  [[ -x "$extracted_root/bin/go" ]] || die "the go-ohos archive does not contain bin/go"
+
+  if [[ -e "$toolchain_root" ]]; then
+    # Another process may have populated the same cache while this download was
+    # in progress. Keep the existing complete installation and validate it
+    # below; never replace an unrelated directory.
+    if [[ ! -x "$toolchain_root/bin/go" ]]; then
+      die "toolchain destination already exists but is not a Go installation: $toolchain_root"
+    fi
+  else
+    mkdir -p "$(dirname -- "$toolchain_root")"
+    mv -- "$extracted_root" "$toolchain_root"
+  fi
+  trap - EXIT
+  cleanup_download
+fi
+
+go_bin="$toolchain_root/bin/go"
+[[ -x "$go_bin" ]] || die "Go executable not found at $go_bin"
+
+version_file="$toolchain_root/VERSION"
+[[ -r "$version_file" ]] || die "toolchain is missing VERSION: $toolchain_root"
+installed_go_version="$(awk 'NR == 1 {print $1; exit}' "$version_file")"
+[[ "$installed_go_version" == "go$GO_OHOS_GO_VERSION" ]] || die "toolchain VERSION is $installed_go_version, expected go$GO_OHOS_GO_VERSION"
+
+# Work out whether the selected host binary can execute directly. The explicit
+# GO_OHOS_HOST_ARCH knob is enough for normal releases, while file(1) catches a
+# wrongly supplied GO_OHOS_ROOT early and gives a useful diagnostic.
+actual_machine=""
+if command -v file >/dev/null 2>&1; then
+  machine_description="$(file -b "$go_bin")"
+  case "$machine_description" in
+    *"x86-64"*|*"x86_64"*) actual_machine=amd64 ;;
+    *"aarch64"*) actual_machine=arm64 ;;
+  esac
+fi
+if [[ -n "$actual_machine" && "$actual_machine" != "$toolchain_arch" ]]; then
+  die "GO_OHOS_ROOT contains a $actual_machine executable, but GO_OHOS_HOST_ARCH=$toolchain_arch"
+fi
+
+qemu_bin=""
+if [[ "$toolchain_arch" != "$host_arch" ]]; then
+  [[ "$toolchain_arch" == arm64 && "$host_arch" == amd64 ]] || die "cannot run $toolchain_arch go-ohos tools on a $host_arch host"
+  qemu_bin="${GO_OHOS_QEMU:-}"
+  if [[ -z "$qemu_bin" ]]; then
+    for candidate in qemu-aarch64-static qemu-aarch64; do
+      if command -v "$candidate" >/dev/null 2>&1; then
+        qemu_bin="$(command -v "$candidate")"
+        break
+      fi
+    done
+  fi
+  [[ -n "$qemu_bin" && -x "$qemu_bin" ]] || die "the ARM64 go-ohos toolchain needs qemu-aarch64; set GO_OHOS_QEMU or use the native $host_arch asset"
+fi
+
+# Build a small symlink GOROOT when the ARM64 host tools are being run through
+# QEMU. The Go driver invokes compiler/linker tools directly from GOROOT, so
+# wrapping only bin/go would fail with an exec-format error for those children.
+prepare_shadow_goroot() {
+  local shadow_base="$cache_dir/shadow"
+  local shadow_root="$shadow_base/${GO_OHOS_RELEASE}-${toolchain_arch}"
+  local helper_path="$script_dir/openharmony/qemu-exec"
+  local stamp="$shadow_root/.go-ohos-shadow"
+  local expected_stamp
+  expected_stamp="${toolchain_root}\n${qemu_bin}\n${helper_path}"
+  mkdir -p "$shadow_base"
+  if [[ -r "$stamp" && "$(cat "$stamp")" == "$expected_stamp" && -x "$shadow_root/bin/go" ]]; then
+    printf '%s\n' "$shadow_root"
+    return
+  fi
+
+  local build_root
+  build_root="$(mktemp -d "$shadow_base/.shadow.XXXXXX")"
+  # Keep the cleanup target narrow and private to this invocation.
+  trap 'rm -rf -- "$build_root"' RETURN
+  local item base
+  for item in "$toolchain_root"/*; do
+    base="${item##*/}"
+    case "$base" in
+      bin|pkg) ;;
+      *) ln -s -- "$item" "$build_root/$base" ;;
+    esac
+  done
+  mkdir -p "$build_root/bin" "$build_root/pkg/tool"
+  for item in "$toolchain_root/pkg"/*; do
+    base="${item##*/}"
+    [[ "$base" == tool ]] || ln -s -- "$item" "$build_root/pkg/$base"
+  done
+  for item in "$toolchain_root/pkg/tool"/*; do
+    base="${item##*/}"
+    if [[ "$base" == linux_arm64 ]]; then
+      mkdir -p "$build_root/pkg/tool/linux_arm64"
+      local tool
+      for tool in "$item"/*; do
+        ln -s -- "$helper_path" "$build_root/pkg/tool/linux_arm64/${tool##*/}"
+      done
+    else
+      ln -s -- "$item" "$build_root/pkg/tool/$base"
+    fi
+  done
+  for item in "$toolchain_root/bin"/*; do
+    ln -s -- "$helper_path" "$build_root/bin/${item##*/}"
+  done
+  printf '%s\n' "$expected_stamp" > "$build_root/.go-ohos-shadow"
+
+  if [[ -e "$shadow_root" ]]; then
+    # Reuse an installation made by another caller only when it is the exact
+    # shadow requested by this invocation. A complete shadow with a stale
+    # stamp must be replaced; otherwise changing the toolchain or QEMU path
+    # would silently keep using the old wrapper.
+    if [[ -r "$shadow_root/.go-ohos-shadow" &&
+          -x "$shadow_root/bin/go" &&
+          "$(cat "$shadow_root/.go-ohos-shadow")" == "$expected_stamp" ]]; then
+      rm -rf -- "$build_root"
+    else
+      rm -rf -- "$shadow_root"
+      mv -- "$build_root" "$shadow_root"
+    fi
+  else
+    mv -- "$build_root" "$shadow_root"
+  fi
+  trap - RETURN
+  printf '%s\n' "$shadow_root"
+}
+
+# These defaults describe the target this entry point is for, but callers may
+# explicitly select another GOOS/GOARCH for a compile-only build-constraint
+# check. GOTOOLCHAIN is always forced local.
+export GOOS="${GOOS:-openharmony}"
+export GOARCH="${GOARCH:-arm64}"
+export CGO_ENABLED="${CGO_ENABLED:-0}"
+export GOTOOLCHAIN=local
+
+if [[ -z "$qemu_bin" ]]; then
+  runtime_goroot="$toolchain_root"
+else
+  runtime_goroot="$(prepare_shadow_goroot)"
+  export GO_OHOS_QEMU="$qemu_bin"
+  export GO_OHOS_REAL_ROOT="$toolchain_root"
+  export GO_OHOS_SHADOW_ROOT="$runtime_goroot"
+fi
+export GOROOT="$runtime_goroot"
+export PATH="$runtime_goroot/bin:$PATH"
+
+invoke_go() {
+  if [[ -z "$qemu_bin" ]]; then
+    "$go_bin" "$@"
+  else
+    "$qemu_bin" "$go_bin" "$go_bin" "$@"
+  fi
+}
+
+if ! invoke_go tool dist list | grep -qx 'openharmony/arm64'; then
+  die "$GO_OHOS_RELEASE does not advertise the openharmony/arm64 target"
+fi
+reported_go_version="$(invoke_go env GOVERSION)"
+[[ "$reported_go_version" == "go$GO_OHOS_GO_VERSION" ]] || die "go env GOVERSION returned $reported_go_version, expected go$GO_OHOS_GO_VERSION"
+
+if [[ -z "$qemu_bin" ]]; then
+  exec "$go_bin" "$@"
+else
+  exec "$qemu_bin" "$go_bin" "$go_bin" "$@"
+fi

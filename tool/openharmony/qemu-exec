@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Copyright (c) Tailscale Inc & contributors
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This helper is installed as a symlink for every executable in an ARM64 Go
+# toolchain's GOROOT. It lets an x86-64 host run the ARM64 Go driver and its
+# compiler/linker tools through user-mode QEMU. The Go driver invokes tools by
+# path, so simply wrapping bin/go is not sufficient: every child tool needs the
+# same translation.
+
+set -euo pipefail
+
+: "${GO_OHOS_QEMU:?GO_OHOS_QEMU is not set}"
+: "${GO_OHOS_REAL_ROOT:?GO_OHOS_REAL_ROOT is not set}"
+: "${GO_OHOS_SHADOW_ROOT:?GO_OHOS_SHADOW_ROOT is not set}"
+
+self="$0"
+case "$self" in
+  /*) ;;
+  *) self="$(pwd)/$self" ;;
+esac
+
+shadow_prefix="${GO_OHOS_SHADOW_ROOT%/}/"
+case "$self" in
+  "$shadow_prefix"*)
+    relative="${self#"$shadow_prefix"}"
+    ;;
+  *)
+    echo "go-ohos: QEMU helper invoked outside its shadow GOROOT: $self" >&2
+    exit 2
+    ;;
+esac
+
+target="${GO_OHOS_REAL_ROOT%/}/$relative"
+if [[ ! -x "$target" ]]; then
+  echo "go-ohos: missing toolchain executable: $target" >&2
+  exit 2
+fi
+
+# qemu-aarch64 passes the first argument after the emulator as argv[0] in a way
+# that makes the Go command lose its subcommand. Supplying the target twice
+# preserves the target argv[0] and gives the program the expected arguments.
+exec "$GO_OHOS_QEMU" "$target" "$target" "$@"

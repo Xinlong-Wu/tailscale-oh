@@ -1,6 +1,6 @@
 module github.com/Xinlong-Wu/tailscale-oh
 
-go 1.26.5
+go 1.26.6
 
 require (
 	filippo.io/mkcert v1.4.4

@@ -460,6 +460,49 @@ jobs:
           ~\AppData\Local\go-build
         key: ${{ runner.os }}-${{ matrix.goos }}-${{ matrix.goarch }}-${{ matrix.goarm }}-go-${{ hashFiles('**/go.sum') }}-${{ github.job }}-${{ github.run_id }}
 
+  openharmony:
+    name: OpenHarmony (go-ohos + DockerHarmony)
+    # DockerHarmony is an arm64 OpenHarmony rootfs. Use a native arm64 runner
+    # so the rootfs and its binaries do not depend on privileged binfmt setup.
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+    - name: checkout
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        path: src
+        persist-credentials: false
+    - name: Restore go-ohos caches
+      id: restore-ohos-cache
+      uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+      with:
+        path: |
+          go-ohos-cache
+          go-ohos-modcache
+          go-ohos-build-cache
+        key: openharmony-go-ohos-${{ hashFiles('src/go.mod', 'src/go.sum', 'src/go.toolchain.rev', 'src/tool/openharmony/toolchain.env') }}
+        restore-keys: |
+          openharmony-go-ohos-
+    - name: Build and test OpenHarmony target
+      working-directory: src
+      env:
+        GO_OHOS_CACHE_DIR: ${{ github.workspace }}/go-ohos-cache
+        GOMODCACHE: ${{ github.workspace }}/go-ohos-modcache
+        GOCACHE: ${{ github.workspace }}/go-ohos-build-cache
+        OPENHARMONY_WORK_DIR: ${{ runner.temp }}/tailscale-openharmony
+      run: ./scripts/test-openharmony.sh all
+    - name: Save go-ohos caches
+      if: always() && steps.restore-ohos-cache.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
+      uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+      with:
+        path: |
+          go-ohos-cache
+          go-ohos-modcache
+          go-ohos-build-cache
+        key: openharmony-go-ohos-${{ hashFiles('src/go.mod', 'src/go.sum', 'src/go.toolchain.rev', 'src/tool/openharmony/toolchain.env') }}
+
   ios: # similar to cross above, but iOS can't build most of the repo. So, just
        # make it build a few smoke packages.
     runs-on: ubuntu-24.04
@@ -890,6 +933,7 @@ jobs:
       - windows
       - macos
       - cross
+      - openharmony
       - ios
       - wasm
       - tailscale_go
@@ -935,6 +979,7 @@ jobs:
       - windows
       - macos
       - cross
+      - openharmony
       - ios
       - wasm
       - tailscale_go
@@ -962,6 +1007,7 @@ jobs:
       - android
       - cross
       - crossmin
+      - openharmony
       - ios
       - tailscale_go
       - depaware
@@ -984,6 +1030,7 @@ jobs:
       - test
       - windows
       - macos
+      - openharmony
       - wasm
       - fuzz
       - race-root-integration

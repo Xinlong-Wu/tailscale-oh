@@ -48,6 +48,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/deptest"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/typewalk"
+	"github.com/Xinlong-Wu/tailscale-oh/tstime"
 	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
 	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
 	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"

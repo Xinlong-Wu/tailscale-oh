@@ -31,6 +31,11 @@ func DefaultTailscaledSocket() string {
 	if runtime.GOOS == "plan9" {
 		return "/srv/tailscaled.sock"
 	}
+	if runtime.GOOS == "openharmony" {
+		// The TailLink engine serves LocalAPI over loopback TCP, not a
+		// Unix socket (see safesocket/safesocket_openharmony.go).
+		return ""
+	}
 	switch distro.Get() {
 	case distro.Synology:
 		if distro.DSMVersion() == 6 {

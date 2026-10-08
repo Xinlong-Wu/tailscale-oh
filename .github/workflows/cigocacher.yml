@@ -7,6 +7,9 @@ on:
 
 jobs:
   build:
+    # The fork uses GitHub-hosted Windows runners without Tailscale's private
+    # cigocacher service, so it does not publish cigocacher releases.
+    if: github.repository == 'tailscale/tailscale'
     strategy:
       matrix:
         GOOS: ["linux", "darwin", "windows"]
@@ -30,6 +33,7 @@ jobs:
         path: cigocacher-${{ matrix.GOOS }}-${{ matrix.GOARCH }}.tar.gz
 
   release:
+    if: github.repository == 'tailscale/tailscale'
     runs-on: ubuntu-24.04
     needs: build
     permissions:

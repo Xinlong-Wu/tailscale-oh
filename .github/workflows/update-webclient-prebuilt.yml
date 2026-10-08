@@ -10,6 +10,8 @@ concurrency:
 
 jobs:
   update-webclient-prebuilt:
+    # This updater depends on Tailscale's private code-updater GitHub App.
+    if: github.repository == 'tailscale/tailscale'
     runs-on: ubuntu-latest
 
     steps:

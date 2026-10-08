@@ -28,6 +28,9 @@ concurrency:
 
 jobs:
   policybot-test:
+    # The policy and PolicyBot installation are maintained by the official
+    # repository. They do not gate merges in this fork.
+    if: github.repository == 'tailscale/tailscale'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
 

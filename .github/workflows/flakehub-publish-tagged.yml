@@ -12,6 +12,8 @@ on:
         required: true
 jobs:
   flakehub-publish:
+    # FlakeHub publication belongs to the official Tailscale release process.
+    if: github.repository == 'tailscale/tailscale'
     runs-on: "ubuntu-latest"
     permissions:
       id-token: "write"

@@ -16,6 +16,9 @@ on:
 
 jobs:
   test:
+    # This matrix validates packages published through Tailscale's official
+    # distribution channels rather than artifacts produced by this fork.
+    if: github.repository == 'tailscale/tailscale'
     strategy:
       # Don't abort the entire matrix if one element fails.
       fail-fast: false
@@ -117,10 +120,14 @@ jobs:
         fi
   notify-slack:
     needs: test
+    if: >-
+      always() &&
+      github.repository == 'tailscale/tailscale' &&
+      github.event_name == 'schedule' &&
+      needs.test.result == 'failure'
     runs-on: ubuntu-latest
     steps:
       - name: Notify Slack of failure on scheduled runs
-        if: failure() && github.event_name == 'schedule'
         uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}

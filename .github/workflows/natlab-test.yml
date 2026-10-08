@@ -5,7 +5,12 @@
 # This workflow runs:
 #   - on demand (workflow_dispatch)
 #   - on PRs that carry the "run-natlab-tests" label
-#   - on main, every 12 hours, via cron
+#
+# The upstream repository also runs this suite on a 12-hour schedule. The fork
+# keeps the suite opt-in to avoid consuming runners for the upstream natlab
+# cadence while retaining it for explicit investigations. After a labeled PR
+# receives new commits, use workflow_dispatch or remove and re-add the label to
+# test the new head.
 #
 # Layout:
 #   - "prepare" builds the gokrazy VM image, downloads the cloud images
@@ -26,10 +31,7 @@ concurrency:
 on:
   workflow_dispatch:
   pull_request:
-    types: [labeled, synchronize, reopened]
-  schedule:
-    # Every 12 hours, off-the-hour to avoid GitHub's :00 cron-stampede window.
-    - cron: "23 3,15 * * *"
+    types: [labeled]
 
 jobs:
   # prepare warms the per-workflow-run caches (gokrazy image, cloud VM
@@ -39,7 +41,6 @@ jobs:
   prepare:
     if: |
       github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'schedule' ||
       (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'run-natlab-tests'))
     runs-on: ubuntu-latest
     timeout-minutes: 30

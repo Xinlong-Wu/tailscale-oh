@@ -1,0 +1,6 @@
+# Trusted SSH signing-key fingerprints for formal tailscale/tailscale release tags.
+#
+# Keep this list deliberately small. A release signed by a different key must
+# be reviewed before its fingerprint is added here; the scheduled synchronizer
+# must never learn trust dynamically from the release it is about to merge.
+SHA256:4X7QKZpmXLkns4z0XcXcUmifM/jruCmFyJnJIVmdUNo

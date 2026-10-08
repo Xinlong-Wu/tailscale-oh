@@ -8,7 +8,9 @@
 #
 # The upstream repository also runs this suite on a 12-hour schedule. The fork
 # keeps the suite opt-in to avoid consuming runners for the upstream natlab
-# cadence while retaining it for explicit investigations.
+# cadence while retaining it for explicit investigations. After a labeled PR
+# receives new commits, use workflow_dispatch or remove and re-add the label to
+# test the new head.
 #
 # Layout:
 #   - "prepare" builds the gokrazy VM image, downloads the cloud images
@@ -29,7 +31,7 @@ concurrency:
 on:
   workflow_dispatch:
   pull_request:
-    types: [labeled, synchronize, reopened]
+    types: [labeled]
 
 jobs:
   # prepare warms the per-workflow-run caches (gokrazy image, cloud VM

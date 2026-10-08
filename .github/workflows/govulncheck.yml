@@ -4,16 +4,9 @@ on:
   schedule:
     - cron: "0 12 * * *" # 8am EST / 10am PST / 12pm UTC
   workflow_dispatch: # allow manual trigger for testing
-  pull_request:
-    paths:
-      - ".github/workflows/govulncheck.yml"
 
 jobs:
   source-scan:
-    # A fork sync PR changes this upstream workflow and would otherwise be
-    # blocked by vulnerabilities inherited from the synchronized release.
-    # Keep scheduled and manual scans enabled in the fork.
-    if: github.event_name != 'pull_request' || github.repository == 'tailscale/tailscale'
     runs-on: ubuntu-latest
 
     steps:

@@ -1,9 +1,7 @@
 name: govulncheck
 
 on:
-  schedule:
-    - cron: "0 12 * * *" # 8am EST / 10am PST / 12pm UTC
-  workflow_dispatch: # allow manual trigger for testing
+  workflow_dispatch: # manually triggered in the fork
 
 jobs:
   source-scan:

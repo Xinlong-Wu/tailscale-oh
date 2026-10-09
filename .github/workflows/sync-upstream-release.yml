@@ -61,7 +61,9 @@ jobs:
           exit 1
 
       - name: Push synchronization branch
-        if: steps.prepare.outputs.action == 'prepared'
+        if: >-
+          steps.prepare.outputs.action == 'prepared' ||
+          steps.prepare.outputs.action == 'conflicted'
         shell: bash
         env:
           SYNC_TOKEN: ${{ github.token }}
@@ -74,10 +76,13 @@ jobs:
 
       - name: Open pull request to main
         id: pull-request
-        if: steps.prepare.outputs.action == 'prepared'
+        if: >-
+          steps.prepare.outputs.action == 'prepared' ||
+          steps.prepare.outputs.action == 'conflicted'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          SYNC_ACTION: ${{ steps.prepare.outputs.action }}
           SYNC_BRANCH: ${{ steps.prepare.outputs.branch }}
           RELEASE_TAG: ${{ steps.prepare.outputs.release_tag }}
           RELEASE_URL: ${{ steps.prepare.outputs.release_url }}
@@ -90,6 +95,8 @@ jobs:
           RELEASE_TOOLCHAIN_VERSION: ${{ steps.prepare.outputs.release_toolchain_version }}
           BASE_TOOLCHAIN_REV: ${{ steps.prepare.outputs.base_toolchain_rev }}
           RELEASE_TOOLCHAIN_REV: ${{ steps.prepare.outputs.release_toolchain_rev }}
+          CONFLICT_COUNT: ${{ steps.prepare.outputs.conflict_count }}
+          CONFLICT_REPORT: ${{ steps.prepare.outputs.conflict_report }}
         run: |
           set -euo pipefail
 
@@ -98,7 +105,14 @@ jobs:
           {
             echo "Automated synchronization of the latest formal upstream release: [${RELEASE_TAG}](${RELEASE_URL})."
             echo
-            echo 'The signed upstream tag was merged into this branch, preserving both histories.'
+            if [[ "$SYNC_ACTION" == conflicted ]]; then
+              echo '> [!CAUTION]'
+              echo "> The verified upstream release has ${CONFLICT_COUNT} merge conflicts. This draft branch contains only a temporary conflict report; the upstream release and release manifest have not been committed yet."
+              echo
+              echo "Conflict report: [\`${CONFLICT_REPORT}\`](https://github.com/${GITHUB_REPOSITORY}/blob/${SYNC_BRANCH}/${CONFLICT_REPORT})"
+            else
+              echo 'The signed upstream tag was merged into this branch, preserving both histories.'
+            fi
             echo
             echo 'Release provenance:'
             echo
@@ -121,18 +135,33 @@ jobs:
             echo
             echo 'Manual review checklist:'
             echo
-            echo '- [ ] Resolve any fork-specific import, workflow, and OpenHarmony compatibility changes.'
+            if [[ "$SYNC_ACTION" == conflicted ]]; then
+              echo '- [ ] Merge the verified upstream commit into this branch and resolve every conflict without blanket `ours`/`theirs` choices.'
+              echo '- [ ] Remove the temporary conflict report and update `.github/upstream-release.json`.'
+            else
+              echo '- [ ] Resolve any fork-specific import, workflow, and OpenHarmony compatibility changes.'
+            fi
             echo '- [ ] Review the prepared diff and perform any required OpenHarmony/toolchain validation.'
-            echo '- [ ] Merge manually only after review.'
+            echo '- [ ] Mark ready and merge manually only after review.'
             echo
             echo 'Auto-merge is intentionally not enabled. No tag or GitHub Release is created before the PR reaches `main`.'
           } > "$pr_body"
 
-          pr_url="$(gh pr create \
-            --repo "$GITHUB_REPOSITORY" \
-            --base main \
-            --head "$SYNC_BRANCH" \
-            --title "sync: upstream ${RELEASE_TAG}" \
-            --body-file "$pr_body")"
+          pr_args=(
+            --repo "$GITHUB_REPOSITORY"
+            --base main
+            --head "$SYNC_BRANCH"
+            --title "sync: upstream ${RELEASE_TAG}"
+            --body-file "$pr_body"
+          )
+          if [[ "$SYNC_ACTION" == conflicted ]]; then
+            pr_args+=(--draft)
+          fi
+
+          pr_url="$(gh pr create "${pr_args[@]}")"
           echo "url=$pr_url" >> "$GITHUB_OUTPUT"
-          echo "Created pull request: ${pr_url}" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$SYNC_ACTION" == conflicted ]]; then
+            echo "Created draft conflict-resolution pull request: ${pr_url}" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Created pull request: ${pr_url}" >> "$GITHUB_STEP_SUMMARY"
+          fi

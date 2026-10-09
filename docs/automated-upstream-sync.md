@@ -42,10 +42,14 @@ suite before merging.
   by validating the returned release metadata.
 - An existing `sync/upstream-*` PR prevents another synchronization PR from
   being opened.
-- Unknown signing keys, merge conflicts, dirty checkouts, version mismatches,
-  and existing same-day branches stop before anything is pushed. The workflow
-  records the blocker in its log and Job Summary; repository Issues are not
-  required.
+- Unknown signing keys, dirty checkouts, version mismatches, and existing
+  same-day branches stop before anything is pushed. Repository Issues are not
+  required; blockers are recorded in the Action log and Job Summary.
+- Merge conflicts create a safe staging branch and Draft PR. The branch
+  contains a temporary `.github/upstream-sync-conflict.md` report, not a fake
+  conflict resolution. A maintainer must merge the verified upstream commit,
+  resolve every conflict, remove the report, update the release manifest, run
+  validation, and mark the PR ready.
 - Go and Tailscale toolchain metadata changes do not prevent the PR from being
   opened. They are shown prominently in its body and must be reviewed before
   merge, including any required `Xinlong-Wu/go-ohos` update and OpenHarmony

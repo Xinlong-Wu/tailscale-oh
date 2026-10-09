@@ -19,6 +19,7 @@ sync_date="${SYNC_DATE:-$(date -u +%F)}"
 sync_branch="sync/upstream-${sync_date}"
 upstream_url="https://github.com/${upstream_repository}.git"
 trusted_signers_file="$repo_root/.github/upstream-release-signers"
+conflict_report_path=".github/upstream-sync-conflict.md"
 
 output_file="${GITHUB_OUTPUT:-/dev/null}"
 summary_file="${GITHUB_STEP_SUMMARY:-/dev/null}"
@@ -65,6 +66,22 @@ noop() {
 	} | write_summary
 	printf '%s\n' "$message"
 	exit 0
+}
+
+write_release_outputs() {
+	write_output branch "$sync_branch"
+	write_output release_tag "$release_tag"
+	write_output release_url "$release_url"
+	write_output release_published_at "$release_published_at"
+	write_output upstream_commit "$release_commit"
+	write_output release_fingerprint "$release_fingerprint"
+	write_output toolchain_changed "$toolchain_changed"
+	write_output base_go_version "$base_go_version"
+	write_output release_go_version "$release_go_version"
+	write_output base_toolchain_version "$base_toolchain_version"
+	write_output release_toolchain_version "$release_toolchain_version"
+	write_output base_toolchain_rev "$base_toolchain_rev"
+	write_output release_toolchain_rev "$release_toolchain_rev"
 }
 
 if [[ "$upstream_repository" != "tailscale/tailscale" ]]; then
@@ -214,26 +231,80 @@ merge_status=$?
 set -e
 if (( merge_status != 0 )); then
 	conflicting_files="$(git diff --name-only --diff-filter=U)"
-	conflict_count="$(wc -l <<<"$conflicting_files" | tr -d '[:space:]')"
-	conflicting_preview="$(sed -n '1,100p' <<<"$conflicting_files")"
-	if (( conflict_count > 100 )); then
-		conflicting_preview+=$'\n'
-		conflicting_preview+="... and $((conflict_count - 100)) more conflicting files"
-	fi
-	git merge --abort || true
-	block "Automated upstream sync has merge conflicts for ${release_tag}" <<EOF
-The signed upstream release tag could not be merged cleanly into
-\`$base_branch\`. No branch was pushed and no PR was created.
-
-Conflicting files:
-
-\`\`\`
-$conflicting_preview
-\`\`\`
-
-Resolve this release manually so the fork-specific OpenHarmony adaptations are
-preserved.
+	if [[ -z "$conflicting_files" ]]; then
+		git merge --abort || true
+		block "Automated upstream sync merge failed for ${release_tag}" <<EOF
+Git failed to merge the signed upstream release, but did not report any
+unmerged paths. No branch was pushed. Review the merge failure manually.
 EOF
+	fi
+	conflict_count="$(wc -l <<<"$conflicting_files" | tr -d '[:space:]')"
+	if ! git merge --abort; then
+		block "Automated upstream sync could not abort the conflicted merge for ${release_tag}" <<EOF
+Git reported $conflict_count conflicting files and then failed to restore the
+clean \`$base_branch\` state. No branch was pushed.
+EOF
+	fi
+
+	if [[ -e "$conflict_report_path" ]]; then
+		block "Automated upstream sync found an existing conflict report" <<EOF
+\`$conflict_report_path\` already exists on \`$base_branch\`. Remove or resolve
+that stale report before preparing \`$release_tag\`.
+EOF
+	fi
+
+	# shellcheck disable=SC2016 # Backticks are intentional Markdown delimiters.
+	{
+		printf '# Upstream synchronization conflict report\n\n'
+		printf '> [!CAUTION]\n'
+		printf '> This is a temporary staging file. Do not merge this PR until the signed upstream release has been merged, every conflict has been resolved, this file has been removed, and the release manifest has been updated.\n\n'
+		printf -- '- Upstream release: [%s](%s)\n' "$release_tag" "$release_url"
+		printf -- '- Upstream commit: `%s`\n' "$release_commit"
+		printf -- '- Verified signing-key fingerprint: `%s`\n' "$release_fingerprint"
+		printf -- '- Base branch: `%s`\n' "$base_branch"
+		printf -- '- Base commit: `%s`\n' "$(git rev-parse "$base_ref")"
+		printf -- '- Conflicting files: `%s`\n' "$conflict_count"
+		printf -- '- Go/toolchain metadata changed: `%s`\n\n' "$toolchain_changed"
+		printf '## Manual resolution\n\n'
+		printf '1. Check out this PR branch.\n'
+		printf '2. Fetch the verified tag and merge its peeled commit without auto-committing:\n\n'
+		printf '   ```sh\n'
+		printf '   git fetch https://github.com/%s.git refs/tags/%s:refs/tags/%s\n' "$upstream_repository" "$release_tag" "$release_tag"
+		printf '   git merge --no-ff --no-commit %s\n' "$release_commit"
+		printf '   ```\n\n'
+		printf '3. Resolve every conflict while preserving the fork-specific OpenHarmony adaptations. Do not apply a blanket `ours` or `theirs` resolution.\n'
+		printf '4. Remove this report as part of the signed-off upstream merge commit.\n'
+		printf '5. Update `.github/upstream-release.json`, run the required validation, and add the signed-off release-preparation commit.\n'
+		printf '6. Mark the PR ready only after the branch is complete and reviewed.\n\n'
+		printf '## Conflicting files\n\n'
+		printf '```text\n%s\n```\n' "$conflicting_files"
+	} > "$conflict_report_path"
+
+	git add "$conflict_report_path"
+	git commit --signoff -m "sync: stage ${release_tag} conflict resolution"
+
+	if ! git diff --check "$base_ref"...HEAD; then
+		block "Automated upstream sync produced an invalid conflict report for ${release_tag}" <<EOF
+The staged conflict-resolution branch fails \`git diff --check\`. No branch was
+pushed.
+EOF
+	fi
+
+	write_release_outputs
+	write_output action conflicted
+	write_output conflict_count "$conflict_count"
+	write_output conflict_report "$conflict_report_path"
+	# shellcheck disable=SC2016 # Backticks are intentional Markdown delimiters.
+	{
+		printf '## Staged conflicted upstream synchronization\n\n'
+		printf -- '- Release: [%s](%s)\n' "$release_tag" "$release_url"
+		printf -- '- Upstream commit: `%s`\n' "$release_commit"
+		printf -- '- Branch: `%s`\n' "$sync_branch"
+		printf -- '- Conflicting files: `%s`\n' "$conflict_count"
+		printf -- '- Conflict report: `%s`\n' "$conflict_report_path"
+		printf '\nA draft PR will be opened for manual resolution.\n'
+	} | write_summary
+	exit 0
 fi
 
 if ! git rev-parse --verify --quiet MERGE_HEAD >/dev/null; then
@@ -286,20 +357,10 @@ pushed. Review the merge result manually.
 EOF
 fi
 
+write_release_outputs
 write_output action prepared
-write_output branch "$sync_branch"
-write_output release_tag "$release_tag"
-write_output release_url "$release_url"
-write_output release_published_at "$release_published_at"
-write_output upstream_commit "$release_commit"
-write_output release_fingerprint "$release_fingerprint"
-write_output toolchain_changed "$toolchain_changed"
-write_output base_go_version "$base_go_version"
-write_output release_go_version "$release_go_version"
-write_output base_toolchain_version "$base_toolchain_version"
-write_output release_toolchain_version "$release_toolchain_version"
-write_output base_toolchain_rev "$base_toolchain_rev"
-write_output release_toolchain_rev "$release_toolchain_rev"
+write_output conflict_count 0
+write_output conflict_report ""
 
 {
 	printf '## Prepared upstream synchronization\n\n'

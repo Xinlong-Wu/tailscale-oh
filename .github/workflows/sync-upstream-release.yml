@@ -8,9 +8,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  issues: write
-  pull-requests: read
+  contents: write
+  pull-requests: write
 
 concurrency:
   group: automated-upstream-release-sync
@@ -34,63 +33,38 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          SYNC_PUSH_TOKEN: ${{ secrets.UPSTREAM_SYNC_TOKEN }}
           UPSTREAM_REPOSITORY: tailscale/tailscale
           DOWNSTREAM_REPOSITORY: ${{ github.repository }}
           BASE_BRANCH: main
           SYNC_REPORT_FILE: ${{ runner.temp }}/upstream-sync-report.md
-          SYNC_ISSUE_TITLE_FILE: ${{ runner.temp }}/upstream-sync-issue-title.txt
         run: bash scripts/prepare-upstream-release-sync.sh
-
-      - name: Create or update blocking issue
-        if: steps.prepare.outcome == 'failure'
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPORT_FILE: ${{ runner.temp }}/upstream-sync-report.md
-          TITLE_FILE: ${{ runner.temp }}/upstream-sync-issue-title.txt
-        run: |
-          set -euo pipefail
-
-          if [[ ! -s "$REPORT_FILE" || ! -s "$TITLE_FILE" ]]; then
-            printf '%s\n' 'Automated upstream sync failed unexpectedly' > "$TITLE_FILE"
-            {
-              echo 'The preparation script failed before it could produce a detailed report.'
-              echo
-              echo "Workflow run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-            } > "$REPORT_FILE"
-          fi
-
-          issue_title="$(<"$TITLE_FILE")"
-          existing_issue="$(gh issue list \
-            --repo "$GITHUB_REPOSITORY" \
-            --state open \
-            --limit 100 \
-            --json number,title \
-            --jq ".[] | select(.title == \"${issue_title}\") | .number" | sed -n '1p')"
-
-          if [[ -n "$existing_issue" ]]; then
-            gh issue comment "$existing_issue" \
-              --repo "$GITHUB_REPOSITORY" \
-              --body-file "$REPORT_FILE"
-            echo "Updated blocking issue #${existing_issue}" >> "$GITHUB_STEP_SUMMARY"
-          else
-            issue_url="$(gh issue create \
-              --repo "$GITHUB_REPOSITORY" \
-              --title "$issue_title" \
-              --body-file "$REPORT_FILE")"
-            echo "Created blocking issue: ${issue_url}" >> "$GITHUB_STEP_SUMMARY"
-          fi
 
       - name: Stop after a blocked preparation
         if: steps.prepare.outcome == 'failure'
-        run: exit 1
+        shell: bash
+        env:
+          REPORT_FILE: ${{ runner.temp }}/upstream-sync-report.md
+        run: |
+          set -euo pipefail
+
+          if [[ -s "$REPORT_FILE" ]]; then
+            cat "$REPORT_FILE" >&2
+          else
+            {
+              echo '## Automated upstream sync failed unexpectedly'
+              echo
+              echo 'The preparation script failed before it could produce a detailed report.'
+              echo
+              echo "Workflow run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            } | tee -a "$GITHUB_STEP_SUMMARY" >&2
+          fi
+          exit 1
 
       - name: Push synchronization branch
         if: steps.prepare.outputs.action == 'prepared'
         shell: bash
         env:
-          SYNC_TOKEN: ${{ secrets.UPSTREAM_SYNC_TOKEN }}
+          SYNC_TOKEN: ${{ github.token }}
           SYNC_BRANCH: ${{ steps.prepare.outputs.branch }}
         run: |
           set -euo pipefail
@@ -103,7 +77,7 @@ jobs:
         if: steps.prepare.outputs.action == 'prepared'
         shell: bash
         env:
-          GH_TOKEN: ${{ secrets.UPSTREAM_SYNC_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           SYNC_BRANCH: ${{ steps.prepare.outputs.branch }}
           RELEASE_TAG: ${{ steps.prepare.outputs.release_tag }}
           RELEASE_URL: ${{ steps.prepare.outputs.release_url }}
@@ -133,7 +107,7 @@ jobs:
             echo
             if [[ "$TOOLCHAIN_CHANGED" == true ]]; then
               echo '> [!WARNING]'
-              echo '> The upstream Go/toolchain metadata changed. The PR was intentionally created so CI can report compatibility; do not merge until a compatible Xinlong-Wu/go-ohos toolchain has been reviewed and the OpenHarmony job passes.'
+              echo '> The upstream Go/toolchain metadata changed. Do not merge until a compatible Xinlong-Wu/go-ohos toolchain has been reviewed and OpenHarmony validation has been performed.'
               echo
               echo '| Metadata | Current main | Upstream release |'
               echo '| --- | --- | --- |'
@@ -142,10 +116,13 @@ jobs:
               printf '| `go.toolchain.rev` | `%s` | `%s` |\n' "$BASE_TOOLCHAIN_REV" "$RELEASE_TOOLCHAIN_REV"
               echo
             fi
+            echo '> [!NOTE]'
+            echo '> This PR was created with the repository `GITHUB_TOKEN`. GitHub intentionally does not start pull-request workflows for that event. The full post-merge `main` CI still gates tag and GitHub Release publication.'
+            echo
             echo 'Manual review checklist:'
             echo
             echo '- [ ] Resolve any fork-specific import, workflow, and OpenHarmony compatibility changes.'
-            echo '- [ ] Confirm the complete PR CI, including the go-ohos + DockerHarmony job, passes.'
+            echo '- [ ] Review the prepared diff and perform any required OpenHarmony/toolchain validation.'
             echo '- [ ] Merge manually only after review.'
             echo
             echo 'Auto-merge is intentionally not enabled. No tag or GitHub Release is created before the PR reaches `main`.'

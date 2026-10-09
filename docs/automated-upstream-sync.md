@@ -19,20 +19,22 @@ creates a fork tag or GitHub Release. Existing post-merge automation remains
 responsible for publication after manual merge and successful same-commit
 `main` CI.
 
-## Required repository secret
+## Authentication and pull-request CI
 
-Configure an Actions secret named `UPSTREAM_SYNC_TOKEN`. Use a fine-grained
-personal access token restricted to `Xinlong-Wu/tailscale-oh` with:
+The workflow uses the repository-provided `GITHUB_TOKEN` with scoped
+`contents: write` and `pull-requests: write` permissions. No personal access
+token or repository secret is required.
 
-- Contents: Read and write
-- Pull requests: Read and write
-- Workflows: Read and write, because an upstream release can change files
-  under `.github/workflows/`
+GitHub suppresses workflow events caused by `GITHUB_TOKEN` to prevent recursive
+automation. Consequently, the automatically opened synchronization PR does not
+start the normal pull-request CI workflows. This is intentional for this fork:
+the maintainer reviews and merges the PR manually, then the full `main` push CI
+validates the exact integrated commit and gates tag and GitHub Release
+publication.
 
-The workflow deliberately does not use `GITHUB_TOKEN` to push the branch or
-open the PR. GitHub suppresses most workflow events created by `GITHUB_TOKEN`;
-using a separate token ensures that the synchronization PR starts the normal
-pull-request CI.
+If pre-merge validation is required for a particular release, trigger it with
+a maintainer-authenticated event or run the documented local OpenHarmony test
+suite before merging.
 
 ## Safety and expected manual work
 
@@ -42,12 +44,13 @@ pull-request CI.
   being opened.
 - Unknown signing keys, merge conflicts, dirty checkouts, version mismatches,
   and existing same-day branches stop before anything is pushed. The workflow
-  creates or updates an issue describing the blocker.
+  records the blocker in its log and Job Summary; repository Issues are not
+  required.
 - Go and Tailscale toolchain metadata changes do not prevent the PR from being
-  opened. They are shown prominently in its body, and the existing OpenHarmony
-  CI is expected to fail until a compatible `Xinlong-Wu/go-ohos` toolchain has
-  been reviewed and configured. The scheduled workflow does not inspect or
-  download a local toolchain and has no toolchain-compatibility gate.
+  opened. They are shown prominently in its body and must be reviewed before
+  merge, including any required `Xinlong-Wu/go-ohos` update and OpenHarmony
+  validation. The scheduled workflow does not inspect or download a local
+  toolchain and has no toolchain-compatibility gate.
 - The merge is intentionally automatic only when Git reports no conflicts.
   CI and human review must still catch semantic conflicts, newly introduced
   upstream-only workflows, module-path changes, generated files, and

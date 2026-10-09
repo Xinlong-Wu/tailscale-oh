@@ -23,7 +23,6 @@ trusted_signers_file="$repo_root/.github/upstream-release-signers"
 output_file="${GITHUB_OUTPUT:-/dev/null}"
 summary_file="${GITHUB_STEP_SUMMARY:-/dev/null}"
 report_file="${SYNC_REPORT_FILE:-${TMPDIR:-/tmp}/upstream-sync-report.md}"
-issue_title_file="${SYNC_ISSUE_TITLE_FILE:-${TMPDIR:-/tmp}/upstream-sync-issue-title.txt}"
 
 write_output() {
 	printf '%s=%s\n' "$1" "$2" >> "$output_file"
@@ -41,9 +40,9 @@ block() {
 	local title="$1" body_file
 	body_file="$(mktemp)"
 	cat > "$body_file"
-	printf '%s\n' "$title" > "$issue_title_file"
 	{
 		printf '## Automated upstream synchronization stopped\n\n'
+		printf '### %s\n\n' "$title"
 		cat "$body_file"
 		if [[ -n "${GITHUB_SERVER_URL:-}" && -n "${GITHUB_REPOSITORY:-}" && -n "${GITHUB_RUN_ID:-}" ]]; then
 			printf '\nWorkflow run: %s/%s/actions/runs/%s\n' \
@@ -79,15 +78,6 @@ if [[ "$downstream_repository" != "Xinlong-Wu/tailscale-oh" ]]; then
 	block "Automated upstream sync has an invalid downstream repository" <<EOF
 The workflow is running for \`$downstream_repository\`. It is intentionally
 restricted to \`Xinlong-Wu/tailscale-oh\`.
-EOF
-fi
-
-if [[ -z "${SYNC_PUSH_TOKEN:-}" ]]; then
-	block "Automated upstream sync needs repository configuration" <<'EOF'
-The `UPSTREAM_SYNC_TOKEN` Actions secret is missing. Configure a fine-grained
-token with read/write access to Contents and Pull requests for this repository.
-A token distinct from `GITHUB_TOKEN` is required so the created pull request
-triggers the normal pull-request CI workflows.
 EOF
 fi
 

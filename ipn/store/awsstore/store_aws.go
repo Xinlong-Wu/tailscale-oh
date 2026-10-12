@@ -14,6 +14,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
@@ -26,6 +27,9 @@ import (
 )
 
 func init() {
+	if !feature.Register("aws") {
+		return
+	}
 	store.Register("arn:", func(logf logger.Logf, arg string) (ipn.StateStore, error) {
 		ssmARN, opts, err := ParseARNAndOpts(arg)
 		if err != nil {

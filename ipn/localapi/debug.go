@@ -25,6 +25,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
@@ -216,7 +217,7 @@ func (h *Handler) serveDebug(w http.ResponseWriter, r *http.Request) {
 	case "pick-new-derp":
 		err = h.b.DebugPickNewDERP()
 	case "force-prefer-derp":
-		var n int
+		var n tailcfg.DERPRegionID
 		err = json.NewDecoder(r.Body).Decode(&n)
 		if err != nil {
 			break
@@ -280,6 +281,13 @@ func (h *Handler) serveDebug(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) serveDevSetStateStore(w http.ResponseWriter, r *http.Request) {
 	if !h.PermitWrite {
 		http.Error(w, "debug access denied", http.StatusForbidden)
+		return
+	}
+	// state keys are otherwise gated by their own handlers, e.g. serve-config
+	// requires a local admin for Unix-socket targets; writing a _serve/<profile>
+	// key here would bypass that, so require a local admin too
+	if !h.Actor.IsLocalAdmin(h.b.OperatorUserID()) {
+		http.Error(w, "dev-set-state-store access denied; must be a local admin", http.StatusUnauthorized)
 		return
 	}
 	if r.Method != httpm.POST {
@@ -514,7 +522,7 @@ func (h *Handler) serveDebugLog(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, feature.ErrUnavailable.Error(), http.StatusNotImplemented)
 		return
 	}
-	if !h.PermitRead {
+	if !h.PermitWrite {
 		http.Error(w, "debug-log access denied", http.StatusForbidden)
 		return
 	}
@@ -557,6 +565,7 @@ func (h *Handler) serveDebugLog(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) serveDebugOptionalFeatures(w http.ResponseWriter, r *http.Request) {
 	of := &apitype.OptionalFeatures{
 		Features: feature.Registered(),
+		Disabled: feature.EnvDisabled(),
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(of)

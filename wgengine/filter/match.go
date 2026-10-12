@@ -7,7 +7,7 @@ import (
 	"net/netip"
 
 	"github.com/Xinlong-Wu/tailscale-oh/net/packet"
-	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
 	"github.com/Xinlong-Wu/tailscale-oh/types/views"
 	"github.com/Xinlong-Wu/tailscale-oh/wgengine/filter/filtertype"
 )
@@ -57,7 +57,7 @@ func srcMatches(m *filtertype.Match, srcAddr netip.Addr, hasCap CapTestFunc) boo
 // has a given capability.
 //
 // It is used in the fast path of evaluating filter rules so should be fast.
-type CapTestFunc = func(srcIP netip.Addr, cap tailcfg.NodeCapability) bool
+type CapTestFunc = func(srcIP netip.Addr, cap nodecap.Cap) bool
 
 func (ms matches) matchIPsOnly(q *packet.Parsed, hasCap CapTestFunc) bool {
 	srcAddr := q.Src.Addr()

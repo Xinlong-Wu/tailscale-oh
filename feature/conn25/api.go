@@ -12,24 +12,17 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/localapi"
 	"github.com/Xinlong-Wu/tailscale-oh/types/appctype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
 	"github.com/Xinlong-Wu/tailscale-oh/util/httpm"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
-	"github.com/Xinlong-Wu/tailscale-oh/util/testenv"
 )
 
 // serveLocalAPIStateGet serves the localapi endpoint /conn25/state.
 // See also [*Conn25.GetActiveState].
 func serveLocalAPIStateGet(h *localapi.Handler, w http.ResponseWriter, r *http.Request) {
-	// TODO(tailscale/corp#39033): Remove for alpha release.
-	if !envknob.UseWIPCode() && !testenv.InTest() {
-		w.WriteHeader(http.StatusNotImplemented)
-		return
-	}
 	if !h.PermitRead {
 		http.Error(w, "conn25/state access denied", http.StatusForbidden)
 		return
@@ -54,12 +47,6 @@ func serveLocalAPIStateGet(h *localapi.Handler, w http.ResponseWriter, r *http.R
 // serveC2NStateGet serves the C2N endpoint /conn25/state.
 // See also [*Conn25.GetActiveState].
 func serveC2NStateGet(b *ipnlocal.LocalBackend, w http.ResponseWriter, r *http.Request) {
-	// TODO(tailscale/corp#39033): Remove for alpha release.
-	if !envknob.UseWIPCode() && !testenv.InTest() {
-		w.WriteHeader(http.StatusNotImplemented)
-		return
-	}
-
 	logf := b.Logger()
 	logf("c2n: GET /conn25/state received")
 

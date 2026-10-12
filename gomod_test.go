@@ -20,7 +20,7 @@ func TestGoMod(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(f.Replace) != 1 {
-		t.Fatalf("go.mod has %d replace directives; expect the setec compatibility replacement", len(f.Replace))
+		t.Fatalf("go.mod has %d replace directives; expect the external-module compatibility replacement", len(f.Replace))
 	}
 	r := f.Replace[0]
 	if r.Old.Path != "tailscale.com" || r.Old.Version != "" ||

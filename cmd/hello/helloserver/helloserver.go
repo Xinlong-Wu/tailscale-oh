@@ -16,6 +16,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/client/local"
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
 )
 
 //go:embed hello.tmpl.html
@@ -94,7 +95,7 @@ func tailscaleIP(who *apitype.WhoIsResponse) string {
 	if who == nil {
 		return ""
 	}
-	vals, err := tailcfg.UnmarshalNodeCapJSON[string](who.Node.CapMap, tailcfg.NodeAttrNativeIPV4)
+	vals, err := tailcfg.UnmarshalNodeCapJSON[string](who.Node.CapMap, nodecap.NativeIPV4)
 	if err == nil && len(vals) > 0 {
 		return vals[0]
 	}

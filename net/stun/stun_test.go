@@ -14,8 +14,6 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/must"
 )
 
-// TODO(bradfitz): fuzz this.
-
 func ExampleRequest() {
 	txID := stun.NewTxID()
 	req := stun.Request(txID)

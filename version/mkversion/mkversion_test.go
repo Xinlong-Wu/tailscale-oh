@@ -129,3 +129,18 @@ func TestMkversion(t *testing.T) {
 		}
 	}
 }
+
+func TestTailscaleModuleRef(t *testing.T) {
+	for _, modulePath := range []string{upstreamModulePath, forkModulePath} {
+		t.Run(modulePath, func(t *testing.T) {
+			goMod := fmt.Sprintf("module example.com/corp\n\nrequire %s v1.104.1\n", modulePath)
+			got, err := tailscaleModuleRef([]byte(goMod))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got != "v1.104.1" {
+				t.Fatalf("tailscaleModuleRef = %q; want v1.104.1", got)
+			}
+		})
+	}
+}

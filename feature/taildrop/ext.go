@@ -18,10 +18,15 @@ import (
 
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscaled/tailscaledhooks"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/localapi"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/peercap"
 	"github.com/Xinlong-Wu/tailscale-oh/tstime"
 	"github.com/Xinlong-Wu/tailscale-oh/types/empty"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
@@ -30,7 +35,14 @@ import (
 )
 
 func init() {
+	if !feature.Register("taildrop") {
+		return
+	}
 	ipnext.RegisterExtension("taildrop", newExtension)
+	ipnlocal.RegisterPeerAPIHandler("/v0/put/", handlePeerPut)
+	localapi.Register("file-put/", serveFilePut)
+	localapi.Register("files/", serveFiles)
+	localapi.Register("file-targets", serveFileTargets)
 
 	if runtime.GOOS == "windows" {
 		tailscaledhooks.UninstallSystemDaemonWindows.Add(func() {
@@ -124,7 +136,7 @@ func (e *Extension) onSelfChange(self tailcfg.NodeView) {
 	if self.Valid() {
 		e.selfUID = self.User()
 	}
-	e.capFileSharing = self.Valid() && self.CapMap().Contains(tailcfg.CapabilityFileSharing)
+	e.capFileSharing = self.Valid() && self.CapMap().Contains(nodecap.FileSharing)
 	osshare.SetFileSharingEnabled(e.capFileSharing, e.logf)
 }
 
@@ -353,7 +365,7 @@ func (e *Extension) FileTargets() ([]*apitype.FileTarget, error) {
 		if self == p.User() {
 			return true
 		}
-		if nb.PeerHasCap(p, tailcfg.PeerCapabilityFileSharingTarget) {
+		if nb.PeerHasCap(p, peercap.FileSharingTarget) {
 			// Explicitly noted in the netmap ACL caps as a target.
 			return true
 		}
@@ -400,7 +412,7 @@ func (e *Extension) taildropTargetStatus(p tailcfg.NodeView, nb ipnext.NodeBacke
 	}
 	if selfUID != p.User() {
 		// Different user must have the explicit file sharing target capability
-		if !nb.PeerHasCap(p, tailcfg.PeerCapabilityFileSharingTarget) {
+		if !nb.PeerHasCap(p, peercap.FileSharingTarget) {
 			return ipnstate.TaildropTargetOwnedByOtherUser
 		}
 	}

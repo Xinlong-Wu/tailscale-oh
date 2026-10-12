@@ -11,11 +11,15 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/net/dns"
 	"github.com/illarion/gonotify/v3"
 )
 
 func init() {
+	if !feature.Register("linuxdnsfight") {
+		return
+	}
 	dns.HookWatchFile.Set(watchFile)
 }
 

@@ -24,6 +24,7 @@ import (
 
 	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
 	"github.com/Xinlong-Wu/tailscale-oh/types/netmap"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
 	"github.com/Xinlong-Wu/tailscale-oh/util/set"
@@ -276,6 +277,7 @@ func (c *Cache) UpdatePeers(ctx context.Context, update []tailcfg.NodeView, remo
 			errs = append(errs, err)
 		}
 		c.wantKeys.Delete(key)
+		delete(c.lastWrote, key)
 	}
 	return errors.Join(errs...)
 }
@@ -339,7 +341,7 @@ func (c *Cache) Load(ctx context.Context) (*netmap.NetworkMap, error) {
 	// If we successfully recovered a SelfNode, pull out its related fields.
 	if s := nm.SelfNode; s.Valid() {
 		nm.NodeKey = s.Key()
-		nm.AllCaps = make(set.Set[tailcfg.NodeCapability])
+		nm.AllCaps = make(set.Set[nodecap.Cap])
 		for _, c := range s.Capabilities().All() {
 			nm.AllCaps.Add(c)
 		}

@@ -4,4 +4,12 @@
 // Package syspolicy provides an interface for system-wide policy management.
 package syspolicy
 
-import _ "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy" // for its registration side effects
+import (
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
+
+	_ "github.com/Xinlong-Wu/tailscale-oh/util/syspolicy" // for its registration side effects
+)
+
+func init() {
+	feature.Register("syspolicy")
+}

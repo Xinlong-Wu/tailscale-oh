@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-// The doctor package registers the "doctor" problem diagnosis support into the
+// Package doctor registers the "doctor" problem diagnosis support into the
 // rest of Tailscale.
 package doctor
 
@@ -16,12 +16,16 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/doctor/ethtool"
 	"github.com/Xinlong-Wu/tailscale-oh/doctor/permissions"
 	"github.com/Xinlong-Wu/tailscale-oh/doctor/routetable"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 func init() {
+	if !feature.Register("doctor") {
+		return
+	}
 	ipnlocal.HookDoctor.Set(visitDoctor)
 	ipnlocal.RegisterPeerAPIHandler("/v0/doctor", handleServeDoctor)
 }

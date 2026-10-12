@@ -32,6 +32,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal/ipnlocaltest"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
 	xacme "github.com/Xinlong-Wu/tailscale-oh/tempfork/acme"
 	"github.com/Xinlong-Wu/tailscale-oh/tsconst"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
@@ -193,9 +194,9 @@ func TestResolveCertDomain(t *testing.T) {
 			e := extOf(t, b)
 
 			if !tt.skipNetmap {
-				var allCaps set.Set[tailcfg.NodeCapability]
+				var allCaps set.Set[nodecap.Cap]
 				if tt.hasCap {
-					allCaps = set.Of(tailcfg.NodeAttrDNSSubdomainResolve)
+					allCaps = set.Of(nodecap.DNSSubdomainResolve)
 				}
 				b.ForTest().SetNetMap(&netmap.NetworkMap{
 					SelfNode: (&tailcfg.Node{}).View(),

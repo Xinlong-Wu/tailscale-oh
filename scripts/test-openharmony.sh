@@ -146,7 +146,7 @@ build_runtime_tests() {
   declare -a test_patterns=(
     'TestShortAllocs|TestIsValidLongWithTwoRepos|TestPrepExeNameForCmp|TestParse|TestAtLeast'
     'TestMonitorStartClose|TestMonitorJustClose|TestMonitorInjectEvent|TestMonitorInjectEventOnBus|TestGetState|TestInterfaceDiff|TestForeachInterface|TestStateString|TestEqual|TestPrefixesEqual'
-    'TestIsLocalhost'
+    'TestIsLocalhost|TestSetListenConfigInterfaceName'
     'TestPropToString|TestMigrateStateToTPM'
     'TestViaTargetAllowed|TestFlagExpiredPeers|TestNextPeerExpiry|TestIsNotableNotify|TestMergePeerChangedPatch|TestExpandProxyArg'
   )
@@ -243,7 +243,7 @@ docker_run_target() {
     docker run --rm "${docker_mount_args[@]}" "$docker_image" "$program" "$@"
   else
     docker run --rm "${docker_mount_args[@]}" --entrypoint /qemu-aarch64 \
-      "$docker_image" "$program" "$program" "$@"
+      "$docker_image" "$program" "$@"
   fi
 }
 
@@ -253,7 +253,7 @@ docker_exec_target() {
   if [[ "$docker_arch" == arm64 ]]; then
     docker exec "$container" "$program" "$@"
   else
-    docker exec "$container" /qemu-aarch64 "$program" "$program" "$@"
+    docker exec "$container" /qemu-aarch64 "$program" "$@"
   fi
 }
 
@@ -282,7 +282,7 @@ run_daemon_smoke() {
       --socket="$socket" --no-logs-no-support >/dev/null
   else
     docker run -d --name "$daemon_container" "${docker_mount_args[@]}" --entrypoint /qemu-aarch64 "$docker_image" \
-      /work/bin/tailscaled /work/bin/tailscaled \
+      /work/bin/tailscaled \
       --tun=userspace-networking --state=mem: --statedir=/data/local/tmp/state \
       --socket="$socket" --no-logs-no-support >/dev/null
   fi

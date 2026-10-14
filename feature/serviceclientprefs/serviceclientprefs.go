@@ -14,6 +14,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
+	"github.com/Xinlong-Wu/tailscale-oh/ipn/localapi"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
@@ -25,8 +26,11 @@ const featureName = "serviceclientprefs"
 const storeKey = "service-client-prefs"
 
 func init() {
-	feature.Register(featureName)
+	if !feature.Register(featureName) {
+		return
+	}
 	ipnext.RegisterExtension(featureName, newExtension)
+	localapi.Register("prefs/service-clients", serveServiceClientPrefs)
 }
 
 // newExtension is the [ipnext.NewExtensionFn] for this feature.

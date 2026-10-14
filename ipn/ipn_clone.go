@@ -12,6 +12,7 @@ import (
 
 	"github.com/Xinlong-Wu/tailscale-oh/drive"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/peercap"
 	"github.com/Xinlong-Wu/tailscale-oh/types/opt"
 	"github.com/Xinlong-Wu/tailscale-oh/types/persist"
 	"github.com/Xinlong-Wu/tailscale-oh/types/preftype"
@@ -247,7 +248,7 @@ var _HTTPHandlerCloneNeedsRegeneration = HTTPHandler(struct {
 	Path          string
 	Proxy         string
 	Text          string
-	AcceptAppCaps []tailcfg.PeerCapability
+	AcceptAppCaps []peercap.Cap
 	Redirect      string
 }{})
 

@@ -8,11 +8,15 @@ import (
 	"net/netip"
 
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlhttp"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/net/ace"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
 )
 
 func init() {
+	if !feature.Register("ace") {
+		return
+	}
 	controlhttp.HookMakeACEDialer.Set(mkDialer)
 }
 

@@ -8,11 +8,15 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 )
 
 func init() {
+	if !feature.Register("appconnectors") {
+		return
+	}
 	ipnlocal.RegisterC2N("GET /appconnector/routes", handleC2NAppConnectorDomainRoutesGet)
 }
 

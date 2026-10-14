@@ -23,6 +23,8 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/peercap"
 	"github.com/Xinlong-Wu/tailscale-oh/tsd"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/types/ipproto"
@@ -157,7 +159,7 @@ func TestDriveRemoteSourceAccessGate(t *testing.T) {
 		}).View(),
 	}
 
-	install := func(allCaps set.Set[tailcfg.NodeCapability]) {
+	install := func(allCaps set.Set[nodecap.Cap]) {
 		b.mu.Lock()
 		defer b.mu.Unlock()
 		b.setNetMapLocked(&netmap.NetworkMap{
@@ -181,7 +183,7 @@ func TestDriveRemoteSourceAccessGate(t *testing.T) {
 		t.Errorf("Remotes without DriveAccess cap: got %d entries, want 0", len(got))
 	}
 
-	install(set.Of(tailcfg.NodeAttrsTaildriveAccess))
+	install(set.Of(nodecap.TaildriveAccess))
 	if got := collect(); len(got) != len(peers) {
 		t.Errorf("Remotes with DriveAccess cap: got %d entries, want %d", len(got), len(peers))
 	}
@@ -376,7 +378,7 @@ func (h *driveEndToEndHarness) filterMatchesFor(specs []peerSpec) []filtertype.M
 			Srcs:    []netip.Prefix{netip.PrefixFrom(s.addr, s.addr.BitLen())},
 			Caps: []filtertype.CapMatch{{
 				Dst: netip.PrefixFrom(h.selfAddr, h.selfAddr.BitLen()),
-				Cap: tailcfg.PeerCapabilityTaildriveSharer,
+				Cap: peercap.TaildriveSharer,
 			}},
 		})
 	}
@@ -403,7 +405,7 @@ func (h *driveEndToEndHarness) installNetMap(specs []peerSpec) {
 		}).View(),
 		Domain:       h.domain,
 		Peers:        peers,
-		AllCaps:      set.Of(tailcfg.NodeAttrsTaildriveAccess),
+		AllCaps:      set.Of(nodecap.TaildriveAccess),
 		PacketFilter: h.filterMatchesFor(specs),
 	}
 	h.cc.send(sendOpt{loginFinished: true, nm: nm})

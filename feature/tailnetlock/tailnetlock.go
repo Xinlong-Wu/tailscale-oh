@@ -1,23 +1,26 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-// package tailnetlock registers the tailnet lock debug C2N handler. In the
+// Package tailnetlock registers the tailnet lock debug C2N handler. In the
 // future, all tailnet lock code should move here.
 package tailnetlock
 
 import (
+	jsonv1 "encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/Xinlong-Wu/tailscale-oh/cmd/tailscale/cli/jsonoutput"
 	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/feature/buildfeatures"
+	"github.com/Xinlong-Wu/tailscale-oh/feature/tailnetlock/tslockjsonv1"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
 )
 
 func init() {
-	feature.Register("tailnetlock")
+	if !feature.Register("tailnetlock") {
+		return
+	}
 	ipnlocal.RegisterC2N("/debug/tka/log", handleC2NDebugTKALog)
 }
 
@@ -49,6 +52,12 @@ func handleC2NDebugTKALog(b *ipnlocal.LocalBackend, w http.ResponseWriter, r *ht
 		http.Error(w, fmt.Sprintf("failed to get tailnet lock log: %v", err), http.StatusInternalServerError)
 		return
 	}
+	resp, err := tslockjsonv1.LogResponse(updates)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed to get tailnet lock log: %v", err), http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	jsonoutput.PrintTailnetLockLogJSONV1(w, updates)
+	jsonv1.NewEncoder(w).Encode(resp)
 }

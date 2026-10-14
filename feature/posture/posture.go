@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnext"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
@@ -23,6 +24,9 @@ import (
 )
 
 func init() {
+	if !feature.Register("posture") {
+		return
+	}
 	ipnext.RegisterExtension("posture", newExtension)
 	ipnlocal.RegisterC2N("GET /posture/identity", handleC2NPostureIdentityGet)
 }

@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
+	"github.com/Xinlong-Wu/tailscale-oh/types/dnstype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/dnsname"
 )
 
@@ -51,5 +52,6 @@ func TestIsZero(t *testing.T) {
 			Addr:  netip.AddrFrom4([4]byte{100, 1, 2, 3}),
 			Hosts: []string{"foo", "bar"},
 		},
+		reflect.TypeFor[*dnstype.Resolver](): &dnstype.Resolver{Addr: "8.8.8.8"},
 	})
 }

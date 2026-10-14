@@ -31,6 +31,7 @@ import (
 
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest/integration/testcontrol"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"go4.org/mem"
@@ -179,7 +180,7 @@ func (s *Streamer) sendInitial(w testcontrol.MapStreamWriter, req *tailcfg.MapRe
 		MachineAuthorized: true,
 		Addresses:         []netip.Prefix{selfIP4, selfIP6},
 		AllowedIPs:        []netip.Prefix{selfIP4, selfIP6},
-		CapMap:            map[tailcfg.NodeCapability][]tailcfg.RawMessage{},
+		CapMap:            map[nodecap.Cap][]tailcfg.RawMessage{},
 	}
 
 	initial := &tailcfg.MapResponse{

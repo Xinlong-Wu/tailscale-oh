@@ -32,12 +32,6 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/util/rands"
 )
 
-func init() {
-	localapi.Register("file-put/", serveFilePut)
-	localapi.Register("files/", serveFiles)
-	localapi.Register("file-targets", serveFileTargets)
-}
-
 var (
 	metricFilePutCalls = clientmetric.NewCounter("localapi_file_put")
 )

@@ -31,6 +31,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/net/tsaddr"
 	"github.com/Xinlong-Wu/tailscale-oh/syncs"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"github.com/Xinlong-Wu/tailscale-oh/types/nettype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/clientmetric"
 	"github.com/Xinlong-Wu/tailscale-oh/util/eventbus"
 	"github.com/Xinlong-Wu/tailscale-oh/util/mak"
@@ -125,6 +126,24 @@ func (c sysConn) Close() error {
 	return nil
 }
 
+// CloseRead implements [nettype.HalfCloser], allowing the underlying Conn
+// to be half-closed if possible. Otherwise, this is a no-op.
+func (c sysConn) CloseRead() error {
+	if hc, ok := c.Conn.(nettype.HalfCloser); ok {
+		return hc.CloseRead()
+	}
+	return nil
+}
+
+// CloseWrite implements [nettype.HalfCloser], allowing the underlying Conn
+// to be half-closed if possible. Otherwise, this is a no-op.
+func (c sysConn) CloseWrite() error {
+	if hc, ok := c.Conn.(nettype.HalfCloser); ok {
+		return hc.CloseWrite()
+	}
+	return nil
+}
+
 // SetTUNName sets the name of the tun device in use ("tailscale0", "utun6",
 // etc). This is needed on some platforms to set sockopts to bind
 // to the same interface index.
@@ -204,7 +223,9 @@ func (d *Dialer) Close() error {
 		c.Close()
 	}
 	d.activeSysConns = nil
-	d.PeerAPITransport().CloseIdleConnections()
+	if buildfeatures.HasPeerAPIClient {
+		d.PeerAPITransport().CloseIdleConnections()
+	}
 	return nil
 }
 

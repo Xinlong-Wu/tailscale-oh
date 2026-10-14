@@ -30,6 +30,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnstate"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
 	"github.com/Xinlong-Wu/tailscale-oh/util/slicesx"
 	"github.com/Xinlong-Wu/tailscale-oh/util/stringsx"
 	"github.com/atotto/clipboard"
@@ -624,7 +625,7 @@ func (menu *Menu) rebuildExitNodeMenu(ctx context.Context) {
 	setExitNodeOnClick(noExitNodeMenu, "")
 
 	// Show recommended exit node if available.
-	if status.Self.CapMap.Contains(tailcfg.NodeAttrSuggestExitNodeUI) {
+	if status.Self.CapMap.Contains(nodecap.SuggestExitNodeUI) {
 		sugg, err := menu.lc.SuggestExitNode(ctx)
 		if err == nil {
 			// Location is invalid for suggested exit nodes that have

@@ -42,10 +42,76 @@ When you touch one of these features, prefer to keep migrating code into
 its `feature/<name>` package rather than adding more to the old location.
 But do not feel obligated to finish the migration in one PR.
 
+## Runtime disabling: `TS_DISABLE_FEATURE`
+
+The `TS_DISABLE_FEATURE` environment variable disables features at
+runtime, even if they're compiled in. It is the runtime analog of the
+`ts_omit_<name>` build tags: a mitigation knob (for when a feature has,
+say, a security bug that most users don't need to be exposed to) and a
+way to shrink attack surface on appliances.
+
+    TS_DISABLE_FEATURE=ssh,taildrop
+
+Names are matched leniently: surrounding spaces, mixed case, a
+`ts_omit_` prefix, and underscores in place of dashes are all accepted.
+A name that this build doesn't know about, or that names a feature not
+linked in, is ignored rather than fatal.
+
+A disabled feature behaves as if it had not been linked: it is absent
+from [`feature.IsRegistered`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#IsRegistered),
+its hooks are unset, and its extensions and handlers are not
+registered. The compile-time `buildfeatures.HasFoo` constants are
+unaffected (the code is still in the binary), so keep pairing them with
+`IsRegistered` as described above.
+
+The mechanism, in order of authority:
+
+1. [`feature.Register(name)`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#Register)
+   reports false and records nothing. Feature packages gate their
+   registration init on it:
+
+       func init() {
+           if !feature.Register("foo") {
+               return
+           }
+           // ... set hooks, register extensions and handlers ...
+       }
+
+   A package with more than one registration init should consolidate
+   them into one gated init, or guard the others with
+   [`feature.Disabled(name)`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#Disabled).
+2. [`ipnext.RegisterExtension`](https://pkg.go.dev/tailscale.com/ipn/ipnext#RegisterExtension)
+   silently ignores a disabled feature's extension.
+3. `feature.Hook.Set` and `feature.Hooks.Add` walk the call stack, and
+   if the caller is a package under `github.com/Xinlong-Wu/tailscale-oh/feature/<x>` whose
+   feature is disabled, they silently skip the registration. This
+   catches sub-packages of a feature (such as
+   `feature/captiveportal/netcheckhook`), which cannot call `Register`
+   themselves without colliding with their parent feature, and future
+   packages whose authors never added the gate.
+
+All of this happens during package init, so the variable must be set
+when the process starts (in the systemd unit's `EnvironmentFile`, the
+container's environment, and so on). The legacy per-feature knobs like
+`TS_DISABLE_SSH_SERVER` and `TS_DISABLE_TAILDROP` keep working
+independently of this one.
+
+The state is visible in the `debug-optional-features` LocalAPI endpoint
+(`tailscaled`'s registered set plus what `TS_DISABLE_FEATURE` listed),
+and `feature/register_disable_test.go` locks the behavior down: it
+disables every registered feature in a subprocess and fails if any of
+them register anyway, so a feature that ignores the variable cannot
+land.
+
+Not everything with a `ts_omit_*` tag is runtime-disableable: code that
+registers itself from outside a `feature/` package without going
+through the mechanisms above (for example the `osrouter` router hooks)
+is not covered.
+
 ## The registry: `feature/featuretags`
 
 [`featuretags/featuretags.go`](featuretags/featuretags.go) is the single
-source of truth. It declares the [`Features`](https://pkg.go.dev/tailscale.com/feature/featuretags#Features)
+source of truth. It declares the [`Features`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature/featuretags#Features)
 map: for each feature tag (a
 lowercase string like `acme` or `taildrop`), it records the exported symbol
 name used by generated constants, a human-readable description, and any
@@ -54,9 +120,9 @@ other features it depends on (forming a DAG).
 Adding a new feature starts with adding an entry there. See the top of the
 file for the tag naming convention: feature `foo` corresponds to build tag
 `ts_omit_foo` (opt-out). The one exception is `cli`, which is opt-in via
-`ts_include_cli`; see [`FeatureTag.IsOmittable`](https://pkg.go.dev/tailscale.com/feature/featuretags#FeatureTag.IsOmittable).
+`ts_include_cli`; see [`FeatureTag.IsOmittable`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature/featuretags#FeatureTag.IsOmittable).
 
-Features can be marked [`ImplementationDetail: true`](https://pkg.go.dev/tailscale.com/feature/featuretags#FeatureMeta)
+Features can be marked [`ImplementationDetail: true`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature/featuretags#FeatureMeta)
 when they are internal
 plumbing (e.g. `dbus`, `c2n`) that users would not select directly; they
 exist only so that user-visible features can depend on them.
@@ -148,7 +214,7 @@ not be set (so `HasFoo` is `true`), yet `tsnet` may have never imported
 
 `buildfeatures.HasFoo` really means "not explicitly omitted by build
 tag." Whether the feature is actually present is
-[`feature.IsRegistered("foo")`](https://pkg.go.dev/tailscale.com/feature#IsRegistered).
+[`feature.IsRegistered("foo")`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#IsRegistered).
 The idiom is:
 
     buildfeatures.HasFoo && feature.IsRegistered("foo")
@@ -159,28 +225,31 @@ unset but the package was never imported.
 
 ## The `feature` API
 
-Package [`feature`](https://pkg.go.dev/tailscale.com/feature) itself
+Package [`feature`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature) itself
 exposes the small runtime API used by feature packages and their callers:
 
-- [`feature.Register(name)`](https://pkg.go.dev/tailscale.com/feature#Register):
+- [`feature.Register(name)`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#Register):
   a feature package calls this from its `init` to record that it was
-  linked in. Callers use
-  [`feature.IsRegistered(name)`](https://pkg.go.dev/tailscale.com/feature#IsRegistered)
+  linked in and to find out whether it should register itself at all
+  (it reports false when disabled via
+  [`TS_DISABLE_FEATURE`](#runtime-disabling-ts_disable_feature), as
+  described below). Callers use
+  [`feature.IsRegistered(name)`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#IsRegistered)
   to check.
-- [`feature.Hook[Func]`](https://pkg.go.dev/tailscale.com/feature#Hook):
+- [`feature.Hook[Func]`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#Hook):
   a single-writer, single-reader hook. The
   extension point declares a `var HookX feature.Hook[func(...)]`, the
   feature package `Set`s it once from `init`, and callers use
   `GetOk`/`GetOrNil`/`IsSet` to invoke it. `Set` panics if called twice.
-- [`feature.Hooks[Func]`](https://pkg.go.dev/tailscale.com/feature#Hooks):
+- [`feature.Hooks[Func]`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#Hooks):
   a slice of hooks for extension points that may
   legitimately have multiple registrants.
 - Common cross-feature hooks (auto-update, proxy, TPM, SSH host keys,
   hardware attestation) live in [`hooks.go`](hooks.go) alongside their
   small dispatcher functions like
-  [`feature.CanAutoUpdate()`](https://pkg.go.dev/tailscale.com/feature#CanAutoUpdate)
+  [`feature.CanAutoUpdate()`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#CanAutoUpdate)
   and
-  [`feature.TPMAvailable()`](https://pkg.go.dev/tailscale.com/feature#TPMAvailable).
+  [`feature.TPMAvailable()`](https://pkg.go.dev/github.com/Xinlong-Wu/tailscale-oh/feature#TPMAvailable).
   Add hooks here only sparingly: every hook in this package is loaded
   by every consumer of `feature`, so its function signature must not
   reference types from "heavy" packages. By heavy we mean any package
@@ -343,8 +412,15 @@ Tests come in three flavors:
    including any `Deps`.
 2. Run `./tool/go generate ./feature/buildfeatures` (or `make generate`).
 3. Create `feature/<name>/` with the code, and register hooks and any
-   `ipnext.Extension` from its `init`. Call `feature.Register("<name>")`
-   from `init` too.
+   `ipnext.Extension` from its `init`, gated as described in
+   ["Runtime disabling: `TS_DISABLE_FEATURE`](#runtime-disabling-ts_disable_feature):
+
+       func init() {
+           if !feature.Register("<name>") {
+               return
+           }
+           // ... set hooks, register extensions and handlers ...
+       }
 4. If the feature should be on by default in `tailscaled`, add
    `feature/condregister/maybe_<name>.go` with `//go:build !ts_omit_<name>`
    and a blank import of `github.com/Xinlong-Wu/tailscale-oh/feature/<name>`.

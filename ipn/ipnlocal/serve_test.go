@@ -29,10 +29,15 @@ import (
 	"time"
 
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
+	"github.com/Xinlong-Wu/tailscale-oh/envknob"
 	"github.com/Xinlong-Wu/tailscale-oh/health"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/store/mem"
+	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
+	"github.com/Xinlong-Wu/tailscale-oh/net/tsdial"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/peercap"
 	"github.com/Xinlong-Wu/tailscale-oh/tsd"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
@@ -407,7 +412,7 @@ func TestServeConfigServices(t *testing.T) {
 		SelfNode: (&tailcfg.Node{
 			Name: "example.ts.net",
 			CapMap: tailcfg.NodeCapMap{
-				tailcfg.NodeAttrServiceHost: []tailcfg.RawMessage{tailcfg.RawMessage(svcIPMapJSON)},
+				nodecap.ServiceHost: []tailcfg.RawMessage{tailcfg.RawMessage(svcIPMapJSON)},
 			},
 		}).View(),
 		UserProfiles: map[tailcfg.UserID]tailcfg.UserProfileView{
@@ -850,7 +855,7 @@ func TestServeHTTPProxyHeaders(t *testing.T) {
 func TestServeHTTPProxyGrantHeader(t *testing.T) {
 	b := newTestBackend(t)
 
-	nm := b.NetMap()
+	nm := b.NetMapWithPeers()
 	matches, err := filter.MatchesFromFilterRules([]tailcfg.FilterRule{
 		{
 			SrcIPs: []string{"100.150.151.152"},
@@ -905,7 +910,7 @@ func TestServeHTTPProxyGrantHeader(t *testing.T) {
 			"example.ts.net:443": {Handlers: map[string]*ipn.HTTPHandler{
 				"/": {
 					Proxy:         testServ.URL,
-					AcceptAppCaps: []tailcfg.PeerCapability{"example.com/cap/interesting", "example.com/cap/boring"},
+					AcceptAppCaps: []peercap.Cap{"example.com/cap/interesting", "example.com/cap/boring"},
 				},
 			}},
 		},
@@ -1098,6 +1103,25 @@ func Test_reverseProxyConfiguration(t *testing.T) {
 			wantsURL:      mustCreateURL(t, "https://example3.com"),
 		},
 	})
+}
+
+func TestServeMaxIdleConnsPerHost(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		env  string
+		want int
+	}{
+		{name: "default", want: 0},
+		{name: "configured", env: "100", want: 100},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			envknob.SetenvForTest(t, "TS_DEBUG_SERVE_MAX_IDLE_CONNS_PER_HOST", tt.env)
+			rp := &reverseProxy{lb: &LocalBackend{dialer: tsdial.NewDialer(netmon.NewStatic())}}
+			if got := rp.getTransport().MaxIdleConnsPerHost; got != tt.want {
+				t.Errorf("MaxIdleConnsPerHost = %d, want %d", got, tt.want)
+			}
+		})
+	}
 }
 
 func mustCreateURL(t *testing.T, u string) url.URL {

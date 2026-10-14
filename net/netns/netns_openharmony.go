@@ -6,12 +6,16 @@
 package netns
 
 import (
+	"errors"
 	"fmt"
+	"log"
+	"net"
 	"sync"
 	"syscall"
 
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
+	"golang.org/x/sys/unix"
 )
 
 var (
@@ -55,4 +59,34 @@ func controlC(network, address string, c syscall.RawConn) error {
 		return fmt.Errorf("RawConn.Control on %T: %w", c, err)
 	}
 	return sockErr
+}
+
+// SetListenConfigInterfaceName sets lc.Control so that sockets created with
+// it are bound to the named interface. OpenHarmony uses the Linux socket API
+// for SO_BINDTODEVICE, and peerapi uses this to keep its kernel listener off
+// physical interfaces.
+//
+// As on Linux, failures to set the socket option are logged and otherwise
+// ignored so that a missing capability does not take out the listener.
+func SetListenConfigInterfaceName(lc *net.ListenConfig, ifName string) error {
+	if lc == nil {
+		return errors.New("nil ListenConfig")
+	}
+	if lc.Control != nil {
+		return errors.New("ListenConfig.Control already set")
+	}
+	lc.Control = func(network, address string, c syscall.RawConn) error {
+		var sockErr error
+		err := c.Control(func(fd uintptr) {
+			sockErr = unix.SetsockoptString(int(fd), unix.SOL_SOCKET, unix.SO_BINDTODEVICE, ifName)
+		})
+		if sockErr != nil {
+			log.Printf("[unexpected] netns: SO_BINDTODEVICE(%q) on %v %v: %v", ifName, network, address, sockErr)
+		}
+		if err != nil {
+			return fmt.Errorf("RawConn.Control on %T: %w", c, err)
+		}
+		return nil
+	}
+	return nil
 }

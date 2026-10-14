@@ -20,7 +20,6 @@ import (
 	"time"
 
 	"github.com/Xinlong-Wu/tailscale-oh/health"
-	"github.com/Xinlong-Wu/tailscale-oh/net/dns"
 	"github.com/Xinlong-Wu/tailscale-oh/net/netmon"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 	"github.com/Xinlong-Wu/tailscale-oh/util/backoff"
@@ -95,11 +94,6 @@ func (r *winRouter) Set(cfg *router.Config) error {
 	if err != nil {
 		r.logf("ConfigureInterface: %v", err)
 		return err
-	}
-
-	// Flush DNS on router config change to clear cached DNS entries (solves #1430)
-	if err := dns.Flush(); err != nil {
-		r.logf("flushdns error: %v", err)
 	}
 
 	return nil

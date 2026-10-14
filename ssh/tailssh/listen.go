@@ -16,8 +16,13 @@ import (
 	gliderssh "github.com/tailscale/gliderssh"
 )
 
-func init() {
+// Register installs tailssh's hooks and child process handlers. It is
+// called from the init of github.com/Xinlong-Wu/tailscale-oh/feature/ssh, which skips it if
+// the ssh feature was disabled via TS_DISABLE_FEATURE or omitted from
+// the build.
+func Register() {
 	ipnlocal.HookListenSSH.Set(listenSSH)
+	registerIncubator()
 }
 
 // listenSSH wraps rawLn with an SSH server that resolves Tailscale peer

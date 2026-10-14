@@ -12,12 +12,16 @@ import (
 	"time"
 
 	"github.com/Xinlong-Wu/tailscale-oh/control/controlclient"
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
 	"github.com/Xinlong-Wu/tailscale-oh/tempfork/httprec"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
 )
 
 func init() {
+	if !feature.Register("c2n") {
+		return
+	}
 	controlclient.HookAnswerC2NPing.Set(answerC2NPing)
 }
 

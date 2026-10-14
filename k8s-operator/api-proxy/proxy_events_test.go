@@ -21,6 +21,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/net/netx"
 	"github.com/Xinlong-Wu/tailscale-oh/sessionrecording"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/peercap"
 	"github.com/Xinlong-Wu/tailscale-oh/tsnet"
 	"go.uber.org/zap"
 )
@@ -73,7 +74,7 @@ func TestRecordRequestAsEvent(t *testing.T) {
 			LoginName: "user@example.com",
 		},
 		CapMap: tailcfg.PeerCapMap{
-			tailcfg.PeerCapabilityKubernetes: []tailcfg.RawMessage{
+			peercap.Kubernetes: []tailcfg.RawMessage{
 				tailcfg.RawMessage(`{"recorderAddrs":["127.0.0.1:1234"]}`),
 				tailcfg.RawMessage(`{"enforceRecorder": true, "enableEvents": true}`),
 			},
@@ -307,7 +308,7 @@ func TestRecordRequestAsEvent(t *testing.T) {
 				Node:        defaultWho.Node,
 				UserProfile: defaultWho.UserProfile,
 				CapMap: tailcfg.PeerCapMap{
-					tailcfg.PeerCapabilityKubernetes: []tailcfg.RawMessage{
+					peercap.Kubernetes: []tailcfg.RawMessage{
 						tailcfg.RawMessage(`{"recorderAddrs":["127.0.0.1:1234", "127.0.0.1:5678"]}`),
 						tailcfg.RawMessage(`{"enforceRecorder": true, "enableEvents": true}`),
 					},

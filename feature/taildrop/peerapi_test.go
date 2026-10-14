@@ -20,6 +20,7 @@ import (
 	"github.com/Xinlong-Wu/tailscale-oh/client/tailscale/apitype"
 	"github.com/Xinlong-Wu/tailscale-oh/ipn/ipnlocal"
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/nodecap"
 	"github.com/Xinlong-Wu/tailscale-oh/tstest"
 	"github.com/Xinlong-Wu/tailscale-oh/tstime"
 	"github.com/Xinlong-Wu/tailscale-oh/types/logger"
@@ -481,7 +482,7 @@ func TestHandlePeerAPI(t *testing.T) {
 				},
 			}
 			if tt.debugCap {
-				selfNode.CapMap = tailcfg.NodeCapMap{tailcfg.CapabilityDebug: nil}
+				selfNode.CapMap = tailcfg.NodeCapMap{nodecap.Debug: nil}
 			}
 			var rootDir string
 			var fo FileOps

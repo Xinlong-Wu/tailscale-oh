@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/Xinlong-Wu/tailscale-oh/tailcfg"
+	"github.com/Xinlong-Wu/tailscale-oh/tailcfg/peercap"
 	"github.com/Xinlong-Wu/tailscale-oh/types/key"
 	"github.com/Xinlong-Wu/tailscale-oh/util/deephash/testtype"
 	"github.com/Xinlong-Wu/tailscale-oh/util/hashx"
@@ -645,7 +646,7 @@ var filterRules = []tailcfg.FilterRule{
 		IPProto: []int{1, 2, 3, 4},
 		CapGrant: []tailcfg.CapGrant{{
 			Dsts: []netip.Prefix{netip.MustParsePrefix("1.2.3.4/32")},
-			Caps: []tailcfg.PeerCapability{"foo"},
+			Caps: []peercap.Cap{"foo"},
 		}},
 	},
 	{

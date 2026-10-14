@@ -6,6 +6,7 @@
 package linkspeed
 
 import (
+	"github.com/Xinlong-Wu/tailscale-oh/feature"
 	"github.com/Xinlong-Wu/tailscale-oh/net/tstun"
 	"github.com/mdlayher/genetlink"
 	"github.com/mdlayher/netlink"
@@ -14,6 +15,9 @@ import (
 )
 
 func init() {
+	if !feature.Register("linkspeed") {
+		return
+	}
 	tstun.HookSetLinkAttrs.Set(setLinkAttrs)
 }
 

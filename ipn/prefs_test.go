@@ -463,6 +463,18 @@ func TestPrefsFromBytesPreservesOldValues(t *testing.T) {
 			json: []byte(`{}`),
 			want: Prefs{Sync: "unset"},
 		},
+		{
+			name: "route-all-explicit-false-overrides-platform-default",
+			old:  Prefs{RouteAll: true},
+			json: []byte(`{"RouteAll": false}`),
+			want: Prefs{RouteAll: false},
+		},
+		{
+			name: "route-all-missing-preserves-platform-default",
+			old:  Prefs{RouteAll: true},
+			json: []byte(`{}`),
+			want: Prefs{RouteAll: true},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -473,6 +485,28 @@ func TestPrefsFromBytesPreservesOldValues(t *testing.T) {
 			}
 			if !old.Equals(&tt.want) {
 				t.Fatalf("got %+v; want %+v", old, tt.want)
+			}
+		})
+	}
+}
+
+func TestDefaultRouteAll(t *testing.T) {
+	tests := []struct {
+		goos string
+		want bool
+	}{
+		{goos: "linux", want: false},
+		{goos: "windows", want: true},
+		{goos: "android", want: true},
+		{goos: "ios", want: true},
+		{goos: "openharmony", want: true},
+	}
+
+	p := new(Prefs)
+	for _, tt := range tests {
+		t.Run(tt.goos, func(t *testing.T) {
+			if got := p.DefaultRouteAll(tt.goos); got != tt.want {
+				t.Fatalf("DefaultRouteAll(%q) = %v; want %v", tt.goos, got, tt.want)
 			}
 		})
 	}
@@ -795,6 +829,23 @@ func TestPrefsApplyEdits(t *testing.T) {
 			},
 			want: &Prefs{
 				Hostname: "bar",
+			},
+		},
+		{
+			name: "preserve-explicit-route-all-false-when-edit-omits-it",
+			prefs: &Prefs{
+				RouteAll: false,
+			},
+			edit: &MaskedPrefs{
+				Prefs: Prefs{
+					RouteAll:    true, // ignored because RouteAllSet is false
+					WantRunning: true,
+				},
+				WantRunningSet: true,
+			},
+			want: &Prefs{
+				RouteAll:    false,
+				WantRunning: true,
 			},
 		},
 		{

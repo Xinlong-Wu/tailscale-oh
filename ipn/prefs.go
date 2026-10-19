@@ -788,7 +788,7 @@ func (p *Prefs) ControlURLOrDefault(polc policyclient.Client) string {
 // of the platform it's running on.
 func (p *Prefs) DefaultRouteAll(goos string) bool {
 	switch goos {
-	case "windows", "android", "ios":
+	case "windows", "android", "ios", "openharmony":
 		return true
 	case "darwin":
 		// Only true for macAppStore and macsys, false for darwin tailscaled.

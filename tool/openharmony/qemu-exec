@@ -37,7 +37,7 @@ if [[ ! -x "$target" ]]; then
   exit 2
 fi
 
-# qemu-aarch64 passes the first argument after the emulator as argv[0] in a way
-# that makes the Go command lose its subcommand. Supplying the target twice
-# preserves the target argv[0] and gives the program the expected arguments.
-exec "$GO_OHOS_QEMU" "$target" "$target" "$@"
+# QEMU takes the target executable once, followed by the target's arguments.
+# Passing the executable a second time would make the Go driver interpret its
+# own path as a subcommand.
+exec "$GO_OHOS_QEMU" "$target" "$@"

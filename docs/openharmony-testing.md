@@ -17,7 +17,7 @@ runtime inputs and execute focused tests in DockerHarmony). An existing local
 toolchain can be selected with `GO_OHOS_ROOT`, for example:
 
 ```sh
-GO_OHOS_ROOT=/root/go_ohos/amd64/go1.26.8-ohos.1 \
+GO_OHOS_ROOT=/root/go_ohos/amd64/go1.27.3-ohos.1 \
   ./scripts/test-openharmony.sh all
 ```
 
@@ -25,7 +25,7 @@ When an ARM64 host-tool release is being used on an x86-64 machine, provide a
 user-mode QEMU binary and identify the selected host asset:
 
 ```sh
-GO_OHOS_ROOT=/root/go_ohos/arm64/go1.26.8-ohos.1 \
+GO_OHOS_ROOT=/root/go_ohos/arm64/go1.27.3-ohos.1 \
 GO_OHOS_HOST_ARCH=arm64 \
 GO_OHOS_QEMU=/path/to/qemu-aarch64 \
   ./scripts/test-openharmony.sh all

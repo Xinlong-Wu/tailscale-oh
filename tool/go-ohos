@@ -309,11 +309,14 @@ invoke_go() {
   if [[ -z "$qemu_bin" ]]; then
     "$go_bin" "$@"
   else
-    "$qemu_bin" "$go_bin" "$go_bin" "$@"
+    "$qemu_bin" "$go_bin" "$@"
   fi
 }
 
-if ! invoke_go tool dist list | grep -qx 'openharmony/arm64'; then
+if ! supported_targets="$(invoke_go tool dist list)"; then
+  die "$GO_OHOS_RELEASE failed to list its supported targets"
+fi
+if ! grep -qx 'openharmony/arm64' <<<"$supported_targets"; then
   die "$GO_OHOS_RELEASE does not advertise the openharmony/arm64 target"
 fi
 reported_go_version="$(invoke_go env GOVERSION)"
@@ -322,5 +325,5 @@ reported_go_version="$(invoke_go env GOVERSION)"
 if [[ -z "$qemu_bin" ]]; then
   exec "$go_bin" "$@"
 else
-  exec "$qemu_bin" "$go_bin" "$go_bin" "$@"
+  exec "$qemu_bin" "$go_bin" "$@"
 fi
